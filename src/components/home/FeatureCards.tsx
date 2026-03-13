@@ -1,47 +1,51 @@
 import { Link } from "react-router-dom";
-import { Search, Building, Key, Wrench, ArrowRight } from "lucide-react";
+import { Search, Building2, Key, Wrench, ArrowRight } from "lucide-react";
 
 const cards = [
   {
     icon: Search,
     title: "Rental Listings",
-    desc: "Browse thousands of verified rental properties across Dhaka, Chittagong, Rajshahi & Khulna. Filter by price, location, and size.",
+    desc: "Find or list verified rental properties across Bangladesh",
     route: "/rentals",
-    color: "bg-primary/10",
+    tag: "124+ Listings",
+    iconBg: "bg-[#E0F2FE]",
     iconColor: "text-primary",
-    accent: "bg-primary",
+    tagBg: "bg-primary/10 text-primary",
   },
   {
-    icon: Building,
+    icon: Building2,
     title: "Building Management",
-    desc: "Manage service charges, building funds, expenses, and residents — all from one smart dashboard.",
+    desc: "Manage service charges, building funds & residents digitally",
     route: "/building-management",
-    color: "bg-indigo/10",
+    tag: "Smart Dashboard",
+    iconBg: "bg-[#EDE9FE]",
     iconColor: "text-indigo",
-    accent: "bg-indigo",
+    tagBg: "bg-indigo/10 text-indigo",
   },
   {
     icon: Key,
     title: "Property Management",
-    desc: "Track rent payments, manage tenant records, send automated reminders, and monitor your income.",
+    desc: "Track rent payments, tenants & income in one place",
     route: "/management",
-    color: "bg-accent/10",
+    tag: "Auto Reminders",
+    iconBg: "bg-[#FEF3C7]",
     iconColor: "text-accent",
-    accent: "bg-accent",
+    tagBg: "bg-accent/10 text-accent",
   },
   {
     icon: Wrench,
     title: "Home Services",
-    desc: "Book verified plumbers, electricians, cleaners, and repair experts on-demand at your doorstep.",
+    desc: "Book verified plumbers, cleaners & repair experts on-demand",
     route: "/services",
-    color: "bg-pink/10",
+    tag: "8 Service Types",
+    iconBg: "bg-[#FCE7F3]",
     iconColor: "text-pink",
-    accent: "bg-pink",
+    tagBg: "bg-pink/10 text-pink",
   },
 ];
 
 const FeatureCards = () => (
-  <section className="py-20 bg-card">
+  <section className="py-20 bg-background">
     <div className="container mx-auto px-4">
       <div className="text-center mb-14">
         <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-3">
@@ -56,17 +60,16 @@ const FeatureCards = () => (
           <Link
             key={c.route}
             to={c.route}
-            className="group relative bg-card border border-border rounded-card p-6 hover-lift cursor-pointer overflow-hidden"
+            className="group bg-card border border-[#F1F5F9] rounded-card p-7 cursor-pointer transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:scale-[1.02]"
+            style={{ boxShadow: "0 2px 16px rgba(0,0,0,0.07)" }}
           >
-            {/* Subtle pattern */}
-            <div className={`absolute top-0 right-0 w-32 h-32 ${c.accent} opacity-[0.03] rounded-full -translate-y-1/2 translate-x-1/2`} />
-            <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${c.color} mb-4`}>
-              <c.icon className={`h-6 w-6 ${c.iconColor} transition-transform group-hover:scale-110`} />
+            <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl ${c.iconBg} mb-5`}>
+              <c.icon className={`h-7 w-7 ${c.iconColor}`} />
             </div>
             <h3 className="text-lg font-heading font-semibold text-foreground mb-2">{c.title}</h3>
-            <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{c.desc}</p>
-            <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-all">
-              Explore <ArrowRight className="h-4 w-4" />
+            <p className="text-sm text-muted-foreground mb-5 leading-relaxed">{c.desc}</p>
+            <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${c.tagBg}`}>
+              {c.tag}
             </span>
           </Link>
         ))}

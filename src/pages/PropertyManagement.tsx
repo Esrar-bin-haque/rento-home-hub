@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Building2, BarChart3, Home, Users, DollarSign, Bell, FileText, Settings,
-  LogOut, Lock, AlertTriangle
+  LogOut, Menu, TrendingUp, TrendingDown, LayoutGrid, Plus, MoreHorizontal
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import {
+  PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  Tooltip, ResponsiveContainer, Legend
+} from "recharts";
 
 const sidebarItems = [
-  { icon: BarChart3, label: "Overview" },
+  { icon: BarChart3, label: "Dashboard" },
   { icon: Home, label: "My Properties" },
   { icon: Users, label: "Tenants" },
   { icon: DollarSign, label: "Rent Records" },
@@ -17,49 +19,89 @@ const sidebarItems = [
   { icon: Settings, label: "Settings" },
 ];
 
-const tenants = [
-  { property: "Flat 3A, Gulshan", tenant: "Aminul Islam", rent: 35000, lastPayment: "Mar 1, 2026", status: "Paid" },
-  { property: "Flat 5B, Banani", tenant: "Sara Haque", rent: 28000, lastPayment: "Mar 2, 2026", status: "Paid" },
-  { property: "House, Dhanmondi", tenant: "Rezaul Karim", rent: 42000, lastPayment: "—", status: "Overdue" },
-  { property: "Flat 2C, Uttara", tenant: "Mithila Akter", rent: 15000, lastPayment: "Mar 1, 2026", status: "Paid" },
-];
-
-const pieData = [
-  { name: "Collected", value: 78000, color: "hsl(175,85%,32%)" },
-  { name: "Due", value: 42000, color: "hsl(0,84%,60%)" },
-];
-
 const barData = [
-  { month: "Oct", amount: 95000 },
-  { month: "Nov", amount: 105000 },
-  { month: "Dec", amount: 110000 },
-  { month: "Jan", amount: 120000 },
-  { month: "Feb", amount: 115000 },
-  { month: "Mar", amount: 120000 },
+  { month: "Oct", collected: 95000, due: 25000 },
+  { month: "Nov", collected: 105000, due: 15000 },
+  { month: "Dec", collected: 110000, due: 10000 },
+  { month: "Jan", collected: 100000, due: 20000 },
+  { month: "Feb", collected: 115000, due: 5000 },
+  { month: "Mar", collected: 120000, due: 0 },
+];
+
+const expensePieData = [
+  { name: "Maintenance", value: 12000, color: "hsl(175,85%,32%)" },
+  { name: "Utilities", value: 18000, color: "hsl(43,96%,50%)" },
+  { name: "Repairs", value: 8000, color: "hsl(0,84%,60%)" },
+  { name: "Insurance", value: 5000, color: "hsl(217,91%,60%)" },
+  { name: "Tax", value: 7000, color: "hsl(271,91%,65%)" },
+];
+
+const payments = [
+  { tenant: "Aminul Islam", flat: "3A, Gulshan", amount: 35000, method: "bKash", status: "paid" },
+  { tenant: "Sara Haque", flat: "5B, Banani", amount: 28000, method: "Nagad", status: "paid" },
+  { tenant: "Rezaul Karim", flat: "House, Dhanmondi", amount: 42000, method: "—", status: "due" },
+  { tenant: "Mithila Akter", flat: "2C, Uttara", amount: 15000, method: "Bank Transfer", status: "paid" },
+];
+
+const properties = [
+  { name: "Flat 3A", location: "Gulshan", rent: 35000, tenant: "Aminul Islam", status: "Occupied" },
+  { name: "Flat 5B", location: "Banani", rent: 28000, tenant: "Sara Haque", status: "Occupied" },
+  { name: "House", location: "Dhanmondi", rent: 42000, tenant: "Rezaul Karim", status: "Occupied" },
+  { name: "Flat 2C", location: "Uttara", rent: 15000, tenant: "Mithila Akter", status: "Occupied" },
+];
+
+const tenantsList = [
+  { name: "Aminul Islam", property: "Flat 3A, Gulshan", phone: "01711-XXXXXX", rent: 35000, since: "Jan 2025" },
+  { name: "Sara Haque", property: "Flat 5B, Banani", phone: "01812-XXXXXX", rent: 28000, since: "Mar 2025" },
+  { name: "Rezaul Karim", property: "House, Dhanmondi", phone: "01911-XXXXXX", rent: 42000, since: "Jun 2025" },
+  { name: "Mithila Akter", property: "Flat 2C, Uttara", phone: "01611-XXXXXX", rent: 15000, since: "Aug 2025" },
+];
+
+const reminders = [
+  { tenant: "Rezaul Karim", type: "Rent Due", date: "Mar 10, 2026", status: "Pending" },
+  { tenant: "All Tenants", type: "Lease Renewal", date: "Apr 1, 2026", status: "Upcoming" },
+  { tenant: "Aminul Islam", type: "Maintenance", date: "Mar 15, 2026", status: "Scheduled" },
 ];
 
 const PropertyManagement = () => {
-  const [activeTab, setActiveTab] = useState("Overview");
+  const [activeTab, setActiveTab] = useState("Dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "Dashboard":
+        return <DashboardContent />;
+      case "My Properties":
+        return <PropertiesContent />;
+      case "Tenants":
+        return <TenantsContent />;
+      case "Rent Records":
+        return <RentRecordsContent />;
+      case "Reminders":
+        return <RemindersContent />;
+      default:
+        return <PlaceholderContent tab={activeTab} />;
+    }
+  };
 
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Sidebar */}
-      <aside className="hidden lg:flex w-[260px] bg-foreground flex-col flex-shrink-0">
-        <div className="p-5">
+    <div className="flex min-h-screen bg-[#F8FAFC]">
+      <aside className={`${sidebarOpen ? "w-[200px]" : "w-0 overflow-hidden"} transition-all duration-300 bg-[#0F172A] flex flex-col flex-shrink-0 fixed h-full z-20`}>
+        <div className="p-4 pb-6">
           <Link to="/" className="flex items-center gap-2">
-            <Building2 className="h-6 w-6 text-primary" />
-            <span className="text-lg font-heading font-bold text-primary-foreground">Rento</span>
+            <Building2 className="h-5 w-5 text-primary" />
+            <span className="text-base font-heading font-bold text-white">Rento</span>
           </Link>
         </div>
-        <nav className="flex-1 px-3 space-y-1">
+        <nav className="flex-1 px-2 space-y-0.5">
           {sidebarItems.map(item => (
             <button
               key={item.label}
               onClick={() => setActiveTab(item.label)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] transition-colors ${
                 activeTab === item.label
-                  ? "bg-primary text-primary-foreground"
-                  : "text-secondary/70 hover:text-secondary hover:bg-secondary/10"
+                  ? "bg-primary text-white"
+                  : "text-slate-400 hover:text-white hover:bg-white/5"
               }`}
             >
               <item.icon className="h-4 w-4" />
@@ -67,126 +109,289 @@ const PropertyManagement = () => {
             </button>
           ))}
         </nav>
-        <div className="p-4 border-t border-secondary/10">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">LM</div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-secondary truncate">Landlord Mode</p>
-            </div>
-            <LogOut className="h-4 w-4 text-secondary/40 cursor-pointer hover:text-secondary transition-colors" />
-          </div>
+        <div className="p-3 border-t border-white/10">
+          <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
+            <LogOut className="h-4 w-4" />
+            Log out
+          </button>
         </div>
       </aside>
 
-      {/* Main */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Banner */}
-        <div className="bg-accent/10 border-b border-accent/20 px-6 py-3 flex items-center justify-between">
-          <p className="text-sm text-foreground flex items-center gap-2"><Lock className="h-4 w-4 text-accent" />Sign in to access your full dashboard</p>
-          <Button className="rounded-button bg-primary text-primary-foreground text-xs h-8">Login</Button>
-        </div>
-
-        <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 flex-shrink-0">
-          <h1 className="text-lg font-heading font-semibold text-foreground">Property Management</h1>
-          <Bell className="h-5 w-5 text-muted-foreground" />
+      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[200px]" : ""} transition-all duration-300`}>
+        <header className="h-14 bg-white border-b border-border flex items-center justify-between px-5 flex-shrink-0 shadow-sm sticky top-0 z-10">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-secondary transition-colors">
+              <Menu className="h-4 w-4 text-muted-foreground" />
+            </button>
+            <span className="text-sm text-muted-foreground">Property Management</span>
+          </div>
+          <button className="relative p-2 rounded-lg hover:bg-secondary transition-colors">
+            <Bell className="h-4 w-4 text-muted-foreground" />
+            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-destructive rounded-full" />
+          </button>
         </header>
 
-        <main className="flex-1 p-6 overflow-auto">
-          {activeTab === "Overview" ? (
-            <div className="space-y-6">
-              {/* Stat Cards */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                  { label: "My Properties", value: "4", icon: Home, color: "bg-indigo/10 text-indigo" },
-                  { label: "Monthly Income", value: "BDT 1,20,000", icon: DollarSign, color: "bg-primary/10 text-primary" },
-                  { label: "Active Tenants", value: "4", icon: Users, color: "bg-primary/10 text-primary" },
-                  { label: "Pending Dues", value: "1", icon: AlertTriangle, color: "bg-destructive/10 text-destructive" },
-                ].map(s => (
-                  <div key={s.label} className="bg-card rounded-card card-shadow p-5 border border-border">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs text-muted-foreground font-medium">{s.label}</span>
-                      <div className={`w-8 h-8 rounded-lg ${s.color} flex items-center justify-center`}>
-                        <s.icon className="h-4 w-4" />
-                      </div>
-                    </div>
-                    <p className="text-xl font-heading font-bold text-foreground">{s.value}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid lg:grid-cols-5 gap-6">
-                {/* Tenant Table */}
-                <div className="lg:col-span-3 bg-card rounded-card card-shadow border border-border overflow-hidden">
-                  <div className="p-4 border-b border-border">
-                    <h3 className="font-heading font-semibold text-foreground text-sm">Tenant Overview</h3>
-                  </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead className="bg-secondary">
-                        <tr>
-                          {["Property", "Tenant", "Rent", "Last Payment", "Status"].map(h => (
-                            <th key={h} className="text-left p-3 font-medium text-muted-foreground text-xs">{h}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {tenants.map(t => (
-                          <tr key={t.property} className="border-t border-border">
-                            <td className="p-3 font-medium text-foreground text-xs">{t.property}</td>
-                            <td className="p-3 text-foreground text-xs">{t.tenant}</td>
-                            <td className="p-3 text-foreground text-xs">BDT {t.rent.toLocaleString()}</td>
-                            <td className="p-3 text-muted-foreground text-xs">{t.lastPayment}</td>
-                            <td className="p-3">
-                              <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                                t.status === "Paid" ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"
-                              }`}>{t.status}</span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Pie Chart */}
-                <div className="lg:col-span-2 bg-card rounded-card card-shadow border border-border p-4">
-                  <h3 className="font-heading font-semibold text-foreground text-sm mb-4">Income vs Due</h3>
-                  <ResponsiveContainer width="100%" height={200}>
-                    <PieChart>
-                      <Pie data={pieData} cx="50%" cy="50%" innerRadius={50} outerRadius={70} dataKey="value" paddingAngle={3}>
-                        {pieData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
-                      </Pie>
-                      <Legend formatter={(value) => <span className="text-xs text-foreground">{value}</span>} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Bar Chart */}
-              <div className="bg-card rounded-card card-shadow border border-border p-5">
-                <h3 className="font-heading font-semibold text-foreground text-sm mb-4">Monthly Income (Last 6 Months)</h3>
-                <ResponsiveContainer width="100%" height={280}>
-                  <BarChart data={barData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(214,32%,91%)" />
-                    <XAxis dataKey="month" tick={{ fontSize: 12, fill: "hsl(215,16%,47%)" }} />
-                    <YAxis tick={{ fontSize: 12, fill: "hsl(215,16%,47%)" }} tickFormatter={v => `${v / 1000}k`} />
-                    <Tooltip formatter={(v: number) => [`BDT ${v.toLocaleString()}`, "Income"]} />
-                    <Bar dataKey="amount" fill="hsl(175,85%,32%)" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-32 text-center">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                {(() => { const Item = sidebarItems.find(s => s.label === activeTab)?.icon || BarChart3; return <Item className="h-7 w-7 text-primary" />; })()}
-              </div>
-              <h3 className="font-heading font-semibold text-lg text-foreground mb-2">{activeTab}</h3>
-              <p className="text-sm text-muted-foreground mb-6">This section is coming soon. Stay tuned!</p>
-              <Button onClick={() => setActiveTab("Overview")} className="rounded-button bg-primary text-primary-foreground text-sm">Go to Overview</Button>
-            </div>
-          )}
+        <main className="flex-1 p-5 overflow-auto">
+          {renderContent()}
         </main>
+      </div>
+    </div>
+  );
+};
+
+const DashboardContent = () => (
+  <div className="space-y-5">
+    <div>
+      <h1 className="text-xl font-heading font-bold text-foreground">Dashboard</h1>
+      <p className="text-sm text-muted-foreground">Overview of your properties</p>
+    </div>
+
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {[
+        { label: "My Properties", value: "4", sub: "Across 4 locations", icon: Home, iconBg: "bg-blue-100 text-blue-600" },
+        { label: "Monthly Income", value: "৳1,20,000", sub: "This month", icon: TrendingUp, iconBg: "bg-green-100 text-green-600" },
+        { label: "Active Tenants", value: "4", sub: "All active", icon: Users, iconBg: "bg-primary/10 text-primary" },
+        { label: "Pending Dues", value: "1", sub: "Action needed", icon: TrendingDown, iconBg: "bg-red-100 text-red-600" },
+      ].map(s => (
+        <div key={s.label} className="bg-white rounded-2xl p-5 border border-[#F1F5F9] shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs text-muted-foreground font-medium">{s.label}</span>
+            <div className={`w-9 h-9 rounded-xl ${s.iconBg} flex items-center justify-center`}>
+              <s.icon className="h-4 w-4" />
+            </div>
+          </div>
+          <p className="text-2xl font-heading font-bold text-foreground">{s.value}</p>
+          <p className="text-xs text-muted-foreground mt-1">{s.sub}</p>
+        </div>
+      ))}
+    </div>
+
+    <div className="grid lg:grid-cols-5 gap-5">
+      <div className="lg:col-span-3 bg-white rounded-2xl border border-[#F1F5F9] shadow-sm p-5">
+        <h3 className="font-heading font-semibold text-foreground text-sm mb-4">Income Collection Trend</h3>
+        <ResponsiveContainer width="100%" height={260}>
+          <BarChart data={barData} barGap={4}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
+            <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#94A3B8" }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 11, fill: "#94A3B8" }} axisLine={false} tickLine={false} tickFormatter={v => `${v / 1000}k`} />
+            <Tooltip formatter={(v: number) => [`৳${v.toLocaleString()}`, ""]} />
+            <Legend iconType="circle" iconSize={8} formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>} />
+            <Bar dataKey="collected" name="Collected" fill="hsl(175,85%,32%)" radius={[4, 4, 0, 0]} barSize={20} />
+            <Bar dataKey="due" name="Due" fill="hsl(0,84%,60%)" radius={[4, 4, 0, 0]} barSize={20} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div className="lg:col-span-2 bg-white rounded-2xl border border-[#F1F5F9] shadow-sm p-5">
+        <h3 className="font-heading font-semibold text-foreground text-sm mb-4">Expense Breakdown</h3>
+        <ResponsiveContainer width="100%" height={220}>
+          <PieChart>
+            <Pie data={expensePieData} cx="50%" cy="50%" innerRadius={55} outerRadius={85} dataKey="value" paddingAngle={2}>
+              {expensePieData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+            </Pie>
+            <Tooltip formatter={(v: number) => [`৳${v.toLocaleString()}`, ""]} />
+          </PieChart>
+        </ResponsiveContainer>
+        <div className="flex flex-wrap gap-x-3 gap-y-1.5 mt-2 justify-center">
+          {expensePieData.map(d => (
+            <span key={d.name} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: d.color }} />
+              {d.name}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <div className="p-4 border-b border-[#F1F5F9]">
+        <h3 className="font-heading font-semibold text-foreground text-sm">Recent Payments</h3>
+      </div>
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-[#F8FAFC]">
+            {["Tenant", "Property", "Amount", "Method", "Status"].map(h => (
+              <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {payments.map((p, i) => (
+            <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+              <td className="p-3 text-foreground text-xs font-medium">{p.tenant}</td>
+              <td className="p-3 text-muted-foreground text-xs">{p.flat}</td>
+              <td className="p-3 text-foreground text-xs font-medium">৳{p.amount.toLocaleString()}</td>
+              <td className="p-3 text-muted-foreground text-xs">{p.method}</td>
+              <td className="p-3">
+                <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium ${
+                  p.status === "paid" ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"
+                }`}>{p.status}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+const PropertiesContent = () => (
+  <div className="space-y-5">
+    <div className="flex items-center justify-between">
+      <div>
+        <h1 className="text-xl font-heading font-bold text-foreground">My Properties</h1>
+        <p className="text-sm text-muted-foreground">Manage your rental properties</p>
+      </div>
+      <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+        <Plus className="h-3.5 w-3.5" /> Add Property
+      </button>
+    </div>
+    <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-[#F8FAFC]">
+            {["Property", "Location", "Rent", "Tenant", "Status"].map(h => (
+              <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {properties.map((p, i) => (
+            <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+              <td className="p-3 text-foreground text-xs font-medium">{p.name}</td>
+              <td className="p-3 text-muted-foreground text-xs">{p.location}</td>
+              <td className="p-3 text-foreground text-xs font-medium">৳{p.rent.toLocaleString()}</td>
+              <td className="p-3 text-muted-foreground text-xs">{p.tenant}</td>
+              <td className="p-3"><span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-primary/10 text-primary">{p.status}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+const TenantsContent = () => (
+  <div className="space-y-5">
+    <div className="flex items-center justify-between">
+      <div>
+        <h1 className="text-xl font-heading font-bold text-foreground">Tenants</h1>
+        <p className="text-sm text-muted-foreground">All your tenants</p>
+      </div>
+    </div>
+    <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-[#F8FAFC]">
+            {["Name", "Property", "Phone", "Rent", "Since"].map(h => (
+              <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tenantsList.map((t, i) => (
+            <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+              <td className="p-3 text-foreground text-xs font-medium">{t.name}</td>
+              <td className="p-3 text-muted-foreground text-xs">{t.property}</td>
+              <td className="p-3 text-muted-foreground text-xs">{t.phone}</td>
+              <td className="p-3 text-foreground text-xs font-medium">৳{t.rent.toLocaleString()}</td>
+              <td className="p-3 text-muted-foreground text-xs">{t.since}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+const RentRecordsContent = () => (
+  <div className="space-y-5">
+    <div>
+      <h1 className="text-xl font-heading font-bold text-foreground">Rent Records</h1>
+      <p className="text-sm text-muted-foreground">All rent payment history</p>
+    </div>
+    <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-[#F8FAFC]">
+            {["Tenant", "Property", "Amount", "Method", "Status"].map(h => (
+              <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {payments.map((p, i) => (
+            <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+              <td className="p-3 text-foreground text-xs font-medium">{p.tenant}</td>
+              <td className="p-3 text-muted-foreground text-xs">{p.flat}</td>
+              <td className="p-3 text-foreground text-xs font-medium">৳{p.amount.toLocaleString()}</td>
+              <td className="p-3 text-muted-foreground text-xs">{p.method}</td>
+              <td className="p-3">
+                <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium ${
+                  p.status === "paid" ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"
+                }`}>{p.status}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+const RemindersContent = () => (
+  <div className="space-y-5">
+    <div className="flex items-center justify-between">
+      <div>
+        <h1 className="text-xl font-heading font-bold text-foreground">Reminders</h1>
+        <p className="text-sm text-muted-foreground">Upcoming reminders & alerts</p>
+      </div>
+      <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+        <Plus className="h-3.5 w-3.5" /> Add Reminder
+      </button>
+    </div>
+    <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-[#F8FAFC]">
+            {["Tenant", "Type", "Date", "Status"].map(h => (
+              <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {reminders.map((r, i) => (
+            <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+              <td className="p-3 text-foreground text-xs font-medium">{r.tenant}</td>
+              <td className="p-3 text-muted-foreground text-xs">{r.type}</td>
+              <td className="p-3 text-muted-foreground text-xs">{r.date}</td>
+              <td className="p-3">
+                <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium ${
+                  r.status === "Pending" ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"
+                }`}>{r.status}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+const PlaceholderContent = ({ tab }: { tab: string }) => {
+  const Item = sidebarItems.find(s => s.label === tab)?.icon || BarChart3;
+  return (
+    <div className="space-y-5">
+      <div>
+        <h1 className="text-xl font-heading font-bold text-foreground">{tab}</h1>
+        <p className="text-sm text-muted-foreground">Manage your {tab.toLowerCase()}</p>
+      </div>
+      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm p-12 flex flex-col items-center justify-center text-center">
+        <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+          <Item className="h-6 w-6 text-primary" />
+        </div>
+        <h3 className="font-heading font-semibold text-foreground mb-1">{tab}</h3>
+        <p className="text-sm text-muted-foreground">This section is under development. Check back soon!</p>
       </div>
     </div>
   );
