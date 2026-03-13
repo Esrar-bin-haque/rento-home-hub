@@ -2,19 +2,22 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Building2, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const navLinks = [
-  { label: "Rentals", to: "/rentals" },
-  { label: "Building Management", to: "/building-management" },
-  { label: "Property Management", to: "/management" },
-  { label: "Services", to: "/services" },
-  { label: "Pricing", to: "/#pricing" },
-];
+import LanguageToggle from "@/components/LanguageToggle";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { t } = useLanguage();
+
+  const navLinks = [
+    { label: t("nav.rentals"), to: "/rentals" },
+    { label: t("nav.building"), to: "/building-management" },
+    { label: t("nav.property"), to: "/management" },
+    { label: t("nav.services"), to: "/services" },
+    { label: t("nav.pricing"), to: "/#pricing" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -50,11 +53,12 @@ const Navbar = () => {
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
+          <LanguageToggle />
           <Button variant="outline" className="rounded-button text-sm">
-            Login
+            {t("nav.login")}
           </Button>
           <Button className="rounded-button text-sm bg-primary text-primary-foreground hover:bg-primary/90">
-            Get Started
+            {t("nav.getStarted")}
           </Button>
         </div>
 
@@ -76,9 +80,12 @@ const Navbar = () => {
               {l.label}
             </Link>
           ))}
-          <div className="flex gap-3 mt-4">
-            <Button variant="outline" className="flex-1 rounded-button text-sm">Login</Button>
-            <Button className="flex-1 rounded-button text-sm bg-primary text-primary-foreground">Get Started</Button>
+          <div className="flex items-center gap-3 mt-4">
+            <LanguageToggle />
+          </div>
+          <div className="flex gap-3 mt-3">
+            <Button variant="outline" className="flex-1 rounded-button text-sm">{t("nav.login")}</Button>
+            <Button className="flex-1 rounded-button text-sm bg-primary text-primary-foreground">{t("nav.getStarted")}</Button>
           </div>
         </div>
       )}
