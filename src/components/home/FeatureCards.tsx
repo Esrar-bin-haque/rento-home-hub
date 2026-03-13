@@ -2,51 +2,43 @@ import { Link } from "react-router-dom";
 import { Search, Building2, Key, Wrench } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+const cards = [
+  {
+    icon: Search,
+    titleKey: "features.rentals.title",
+    descKey: "features.rentals.desc",
+    route: "/rentals",
+    tagKey: "features.rentals.tag",
+    gradient: "linear-gradient(135deg, #0D9488 0%, #0891B2 100%)",
+  },
+  {
+    icon: Building2,
+    titleKey: "features.building.title",
+    descKey: "features.building.desc",
+    route: "/building-management",
+    tagKey: "features.building.tag",
+    gradient: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
+  },
+  {
+    icon: Key,
+    titleKey: "features.property.title",
+    descKey: "features.property.desc",
+    route: "/management",
+    tagKey: "features.property.tag",
+    gradient: "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
+  },
+  {
+    icon: Wrench,
+    titleKey: "features.services.title",
+    descKey: "features.services.desc",
+    route: "/services",
+    tagKey: "features.services.tag",
+    gradient: "linear-gradient(135deg, #EC4899 0%, #F43F5E 100%)",
+  },
+];
+
 const FeatureCards = () => {
   const { t } = useLanguage();
-
-  const cards = [
-    {
-      icon: Search,
-      titleKey: "features.rentals.title",
-      descKey: "features.rentals.desc",
-      route: "/rentals",
-      tagKey: "features.rentals.tag",
-      iconBg: "bg-[#E0F2FE]",
-      iconColor: "text-primary",
-      tagBg: "bg-primary/10 text-primary",
-    },
-    {
-      icon: Building2,
-      titleKey: "features.building.title",
-      descKey: "features.building.desc",
-      route: "/building-management",
-      tagKey: "features.building.tag",
-      iconBg: "bg-[#EDE9FE]",
-      iconColor: "text-indigo",
-      tagBg: "bg-indigo/10 text-indigo",
-    },
-    {
-      icon: Key,
-      titleKey: "features.property.title",
-      descKey: "features.property.desc",
-      route: "/management",
-      tagKey: "features.property.tag",
-      iconBg: "bg-[#FEF3C7]",
-      iconColor: "text-accent",
-      tagBg: "bg-accent/10 text-accent",
-    },
-    {
-      icon: Wrench,
-      titleKey: "features.services.title",
-      descKey: "features.services.desc",
-      route: "/services",
-      tagKey: "features.services.tag",
-      iconBg: "bg-[#FCE7F3]",
-      iconColor: "text-pink",
-      tagBg: "bg-pink/10 text-pink",
-    },
-  ];
 
   return (
     <section className="py-20 bg-background">
@@ -59,22 +51,77 @@ const FeatureCards = () => {
             {t("features.subheading")}
           </p>
         </div>
-        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
           {cards.map((c) => (
             <Link
               key={c.route}
               to={c.route}
-              className="group bg-card border border-[#F1F5F9] rounded-card p-7 cursor-pointer transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:scale-[1.02]"
-              style={{ boxShadow: "0 2px 16px rgba(0,0,0,0.07)" }}
+              className="group relative overflow-hidden rounded-[20px] p-6 min-h-[220px] flex flex-col justify-between cursor-pointer"
+              style={{
+                background: c.gradient,
+                boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
+                transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-8px)";
+                e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,0,0,0.25)";
+                e.currentTarget.style.filter = "brightness(1.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.15)";
+                e.currentTarget.style.filter = "brightness(1)";
+              }}
             >
-              <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl ${c.iconBg} mb-5`}>
-                <c.icon className={`h-7 w-7 ${c.iconColor}`} />
+              {/* Noise overlay */}
+              <div
+                className="absolute inset-0 opacity-[0.05] pointer-events-none"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+                }}
+              />
+
+              {/* Decorative circle */}
+              <div
+                className="absolute pointer-events-none rounded-full"
+                style={{
+                  width: 150,
+                  height: 150,
+                  bottom: -30,
+                  right: -30,
+                  background: "rgba(255,255,255,0.08)",
+                }}
+              />
+
+              {/* Top row */}
+              <div className="relative z-10 flex items-start justify-between">
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-sm"
+                  style={{
+                    background: "rgba(255,255,255,0.2)",
+                    boxShadow: "0 0 0 8px rgba(255,255,255,0.1)",
+                  }}
+                >
+                  <c.icon className="h-6 w-6 text-white" />
+                </div>
+                <span
+                  className="px-3 py-1 rounded-full text-xs font-medium text-white"
+                  style={{ background: "rgba(255,255,255,0.2)" }}
+                >
+                  {t(c.tagKey)}
+                </span>
               </div>
-              <h3 className="text-lg font-heading font-semibold text-foreground mb-2">{t(c.titleKey)}</h3>
-              <p className="text-sm text-muted-foreground mb-5 leading-relaxed">{t(c.descKey)}</p>
-              <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${c.tagBg}`}>
-                {t(c.tagKey)}
-              </span>
+
+              {/* Bottom content */}
+              <div className="relative z-10 mt-auto">
+                <h3 className="text-xl font-heading font-bold text-white mb-1">{t(c.titleKey)}</h3>
+                <p className="text-[13px] text-white/85 leading-relaxed line-clamp-2 mb-2">
+                  {t(c.descKey)}
+                </p>
+                <span className="text-xs text-white/70 font-medium group-hover:text-white/100 transition-opacity">
+                  Explore →
+                </span>
+              </div>
             </Link>
           ))}
         </div>
