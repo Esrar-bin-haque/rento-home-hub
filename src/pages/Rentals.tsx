@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Search, MapPin, Star, Heart, Bed, Bath, Maximize, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const listings = [
   { id: 1, name: "Modern 2BHK — Dhanmondi", area: "Dhanmondi, Dhaka", price: 25000, beds: 2, baths: 2, sqft: 850, rating: 4.8, reviews: 12, seed: 101 },
@@ -22,6 +23,7 @@ const listings = [
 const Rentals = () => {
   const [location, setLocation] = useState("Dhaka");
   const [page, setPage] = useState(1);
+  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen bg-background">
@@ -30,19 +32,19 @@ const Rentals = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row items-stretch bg-card rounded-full border border-border card-shadow overflow-hidden max-w-3xl mx-auto">
             <div className="flex-1 px-5 py-3 border-b sm:border-b-0 sm:border-r border-border">
-              <p className="text-[10px] font-medium text-muted-foreground uppercase">Location</p>
+              <p className="text-[10px] font-medium text-muted-foreground uppercase">{t("rentals.location")}</p>
               <select className="text-sm font-medium bg-transparent outline-none w-full text-foreground" value={location} onChange={e => setLocation(e.target.value)}>
                 {["Dhaka", "Chittagong", "Rajshahi", "Khulna"].map(c => <option key={c}>{c}</option>)}
               </select>
             </div>
             <div className="flex-1 px-5 py-3 border-b sm:border-b-0 sm:border-r border-border">
-              <p className="text-[10px] font-medium text-muted-foreground uppercase">Property Type</p>
+              <p className="text-[10px] font-medium text-muted-foreground uppercase">{t("rentals.propertyType")}</p>
               <select className="text-sm font-medium bg-transparent outline-none w-full text-foreground">
-                {["Apartment", "House", "Room", "Studio"].map(t => <option key={t}>{t}</option>)}
+                {["Apartment", "House", "Room", "Studio"].map(tt => <option key={tt}>{tt}</option>)}
               </select>
             </div>
             <div className="flex-1 px-5 py-3 border-b sm:border-b-0 sm:border-r border-border">
-              <p className="text-[10px] font-medium text-muted-foreground uppercase">Budget</p>
+              <p className="text-[10px] font-medium text-muted-foreground uppercase">{t("rentals.budget")}</p>
               <input placeholder="BDT min – max" className="text-sm font-medium bg-transparent outline-none w-full text-foreground placeholder:text-muted-foreground" />
             </div>
             <Button className="m-2 rounded-full bg-primary text-primary-foreground px-6">
@@ -54,13 +56,12 @@ const Rentals = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Filters */}
           <aside className="lg:w-[260px] flex-shrink-0">
             <div className="bg-card rounded-card card-shadow p-5 border border-border sticky top-24">
-              <h3 className="font-heading font-semibold text-foreground mb-4">Filter Results</h3>
+              <h3 className="font-heading font-semibold text-foreground mb-4">{t("rentals.filterResults")}</h3>
               <div className="space-y-5 text-sm">
                 <div>
-                  <p className="font-medium text-foreground mb-2">City</p>
+                  <p className="font-medium text-foreground mb-2">{t("rentals.city")}</p>
                   {["Dhaka", "Chittagong", "Rajshahi", "Khulna"].map(c => (
                     <label key={c} className="flex items-center gap-2 py-1 text-muted-foreground cursor-pointer">
                       <input type="radio" name="city" defaultChecked={c === "Dhaka"} className="accent-primary" /> {c}
@@ -68,7 +69,7 @@ const Rentals = () => {
                   ))}
                 </div>
                 <div>
-                  <p className="font-medium text-foreground mb-2">Bedrooms</p>
+                  <p className="font-medium text-foreground mb-2">{t("rentals.bedrooms")}</p>
                   <div className="flex gap-2">
                     {["1", "2", "3", "4+"].map(b => (
                       <button key={b} className="px-3 py-1 rounded-button border border-border text-muted-foreground hover:border-primary hover:text-primary transition-colors text-xs">{b}</button>
@@ -76,27 +77,26 @@ const Rentals = () => {
                   </div>
                 </div>
                 <div>
-                  <p className="font-medium text-foreground mb-2">Furnished</p>
+                  <p className="font-medium text-foreground mb-2">{t("rentals.furnished")}</p>
                   <div className="flex gap-2">
-                    {["Yes", "No"].map(f => (
+                    {[t("rentals.yes"), t("rentals.no")].map(f => (
                       <button key={f} className="px-3 py-1 rounded-button border border-border text-muted-foreground hover:border-primary hover:text-primary transition-colors text-xs">{f}</button>
                     ))}
                   </div>
                 </div>
-                <Button className="w-full rounded-button bg-primary text-primary-foreground text-xs">Apply Filters</Button>
-                <button className="w-full text-xs text-muted-foreground hover:text-primary transition-colors">Reset</button>
+                <Button className="w-full rounded-button bg-primary text-primary-foreground text-xs">{t("rentals.applyFilters")}</Button>
+                <button className="w-full text-xs text-muted-foreground hover:text-primary transition-colors">{t("rentals.reset")}</button>
               </div>
             </div>
           </aside>
 
-          {/* Main grid */}
           <div className="flex-1">
             <div className="flex items-center justify-between mb-6">
-              <p className="text-sm text-muted-foreground"><span className="font-semibold text-foreground">124</span> properties found in {location}</p>
+              <p className="text-sm text-muted-foreground"><span className="font-semibold text-foreground">124</span> {t("rentals.propertiesFound")} {location}</p>
               <select className="text-xs border border-border rounded-button px-3 py-1.5 bg-card text-foreground outline-none">
-                <option>Newest</option>
-                <option>Price Low–High</option>
-                <option>Price High–Low</option>
+                <option>{t("rentals.newest")}</option>
+                <option>{t("rentals.priceLH")}</option>
+                <option>{t("rentals.priceHL")}</option>
               </select>
             </div>
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -104,8 +104,8 @@ const Rentals = () => {
                 <div key={l.id} className="bg-card rounded-card border border-border overflow-hidden hover-lift group">
                   <div className="relative">
                     <img src={`https://picsum.photos/seed/${l.seed}/400/250`} alt={l.name} className="w-full h-[200px] object-cover" loading="lazy" />
-                    <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-medium px-2 py-0.5 rounded-full">Verified</span>
-                    <span className="absolute top-3 right-10 bg-card/90 text-primary text-[10px] font-medium px-2 py-0.5 rounded-full">Available Now</span>
+                    <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-medium px-2 py-0.5 rounded-full">{t("rentals.verified")}</span>
+                    <span className="absolute top-3 right-10 bg-card/90 text-primary text-[10px] font-medium px-2 py-0.5 rounded-full">{t("rentals.availableNow")}</span>
                     <button className="absolute top-3 right-3 text-card hover:text-destructive transition-colors">
                       <Heart className="h-4 w-4" />
                     </button>
@@ -116,24 +116,23 @@ const Rentals = () => {
                       <MapPin className="h-3 w-3" />{l.area}
                     </p>
                     <p className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
-                      <Star className="h-3 w-3 text-accent fill-accent" />{l.rating} · {l.reviews} reviews
+                      <Star className="h-3 w-3 text-accent fill-accent" />{l.rating} · {l.reviews} {t("rentals.reviews")}
                     </p>
                     <p className="text-base font-bold text-foreground mb-2">BDT {l.price.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">/ month</span></p>
                     <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
-                      <span className="flex items-center gap-1"><Bed className="h-3 w-3" />{l.beds} Beds</span>
-                      <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.baths} Baths</span>
+                      <span className="flex items-center gap-1"><Bed className="h-3 w-3" />{l.beds} {t("rentals.beds")}</span>
+                      <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.baths} {t("rentals.baths")}</span>
                       <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.sqft} sqft</span>
                     </div>
-                    <Button className="w-full rounded-button bg-primary text-primary-foreground text-xs h-9">View Details</Button>
+                    <Button className="w-full rounded-button bg-primary text-primary-foreground text-xs h-9">{t("rentals.viewDetails")}</Button>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Pagination */}
             <div className="flex items-center justify-center gap-2 mt-10">
               <Button variant="outline" size="sm" className="rounded-button text-xs" onClick={() => setPage(Math.max(1, page - 1))}>
-                <ChevronLeft className="h-3 w-3 mr-1" />Previous
+                <ChevronLeft className="h-3 w-3 mr-1" />{t("rentals.previous")}
               </Button>
               {[1, 2, 3].map(p => (
                 <Button
@@ -147,7 +146,7 @@ const Rentals = () => {
                 </Button>
               ))}
               <Button variant="outline" size="sm" className="rounded-button text-xs" onClick={() => setPage(Math.min(3, page + 1))}>
-                Next<ChevronRight className="h-3 w-3 ml-1" />
+                {t("rentals.next")}<ChevronRight className="h-3 w-3 ml-1" />
               </Button>
             </div>
           </div>
