@@ -28,11 +28,11 @@ const translations: Record<string, Record<Lang, string>> = {
 
   // Hero
   "hero.smart": { en: "Smart", bn: "স্মার্ট" },
-  "hero.title1": { en: "Property &", bn: "প্রপার্টি ও" },
-  "hero.title2": { en: "Building Management", bn: "বিল্ডিং ম্যানেজমেন্ট" },
+  "hero.title1": { en: "Bangladesh's Digital", bn: "বাংলাদেশের ডিজিটাল" },
+  "hero.title2": { en: "Property Ecosystem", bn: "প্রপার্টি ইকোসিস্টেম" },
   "hero.subtitle": {
-    en: "Bangladesh's all-in-one platform for landlords, renters, and building managers. Find homes, collect rent, and manage buildings — digitally.",
-    bn: "বাড়িওয়ালা, ভাড়াটে এবং বিল্ডিং ম্যানেজারদের জন্য বাংলাদেশের সর্বোচ্চ ডিজিটাল প্ল্যাটফর্ম।",
+    en: "Find rentals, buy property, manage tenants, and book home services — all in one place.",
+    bn: "ভাড়া খুঁজুন, সম্পত্তি কিনুন, ভাড়াটে পরিচালনা করুন এবং হোম সার্ভিস বুক করুন — সব এক জায়গায়।",
   },
   "hero.exploreRentals": { en: "Explore Rentals", bn: "ভাড়া দেখুন" },
   "hero.howItWorks": { en: "See How It Works", bn: "কীভাবে কাজ করে" },
