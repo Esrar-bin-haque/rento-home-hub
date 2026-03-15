@@ -278,6 +278,10 @@ const translations: Record<string, Record<Lang, string>> = {
   "rentals.next": { en: "Next", bn: "পরের" },
   "rentals.yes": { en: "Yes", bn: "হ্যাঁ" },
   "rentals.no": { en: "No", bn: "না" },
+  "rentals.area": { en: "Area", bn: "এলাকা" },
+  "rentals.selectCity": { en: "Select City", bn: "শহর নির্বাচন করুন" },
+  "rentals.selectArea": { en: "Select Area", bn: "এলাকা নির্বাচন করুন" },
+  "rentals.allAreas": { en: "All Areas", bn: "সকল এলাকা" },
 
   // Services page
   "services.heading": { en: "Book Trusted Home Services", bn: "বিশ্বস্ত হোম সার্ভিস বুক করুন" },

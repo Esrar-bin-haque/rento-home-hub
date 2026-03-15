@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Building2, TrendingUp, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 

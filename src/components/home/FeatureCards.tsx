@@ -9,7 +9,7 @@ const cards = [
     descKey: "features.rentals.desc",
     route: "/rentals",
     tagKey: "features.rentals.tag",
-    gradient: "linear-gradient(135deg, #0D9488 0%, #0891B2 100%)",
+    gradient: "linear-gradient(135deg, #1E3A5F 0%, #2E86AB 100%)",
   },
   {
     icon: Building2,
@@ -17,7 +17,7 @@ const cards = [
     descKey: "features.building.desc",
     route: "/building-management",
     tagKey: "features.building.tag",
-    gradient: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
+    gradient: "linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%)",
   },
   {
     icon: Key,
@@ -25,7 +25,7 @@ const cards = [
     descKey: "features.property.desc",
     route: "/management",
     tagKey: "features.property.tag",
-    gradient: "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
+    gradient: "linear-gradient(135deg, #B45309 0%, #D97706 100%)",
   },
   {
     icon: Wrench,
@@ -33,7 +33,7 @@ const cards = [
     descKey: "features.services.desc",
     route: "/services",
     tagKey: "features.services.tag",
-    gradient: "linear-gradient(135deg, #EC4899 0%, #F43F5E 100%)",
+    gradient: "linear-gradient(135deg, #4C1D95 0%, #7C3AED 100%)",
   },
 ];
 
