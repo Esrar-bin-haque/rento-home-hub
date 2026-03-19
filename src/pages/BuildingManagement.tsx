@@ -241,57 +241,68 @@ const BuildingManagement = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC]">
+    <div className="flex min-h-[calc(100vh-60px)]" style={{ background: '#F4F6F8' }}>
       {/* Sidebar */}
-      <aside className={`${sidebarOpen ? "w-[260px]" : "w-0 overflow-hidden"} transition-all duration-300 bg-[#1A0000] flex flex-col flex-shrink-0 fixed h-full z-20`}>
-        <div className="p-4 pb-3">
+      <aside
+        className={`${sidebarOpen ? "w-[220px]" : "w-0 overflow-hidden"} transition-all duration-300 flex flex-col flex-shrink-0 fixed left-0 z-20 lg:block`}
+        style={{ background: '#1C0F0F', top: '60px', height: 'calc(100vh - 60px)' }}
+      >
+        <div className="px-4 pt-3 pb-2">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/src/assets/rento-logo.png" alt="Rento" className="h-8 rounded-lg" />
-            <span className="text-base font-heading font-bold text-white">Rento</span>
+            <img src="/src/assets/rento-logo.png" alt="Rento" className="h-7 rounded-lg" />
+            <span className="text-sm font-heading font-bold text-white">Rento</span>
           </Link>
         </div>
-        <div className="mx-4 mb-3 border-t border-white/10" />
-        <nav className="flex-1 px-2 space-y-0.5 overflow-y-auto">
+        <div className="mx-3 mb-1 border-t" style={{ borderColor: 'rgba(255,255,255,0.1)' }} />
+        <nav className="flex-1 px-1 py-1 overflow-y-auto">
           {sidebarItems.map(item => (
             <button
               key={item.key}
               onClick={() => setActiveTab(item.key)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] transition-colors ${
-                activeTab === item.key ? "bg-[#9B0000] text-white border-l-[3px] border-l-[#C41E1E]" : "text-gray-400 hover:text-white hover:bg-[#2A0000]"
-              }`}
+              className="w-full flex items-center gap-[10px] rounded-lg transition-colors"
+              style={{
+                padding: '8px 16px',
+                fontSize: '13px',
+                lineHeight: '1.2',
+                background: activeTab === item.key ? '#C0392B' : 'transparent',
+                color: activeTab === item.key ? '#FFFFFF' : 'rgba(255,255,255,0.72)',
+                borderLeft: activeTab === item.key ? '3px solid #E74C3C' : '3px solid transparent',
+              }}
+              onMouseEnter={(e) => { if (activeTab !== item.key) e.currentTarget.style.background = 'rgba(192,57,43,0.15)'; }}
+              onMouseLeave={(e) => { if (activeTab !== item.key) e.currentTarget.style.background = 'transparent'; }}
             >
-              <item.icon className="h-4 w-4" />
+              <item.icon style={{ width: '15px', height: '15px' }} />
               {item.label}
             </button>
           ))}
         </nav>
-        <div className="p-3 border-t border-white/10">
-          <div className="flex items-center gap-2 px-3 py-2 mb-2">
-            <div className="w-8 h-8 rounded-full bg-[#9B0000] flex items-center justify-center text-white text-xs font-bold">MR</div>
-            <div><p className="text-white text-xs font-medium">M. Rahman</p></div>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', padding: '12px 16px' }}>
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ background: '#C0392B' }}>MR</div>
+            <span className="text-white text-xs">M. Rahman</span>
           </div>
-          <Link to="/" className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-gray-400 hover:text-white hover:bg-[#2A0000] transition-colors">
-            <LogOut className="h-4 w-4" />
+          <Link to="/" className="flex items-center gap-2 text-xs transition-colors" style={{ color: 'rgba(255,255,255,0.72)' }}>
+            <LogOut style={{ width: '15px', height: '15px' }} />
             Log out
           </Link>
         </div>
       </aside>
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[260px]" : ""} transition-all duration-300`}>
-        <header className="h-14 bg-white border-b border-border flex items-center justify-between px-5 flex-shrink-0 shadow-sm sticky top-0 z-10">
+      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[220px]" : ""} transition-all duration-300`}>
+        <header className="h-12 bg-white flex items-center justify-between px-5 flex-shrink-0 sticky top-0 z-10" style={{ borderBottom: '1px solid #E2E8F0' }}>
           <div className="flex items-center gap-3">
-            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-secondary transition-colors">
-              <Menu className="h-4 w-4 text-muted-foreground" />
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors lg:hidden">
+              <Menu className="h-4 w-4" style={{ color: '#64748B' }} />
             </button>
-            <span className="text-sm text-muted-foreground">Building Management Dashboard</span>
+            <span className="text-sm" style={{ color: '#64748B' }}>Building Management Dashboard</span>
           </div>
-          <button className="relative p-2 rounded-lg hover:bg-secondary transition-colors">
-            <Bell className="h-4 w-4 text-muted-foreground" />
-            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-destructive rounded-full" />
+          <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
+            <Bell className="h-4 w-4" style={{ color: '#64748B' }} />
+            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: '#DC2626' }} />
           </button>
         </header>
-        <main className="flex-1 p-5 overflow-auto">{renderContent()}</main>
+        <main className="flex-1 p-6 overflow-auto">{renderContent()}</main>
       </div>
 
       {/* Tenant Detail Slide Panel */}
