@@ -196,7 +196,7 @@ const Rentals = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };
