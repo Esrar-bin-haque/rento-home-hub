@@ -394,8 +394,10 @@ const translations: Record<string, Record<Lang, string>> = {
   "pm.dateReceived": { en: "Date Received", bn: "প্রাপ্তির তারিখ" },
   "pm.adjustmentStatus": { en: "Adjustment Status", bn: "সমন্বয়ের অবস্থা" },
   "pm.notes": { en: "Notes", bn: "মন্তব্য" },
+  "pm.accountPayable": { en: "Account Payable", bn: "পরিশোধযোগ্য" },
+  "pm.accountReceivable": { en: "Account Receivable", bn: "প্রাপ্য" },
 
-  // Contact page
+
   "contact.heading": { en: "Get In Touch", bn: "যোগাযোগ করুন" },
   "contact.subheading": { en: "Have questions about Rento? We'd love to hear from you.", bn: "রেন্টো সম্পর্কে প্রশ্ন আছে? আমরা আপনার কথা শুনতে চাই।" },
   "contact.sendMessage": { en: "Send Message", bn: "বার্তা পাঠান" },
