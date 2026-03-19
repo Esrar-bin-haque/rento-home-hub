@@ -9,7 +9,7 @@ const cards = [
     descKey: "features.rentals.desc",
     route: "/rentals",
     tagKey: "features.rentals.tag",
-    gradient: "linear-gradient(135deg, #9B0000 0%, #C41E1E 100%)",
+    gradient: "linear-gradient(135deg, #1A56DB 0%, #1E3A8A 100%)",
   },
   {
     icon: Building2,
@@ -17,7 +17,7 @@ const cards = [
     descKey: "features.building.desc",
     route: "/building-management",
     tagKey: "features.building.tag",
-    gradient: "linear-gradient(135deg, #6B0080 0%, #9B0000 100%)",
+    gradient: "linear-gradient(135deg, #0F766E 0%, #134E4A 100%)",
   },
   {
     icon: Key,
@@ -25,7 +25,7 @@ const cards = [
     descKey: "features.property.desc",
     route: "/management",
     tagKey: "features.property.tag",
-    gradient: "linear-gradient(135deg, #B8500A 0%, #9B0000 100%)",
+    gradient: "linear-gradient(135deg, #92400E 0%, #78350F 100%)",
   },
   {
     icon: Wrench,
@@ -33,7 +33,7 @@ const cards = [
     descKey: "features.services.desc",
     route: "/services",
     tagKey: "features.services.tag",
-    gradient: "linear-gradient(135deg, #9B0000 0%, #5C0000 100%)",
+    gradient: "linear-gradient(135deg, #5B21B6 0%, #3B0764 100%)",
   },
 ];
 
@@ -41,13 +41,13 @@ const FeatureCards = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-20 bg-background">
+    <section className="py-20" style={{ background: '#F9FAFB' }}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-3">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-3" style={{ color: '#1E293B' }}>
             {t("features.heading")}
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p style={{ color: '#64748B' }} className="max-w-xl mx-auto">
             {t("features.subheading")}
           </p>
         </div>

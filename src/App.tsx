@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import PageTransition from "@/components/PageTransition";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import Index from "./pages/Index";
 import Rentals from "./pages/Rentals";
 import BuildingManagement from "./pages/BuildingManagement";
@@ -25,24 +27,35 @@ const ScrollToTop = () => {
   return null;
 };
 
-const AppRoutes = () => (
-  <>
-    <ScrollToTop />
-    <PageTransition>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/rentals" element={<Rentals />} />
-        <Route path="/building-management" element={<BuildingManagement />} />
-        <Route path="/management" element={<PropertyManagement />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </PageTransition>
-  </>
-);
+const noFooterRoutes = ["/building-management", "/management", "/login", "/register"];
+
+const AppRoutes = () => {
+  const { pathname } = useLocation();
+  const showFooter = !noFooterRoutes.includes(pathname);
+
+  return (
+    <>
+      <ScrollToTop />
+      <Navbar />
+      <div className="pt-[60px]">
+        <PageTransition>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/rentals" element={<Rentals />} />
+            <Route path="/building-management" element={<BuildingManagement />} />
+            <Route path="/management" element={<PropertyManagement />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </PageTransition>
+        {showFooter && <Footer />}
+      </div>
+    </>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

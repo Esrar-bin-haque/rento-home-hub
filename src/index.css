@@ -4,44 +4,44 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    --background: 210 20% 98%;
+    --foreground: 215 25% 17%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 215 25% 17%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 215 25% 17%;
 
-    --primary: 0 100% 30%;
+    --primary: 4 66% 44%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 20% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 215 25% 17%;
 
-    --muted: 210 40% 96%;
+    --muted: 210 20% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 0 100% 38%;
+    --accent: 4 66% 44%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 0 100% 30%;
+    --border: 214 20% 89%;
+    --input: 214 20% 89%;
+    --ring: 4 66% 44%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 100% 5%;
+    --sidebar-background: 0 28% 8%;
     --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 0 100% 30%;
+    --sidebar-primary: 4 66% 44%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 100% 10%;
+    --sidebar-accent: 4 66% 44%;
     --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 0 100% 10%;
-    --sidebar-ring: 0 100% 30%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 4 66% 44%;
 
     /* Custom tokens */
     --indigo: 239 84% 67%;
@@ -49,11 +49,19 @@
     --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
 
     /* Brand palette */
-    --brand-primary: #9B0000;
-    --brand-dark: #7A0000;
-    --brand-light: #C41E1E;
-    --brand-sidebar: #1A0000;
-    --brand-bg-tint: #FFF5F5;
+    --brand-primary: #C0392B;
+    --brand-dark: #A93226;
+    --brand-light: rgba(192, 57, 43, 0.08);
+    --brand-sidebar: #1C0F0F;
+    --brand-bg-tint: #F9FAFB;
+
+    /* Semantic colors */
+    --success: #16A34A;
+    --success-bg: #F0FDF4;
+    --danger: #DC2626;
+    --danger-bg: #FEF2F2;
+    --warning: #CA8A04;
+    --warning-bg: #FEFCE8;
   }
 }
 
@@ -82,9 +90,9 @@
   }
   .mesh-gradient {
     background: 
-      radial-gradient(ellipse at 20% 50%, hsl(0 100% 30% / 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, hsl(222 47% 11% / 0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 80%, hsl(0 100% 30% / 0.05) 0%, transparent 50%),
-      hsl(0 0% 100%);
+      radial-gradient(ellipse at 20% 50%, hsl(210 20% 96% / 0.5) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, hsl(215 25% 17% / 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, hsl(210 20% 96% / 0.3) 0%, transparent 50%),
+      hsl(210 20% 98%);
   }
 }
