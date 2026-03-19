@@ -190,7 +190,8 @@ const PropertyManagement = () => {
       case "dash.rentPayments": return <RentPaymentsContent />;
       case "pm.advanceMoney": return <AdvanceMoneyContent />;
       case "dash.expenses": return <ExpensesContent />;
-      case "bm.reminders": return <RemindersContent />;
+      case "pm.accountPayable": return <AccountPayableContent />;
+      case "pm.accountReceivable": return <AccountReceivableContent />;
       case "dash.settings": return <SettingsContent />;
       default: return null;
     }
