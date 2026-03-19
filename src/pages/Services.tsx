@@ -27,8 +27,7 @@ const Services = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <section className="pt-24 pb-12 mesh-gradient">
+      <section className="pt-10 pb-12 mesh-gradient">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-5xl font-heading font-bold text-foreground mb-3">
             {t("services.heading")}
