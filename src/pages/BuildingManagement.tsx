@@ -34,12 +34,12 @@ const incomeExpenseData = [
 ];
 
 const expensePieData = [
-  { name: "Cleaning", value: 5000, color: "#9B0000" },
-  { name: "Security", value: 8000, color: "#2563EB" },
-  { name: "Electricity", value: 6500, color: "#F59E0B" },
-  { name: "Lift Maintenance", value: 3800, color: "#EA580C" },
-  { name: "Repairs", value: 2500, color: "#EF4444" },
-  { name: "Generator", value: 2000, color: "#7C3AED" },
+  { name: "Cleaning", value: 5000, color: "#0F766E" },
+  { name: "Security", value: 8000, color: "#1A56DB" },
+  { name: "Electricity", value: 6500, color: "#CA8A04" },
+  { name: "Lift Maintenance", value: 3800, color: "#7C3AED" },
+  { name: "Repairs", value: 2500, color: "#DC2626" },
+  { name: "Generator", value: 2000, color: "#374151" },
 ];
 
 const dashPayments = [
