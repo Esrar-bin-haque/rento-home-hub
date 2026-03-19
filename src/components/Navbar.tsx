@@ -1,15 +1,20 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Building2, Menu, X } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Building2, Menu, X, ChevronDown, User, LayoutDashboard, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import LanguageToggle from "@/components/LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const { t } = useLanguage();
+  const { user, logout } = useAuth();
 
   const navLinks = [
     { label: t("nav.rentals"), to: "/rentals" },
@@ -26,6 +31,22 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => setMobileOpen(false), [location]);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setDropdownOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const initials = user ? user.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase() : "";
+
+  const handleLogout = () => {
+    logout();
+    setDropdownOpen(false);
+    navigate("/");
+  };
 
   return (
     <nav
@@ -54,12 +75,43 @@ const Navbar = () => {
 
         <div className="hidden lg:flex items-center gap-3">
           <LanguageToggle />
-          <Button variant="outline" className="rounded-button text-sm">
-            {t("nav.login")}
-          </Button>
-          <Button className="rounded-button text-sm bg-primary text-primary-foreground hover:bg-primary/90">
-            {t("nav.getStarted")}
-          </Button>
+          {user ? (
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center gap-2 h-9 px-3 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
+                <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold">{initials}</span>
+                <ChevronDown className="h-3.5 w-3.5" />
+              </button>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-[#F1F5F9] py-1 z-50">
+                  <div className="px-3 py-2 border-b border-[#F1F5F9]">
+                    <p className="text-sm font-medium text-foreground">{user.name}</p>
+                    <p className="text-xs text-muted-foreground">{user.phone}</p>
+                  </div>
+                  <Link to="/building-management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-secondary transition-colors">
+                    <LayoutDashboard className="h-4 w-4" /> {t("auth.dashboard")}
+                  </Link>
+                  <Link to="/management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-secondary transition-colors">
+                    <User className="h-4 w-4" /> {t("auth.myProfile")}
+                  </Link>
+                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-secondary transition-colors">
+                    <LogOut className="h-4 w-4" /> {t("dash.logout")}
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Button variant="outline" className="rounded-button text-sm" onClick={() => navigate("/login")}>
+                {t("nav.login")}
+              </Button>
+              <Button className="rounded-button text-sm bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => navigate("/register")}>
+                {t("nav.getStarted")}
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -84,8 +136,14 @@ const Navbar = () => {
             <LanguageToggle />
           </div>
           <div className="flex gap-3 mt-3">
-            <Button variant="outline" className="flex-1 rounded-button text-sm">{t("nav.login")}</Button>
-            <Button className="flex-1 rounded-button text-sm bg-primary text-primary-foreground">{t("nav.getStarted")}</Button>
+            {user ? (
+              <Button variant="outline" className="flex-1 rounded-button text-sm" onClick={handleLogout}>{t("dash.logout")}</Button>
+            ) : (
+              <>
+                <Button variant="outline" className="flex-1 rounded-button text-sm" onClick={() => navigate("/login")}>{t("nav.login")}</Button>
+                <Button className="flex-1 rounded-button text-sm bg-primary text-primary-foreground" onClick={() => navigate("/register")}>{t("nav.getStarted")}</Button>
+              </>
+            )}
           </div>
         </div>
       )}
