@@ -389,7 +389,6 @@ const translations: Record<string, Record<Lang, string>> = {
   "pm.dateReceived": { en: "Date Received", bn: "প্রাপ্তির তারিখ" },
   "pm.adjustmentStatus": { en: "Adjustment Status", bn: "সমন্বয়ের অবস্থা" },
   "pm.notes": { en: "Notes", bn: "মন্তব্য" },
-  "pm.property": { en: "Property", bn: "সম্পত্তি" },
 
   // Services page
   "services.heading": { en: "Book Trusted Home Services", bn: "বিশ্বস্ত হোম সার্ভিস বুক করুন" },
