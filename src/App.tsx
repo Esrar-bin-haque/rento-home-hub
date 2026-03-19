@@ -4,12 +4,15 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 import Rentals from "./pages/Rentals";
 import BuildingManagement from "./pages/BuildingManagement";
 import PropertyManagement from "./pages/PropertyManagement";
 import Services from "./pages/Services";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 
@@ -31,6 +34,8 @@ const AppRoutes = () => (
         <Route path="/building-management" element={<BuildingManagement />} />
         <Route path="/management" element={<PropertyManagement />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </PageTransition>
@@ -41,11 +46,13 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <LanguageProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <AuthProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </AuthProvider>
       </LanguageProvider>
     </TooltipProvider>
   </QueryClientProvider>
