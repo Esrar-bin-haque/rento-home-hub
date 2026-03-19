@@ -24,7 +24,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF5F5] flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#F4F6F8' }}>
       <div className="w-full max-w-[440px] bg-white rounded-2xl shadow-lg border border-border p-8">
         <div className="flex flex-col items-center mb-6">
           <Link to="/" className="flex items-center gap-2 mb-4">

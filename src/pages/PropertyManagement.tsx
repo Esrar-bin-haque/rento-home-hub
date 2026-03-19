@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Building2, BarChart3, Home, Users, DollarSign, FileText, Bell, Settings,
-  LogOut, Menu, TrendingUp, TrendingDown, LayoutGrid, Plus, X, Eye, Edit
+  LogOut, Menu, TrendingUp, TrendingDown, LayoutGrid, Plus, X, Eye, Edit,
+  ArrowUpCircle, ArrowDownCircle, Send, CreditCard, Receipt
 } from "lucide-react";
 import {
   PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -170,7 +171,8 @@ const sidebarKeys = [
   { icon: DollarSign, key: "dash.rentPayments" },
   { icon: FileText, key: "pm.advanceMoney" },
   { icon: FileText, key: "dash.expenses" },
-  { icon: Bell, key: "bm.reminders" },
+  { icon: ArrowUpCircle, key: "pm.accountPayable" },
+  { icon: ArrowDownCircle, key: "pm.accountReceivable" },
   { icon: Settings, key: "dash.settings" },
 ];
 
@@ -189,62 +191,70 @@ const PropertyManagement = () => {
       case "dash.rentPayments": return <RentPaymentsContent />;
       case "pm.advanceMoney": return <AdvanceMoneyContent />;
       case "dash.expenses": return <ExpensesContent />;
-      case "bm.reminders": return <RemindersContent />;
+      case "pm.accountPayable": return <AccountPayableContent />;
+      case "pm.accountReceivable": return <AccountReceivableContent />;
       case "dash.settings": return <SettingsContent />;
       default: return null;
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC]">
-      <aside className={`${sidebarOpen ? "w-[260px]" : "w-0 overflow-hidden"} transition-all duration-300 bg-[#1A0000] flex flex-col flex-shrink-0 fixed h-full z-20`}>
-        <div className="p-4 pb-3">
+    <div className="flex min-h-[calc(100vh-60px)]" style={{ background: '#F4F6F8' }}>
+      <aside
+        className={`${sidebarOpen ? "w-[220px]" : "w-0 overflow-hidden"} transition-all duration-300 flex flex-col flex-shrink-0 fixed left-0 z-20 lg:block`}
+        style={{ background: '#1C0F0F', top: '60px', height: 'calc(100vh - 60px)' }}
+      >
+        <div className="px-4 pt-3 pb-2">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/src/assets/rento-logo.png" alt="Rento" className="h-8 rounded-lg" />
-            <span className="text-base font-heading font-bold text-white">Rento</span>
+            <img src="/src/assets/rento-logo.png" alt="Rento" className="h-7 rounded-lg" />
+            <span className="text-sm font-heading font-bold text-white">Rento</span>
           </Link>
         </div>
-        <div className="mx-4 mb-3 border-t border-white/10" />
-        <nav className="flex-1 px-2 space-y-0.5 overflow-y-auto">
+        <div className="mx-3 mb-1 border-t" style={{ borderColor: 'rgba(255,255,255,0.1)' }} />
+        <nav className="flex-1 px-1 py-1 overflow-y-auto">
           {sidebarKeys.map(item => (
             <button
               key={item.key}
               onClick={() => setActiveTab(item.key)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] transition-colors ${
-                activeTab === item.key ? "bg-[#9B0000] text-white border-l-[3px] border-l-[#C41E1E]" : "text-gray-400 hover:text-white hover:bg-[#2A0000]"
-              }`}
+              className="w-full flex items-center gap-[10px] rounded-lg transition-colors"
+              style={{
+                padding: '8px 16px',
+                fontSize: '13px',
+                lineHeight: '1.2',
+                background: activeTab === item.key ? '#C0392B' : 'transparent',
+                color: activeTab === item.key ? '#FFFFFF' : 'rgba(255,255,255,0.72)',
+                borderLeft: activeTab === item.key ? '3px solid #E74C3C' : '3px solid transparent',
+              }}
+              onMouseEnter={(e) => { if (activeTab !== item.key) e.currentTarget.style.background = 'rgba(192,57,43,0.15)'; }}
+              onMouseLeave={(e) => { if (activeTab !== item.key) e.currentTarget.style.background = 'transparent'; }}
             >
-              <item.icon className="h-4 w-4" />
+              <item.icon style={{ width: '15px', height: '15px' }} />
               {t(item.key)}
             </button>
           ))}
         </nav>
-        <div className="p-3 border-t border-white/10">
-          <div className="flex items-center gap-2 px-3 py-2 mb-2">
-            <div className="w-8 h-8 rounded-full bg-[#9B0000] flex items-center justify-center text-white text-xs font-bold">MR</div>
-            <div><p className="text-white text-xs font-medium">M. Rahman</p></div>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', padding: '12px 16px' }}>
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ background: '#C0392B' }}>MR</div>
+            <span className="text-white text-xs">M. Rahman</span>
           </div>
-          <Link to="/" className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-gray-400 hover:text-white hover:bg-[#2A0000] transition-colors">
-            <LogOut className="h-4 w-4" />
+          <Link to="/" className="flex items-center gap-2 text-xs transition-colors" style={{ color: 'rgba(255,255,255,0.72)' }}>
+            <LogOut style={{ width: '15px', height: '15px' }} />
             {t("dash.logout")}
           </Link>
         </div>
       </aside>
 
-      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[260px]" : ""} transition-all duration-300`}>
-        <header className="h-14 bg-white border-b border-border flex items-center justify-between px-5 flex-shrink-0 shadow-sm sticky top-0 z-10">
+      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[220px]" : ""} transition-all duration-300`}>
+        <header className="h-12 bg-white flex items-center justify-between px-5 flex-shrink-0 sticky top-0 z-10" style={{ borderBottom: '1px solid #E2E8F0' }}>
           <div className="flex items-center gap-3">
-            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-secondary transition-colors">
-              <Menu className="h-4 w-4 text-muted-foreground" />
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors lg:hidden">
+              <Menu className="h-4 w-4" style={{ color: '#64748B' }} />
             </button>
-            <span className="text-sm text-muted-foreground">{t("pm.propertyManagement")}</span>
+            <span className="text-sm" style={{ color: '#64748B' }}>{t("pm.propertyManagement")}</span>
           </div>
-          <button className="relative p-2 rounded-lg hover:bg-secondary transition-colors">
-            <Bell className="h-4 w-4 text-muted-foreground" />
-            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-destructive rounded-full" />
-          </button>
         </header>
-        <main className="flex-1 p-5 overflow-auto">{renderContent()}</main>
+        <main className="flex-1 p-6 overflow-auto">{renderContent()}</main>
       </div>
 
       {/* Tenant Detail Slide Panel */}
@@ -676,7 +686,127 @@ const ExpensesContent = () => {
   );
 };
 
-const RemindersContent = () => {
+const accountPayableDataPM = [
+  { date: "Mar 15", description: "Maintenance staff salary", amount: 15000, payTo: "Staff Agency", status: "pending" },
+  { date: "Mar 10", description: "Property insurance premium", amount: 8000, payTo: "Guardian Insurance", status: "pending" },
+  { date: "Mar 5", description: "Cleaning service", amount: 5000, payTo: "CleanPro", status: "paid" },
+  { date: "Feb 28", description: "Pest control", amount: 3500, payTo: "SafeHome", status: "paid" },
+  { date: "Feb 20", description: "Water supply bill", amount: 4200, payTo: "WASA", status: "paid" },
+];
+
+const accountReceivableDataPM = [
+  { tenant: "Kamal Hossain", flat: "B1", building: "Sunset Tower", type: "Rent", amount: 22000, dueDate: "Mar 1, 2026", daysOverdue: 18, status: "overdue" },
+  { tenant: "Arif Rahman", flat: "C1", building: "Sunset Tower", type: "Rent", amount: 20000, dueDate: "Mar 1, 2026", daysOverdue: 18, status: "overdue" },
+  { tenant: "Riya Chowdhury", flat: "D2", building: "City View Apt", type: "Rent", amount: 28000, dueDate: "Mar 1, 2026", daysOverdue: 18, status: "overdue" },
+  { tenant: "Nasrin Akter", flat: "E2", building: "Sunset Tower", type: "Advance", amount: 5000, dueDate: "Apr 1, 2026", daysOverdue: 0, status: "upcoming" },
+];
+
+const AccountPayableContent = () => {
+  const { t } = useLanguage();
+  const total = accountPayableDataPM.reduce((s, a) => s + a.amount, 0);
+  const paid = accountPayableDataPM.filter(a => a.status === "paid").reduce((s, a) => s + a.amount, 0);
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-heading font-bold text-foreground">Account Payable</h1>
+          <p className="text-sm text-muted-foreground">Amounts owed to vendors & service providers</p>
+        </div>
+        <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90"><Plus className="h-3.5 w-3.5" /> Add Payable</button>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Total Payable</span><p className="text-xl font-bold" style={{ color: '#1E293B' }}>BDT {total.toLocaleString()}</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Paid</span><p className="text-xl font-bold" style={{ color: '#16A34A' }}>BDT {paid.toLocaleString()}</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Pending</span><p className="text-xl font-bold" style={{ color: '#CA8A04' }}>BDT {(total - paid).toLocaleString()}</p></div>
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border" style={{ borderColor: '#E2E8F0' }}>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead><tr style={{ background: '#F8FAFC' }}>
+              {["Date", "Description", "Amount", "Pay To", "Status", "Actions"].map(h => (
+                <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#475569' }}>{h}</th>
+              ))}
+            </tr></thead>
+            <tbody>
+              {accountPayableDataPM.map((a, i) => (
+                <tr key={i} className="hover:bg-[#F8FAFC]" style={{ borderTop: '1px solid #F1F5F9' }}>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.date}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>{a.description}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>BDT {a.amount.toLocaleString()}</td>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.payTo}</td>
+                  <td className="p-3">
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium" style={a.status === "paid" ? { background: '#FEF2F2', color: '#C0392B', border: '1px solid #FECACA' } : { background: '#FEFCE8', color: '#CA8A04', border: '1px solid #FDE68A' }}>
+                      {a.status === "paid" ? "Paid" : "Pending"}
+                    </span>
+                  </td>
+                  <td className="p-3">
+                    {a.status === "pending" && <button className="text-xs hover:underline" style={{ color: '#C0392B' }}>Mark Paid</button>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const AccountReceivableContent = () => {
+  const { t } = useLanguage();
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-heading font-bold text-foreground">Account Receivable</h1>
+          <p className="text-sm text-muted-foreground">Outstanding amounts to be collected from tenants</p>
+        </div>
+        <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90"><Plus className="h-3.5 w-3.5" /> Add Entry</button>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Total Receivable</span><p className="text-xl font-bold" style={{ color: '#1E293B' }}>BDT 75,000</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Overdue</span><p className="text-xl font-bold" style={{ color: '#DC2626' }}>BDT 70,000</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Upcoming</span><p className="text-xl font-bold" style={{ color: '#CA8A04' }}>BDT 5,000</p></div>
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border" style={{ borderColor: '#E2E8F0' }}>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead><tr style={{ background: '#F8FAFC' }}>
+              {["Tenant", "Flat", "Property", "Type", "Amount", "Due Date", "Days Overdue", "Status", "Actions"].map(h => (
+                <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#475569' }}>{h}</th>
+              ))}
+            </tr></thead>
+            <tbody>
+              {accountReceivableDataPM.map((a, i) => (
+                <tr key={i} className="hover:bg-[#F8FAFC]" style={{ borderTop: '1px solid #F1F5F9' }}>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>{a.tenant}</td>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.flat}</td>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.building}</td>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.type}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>BDT {a.amount.toLocaleString()}</td>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.dueDate}</td>
+                  <td className="p-3">
+                    {a.daysOverdue > 0 ? <span className="text-xs font-medium" style={{ color: '#DC2626' }}>{a.daysOverdue} days</span> : <span className="text-xs" style={{ color: '#64748B' }}>—</span>}
+                  </td>
+                  <td className="p-3">
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium" style={a.status === "overdue" ? { background: '#FEF2F2', color: '#DC2626', border: '1px solid #FCA5A5' } : { background: '#FEFCE8', color: '#CA8A04', border: '1px solid #FDE68A' }}>
+                      {a.status === "overdue" ? "Overdue" : "Upcoming"}
+                    </span>
+                  </td>
+                  <td className="p-3">
+                    <button onClick={() => toast.success(`Reminder sent to ${a.tenant}`)} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#C0392B' }}><Send className="h-3 w-3" />Remind</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
   const { t } = useLanguage();
   const overdueItems = [
     { name: "Kamal Hossain", flat: "B1", type: "Rent", amount: 22000, days: 10 },

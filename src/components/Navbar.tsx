@@ -49,16 +49,14 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const isActive = (to: string) => location.pathname === to;
+
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-card/80 backdrop-blur-xl card-shadow" : "bg-transparent"
-      }`}
-    >
-      <div className="container mx-auto flex items-center justify-between h-16 px-4">
+    <nav className="fixed top-0 left-0 right-0 z-[1000] h-[60px] bg-white border-b" style={{ borderColor: '#E2E8F0' }}>
+      <div className="container mx-auto flex items-center justify-between h-full px-4">
         <Link to="/" className="flex items-center gap-2">
           <img src={rentoLogo} alt="Rento" className="h-9 w-9 rounded-lg object-cover" />
-          <span className="text-xl font-heading font-bold text-foreground">Rento</span>
+          <span className="text-xl font-heading font-bold" style={{ color: '#1E293B' }}>Rento</span>
         </Link>
 
         {/* Desktop */}
@@ -67,14 +65,24 @@ const Navbar = () => {
             <Link
               key={l.to}
               to={l.to}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm font-medium transition-colors"
+              style={{ color: isActive(l.to) ? '#C0392B' : '#475569' }}
+              onMouseEnter={(e) => { if (!isActive(l.to)) (e.target as HTMLElement).style.color = '#C0392B'; }}
+              onMouseLeave={(e) => { if (!isActive(l.to)) (e.target as HTMLElement).style.color = '#475569'; }}
             >
               {l.label}
             </Link>
           ))}
           <Link
             to="/contact"
-            className="text-sm font-medium px-4 py-1.5 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+            className="text-sm font-medium px-4 py-1.5 rounded-full transition-colors"
+            style={{
+              border: '1.5px solid #C0392B',
+              color: isActive('/contact') ? '#FFFFFF' : '#C0392B',
+              background: isActive('/contact') ? '#C0392B' : 'transparent',
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#C0392B'; (e.currentTarget as HTMLElement).style.color = '#FFFFFF'; }}
+            onMouseLeave={(e) => { if (!isActive('/contact')) { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#C0392B'; }}}
           >
             {t("nav.contact")}
           </Link>
@@ -86,24 +94,25 @@ const Navbar = () => {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 h-9 px-3 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-colors"
+                className="flex items-center gap-2 h-9 px-3 rounded-full text-sm font-medium hover:opacity-90 transition-colors"
+                style={{ background: '#C0392B', color: '#FFFFFF' }}
               >
                 <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold">{initials}</span>
                 <ChevronDown className="h-3.5 w-3.5" />
               </button>
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-border py-1 z-50">
-                  <div className="px-3 py-2 border-b border-border">
-                    <p className="text-sm font-medium text-foreground">{user.name}</p>
-                    <p className="text-xs text-muted-foreground">{user.phone}</p>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border py-1 z-50" style={{ borderColor: '#E2E8F0' }}>
+                  <div className="px-3 py-2 border-b" style={{ borderColor: '#E2E8F0' }}>
+                    <p className="text-sm font-medium" style={{ color: '#1E293B' }}>{user.name}</p>
+                    <p className="text-xs" style={{ color: '#64748B' }}>{user.phone}</p>
                   </div>
-                  <Link to="/building-management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-secondary transition-colors">
+                  <Link to="/building-management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#1E293B' }}>
                     <LayoutDashboard className="h-4 w-4" /> {t("auth.dashboard")}
                   </Link>
-                  <Link to="/management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-secondary transition-colors">
+                  <Link to="/management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#1E293B' }}>
                     <User className="h-4 w-4" /> {t("auth.myProfile")}
                   </Link>
-                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-secondary transition-colors">
+                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#DC2626' }}>
                     <LogOut className="h-4 w-4" /> {t("dash.logout")}
                   </button>
                 </div>
@@ -111,10 +120,10 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <Button variant="outline" className="rounded-button text-sm" onClick={() => navigate("/login")}>
+              <Button variant="outline" className="rounded-lg text-sm" style={{ borderColor: '#E2E8F0', color: '#475569' }} onClick={() => navigate("/login")}>
                 {t("nav.login")}
               </Button>
-              <Button className="rounded-button text-sm bg-primary text-primary-foreground hover:opacity-90" onClick={() => navigate("/register")}>
+              <Button className="rounded-lg text-sm" style={{ background: '#C0392B', color: '#FFFFFF' }} onClick={() => navigate("/register")}>
                 {t("nav.getStarted")}
               </Button>
             </>
@@ -129,16 +138,17 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-card border-t border-border px-4 pb-4 animate-fade-in-up">
-          <div className="flex items-center gap-2 py-3 border-b border-border mb-2">
+        <div className="lg:hidden bg-white border-t px-4 pb-4 animate-fade-in-up" style={{ borderColor: '#E2E8F0' }}>
+          <div className="flex items-center gap-2 py-3 border-b mb-2" style={{ borderColor: '#E2E8F0' }}>
             <img src={rentoLogo} alt="Rento" className="h-8 w-8 rounded-lg object-cover" />
-            <span className="text-lg font-heading font-bold text-foreground">Rento</span>
+            <span className="text-lg font-heading font-bold" style={{ color: '#1E293B' }}>Rento</span>
           </div>
           {navLinks.map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              className="block py-3 text-sm font-medium text-muted-foreground hover:text-foreground border-b border-border last:border-0"
+              className="block py-3 text-sm font-medium border-b last:border-0"
+              style={{ color: isActive(l.to) ? '#C0392B' : '#475569', borderColor: '#F1F5F9' }}
             >
               {l.label}
             </Link>
@@ -149,16 +159,17 @@ const Navbar = () => {
           <div className="flex flex-col gap-3 mt-3">
             <Link
               to="/contact"
-              className="w-full text-center text-sm font-medium py-2 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+              className="w-full text-center text-sm font-medium py-2 rounded-full transition-colors"
+              style={{ border: '1.5px solid #C0392B', color: '#C0392B' }}
             >
               {t("nav.contact")}
             </Link>
             {user ? (
-              <Button variant="outline" className="w-full rounded-button text-sm" onClick={handleLogout}>{t("dash.logout")}</Button>
+              <Button variant="outline" className="w-full rounded-lg text-sm" onClick={handleLogout}>{t("dash.logout")}</Button>
             ) : (
               <>
-                <Button variant="outline" className="w-full rounded-button text-sm" onClick={() => navigate("/login")}>{t("nav.login")}</Button>
-                <Button className="w-full rounded-button text-sm bg-primary text-primary-foreground" onClick={() => navigate("/register")}>{t("nav.getStarted")}</Button>
+                <Button variant="outline" className="w-full rounded-lg text-sm" onClick={() => navigate("/login")}>{t("nav.login")}</Button>
+                <Button className="w-full rounded-lg text-sm" style={{ background: '#C0392B', color: '#FFFFFF' }} onClick={() => navigate("/register")}>{t("nav.getStarted")}</Button>
               </>
             )}
           </div>

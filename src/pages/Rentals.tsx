@@ -1,6 +1,4 @@
 import { useState, useMemo } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Search, MapPin, Star, Heart, Bed, Bath, Maximize, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -51,8 +49,7 @@ const Rentals = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="pt-20 pb-6 bg-card border-b border-border">
+      <div className="pt-6 pb-6 bg-card border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row items-stretch bg-card rounded-full border border-border card-shadow overflow-hidden max-w-4xl mx-auto">
             <div className="flex-1 px-5 py-3 border-b sm:border-b-0 sm:border-r border-border">
@@ -199,7 +196,7 @@ const Rentals = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };
