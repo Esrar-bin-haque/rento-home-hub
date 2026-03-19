@@ -197,13 +197,14 @@ const PropertyManagement = () => {
 
   return (
     <div className="flex min-h-screen bg-[#F8FAFC]">
-      <aside className={`${sidebarOpen ? "w-[200px]" : "w-0 overflow-hidden"} transition-all duration-300 bg-[#0F172A] flex flex-col flex-shrink-0 fixed h-full z-20`}>
-        <div className="p-4 pb-6">
+      <aside className={`${sidebarOpen ? "w-[260px]" : "w-0 overflow-hidden"} transition-all duration-300 bg-[#1A0000] flex flex-col flex-shrink-0 fixed h-full z-20`}>
+        <div className="p-4 pb-3">
           <Link to="/" className="flex items-center gap-2">
-            <Building2 className="h-5 w-5 text-primary" />
+            <img src="/src/assets/rento-logo.png" alt="Rento" className="h-8 rounded-lg" />
             <span className="text-base font-heading font-bold text-white">Rento</span>
           </Link>
         </div>
+        <div className="mx-4 mb-3 border-t border-white/10" />
         <nav className="flex-1 px-2 space-y-0.5 overflow-y-auto">
           {sidebarKeys.map(item => (
             <button
