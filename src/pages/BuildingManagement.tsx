@@ -34,7 +34,7 @@ const incomeExpenseData = [
 ];
 
 const expensePieData = [
-  { name: "Cleaning", value: 5000, color: "#0D9488" },
+  { name: "Cleaning", value: 5000, color: "#9B0000" },
   { name: "Security", value: 8000, color: "#2563EB" },
   { name: "Electricity", value: 6500, color: "#F59E0B" },
   { name: "Lift Maintenance", value: 3800, color: "#EA580C" },
