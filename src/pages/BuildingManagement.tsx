@@ -439,9 +439,9 @@ const DashboardContent = () => {
             <YAxis tick={{ fontSize: 11, fill: "#94A3B8" }} axisLine={false} tickLine={false} tickFormatter={v => `${v / 1000}k`} />
             <Tooltip formatter={(v: number) => [`BDT ${v.toLocaleString()}`, ""]} />
             <Legend iconType="circle" iconSize={8} formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>} />
-            <Bar dataKey="income" name="Income" fill="#16A34A" radius={[4, 4, 0, 0]} barSize={16} />
-            <Bar dataKey="expense" name="Expense" fill="#EF4444" radius={[4, 4, 0, 0]} barSize={16} />
-            <Bar dataKey="payable" name="Account Payable" fill="#F59E0B" radius={[4, 4, 0, 0]} barSize={16} />
+             <Bar dataKey="income" name="Income" fill="#16A34A" radius={[4, 4, 0, 0]} barSize={16} />
+            <Bar dataKey="expense" name="Expense" fill="#DC2626" radius={[4, 4, 0, 0]} barSize={16} />
+            <Bar dataKey="payable" name="Account Payable" fill="#CA8A04" radius={[4, 4, 0, 0]} barSize={16} />
           </BarChart>
         </ResponsiveContainer>
       </div>
