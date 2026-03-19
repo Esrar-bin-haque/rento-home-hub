@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
+    --background: 0 0% 100%;
     --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
@@ -13,40 +13,47 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 175 85% 32%;
+    --primary: 0 100% 30%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96%;
+    --secondary: 0 20% 96%;
     --secondary-foreground: 222 47% 11%;
 
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 43 96% 50%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 0 100% 38%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 175 85% 32%;
+    --ring: 0 100% 30%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 222 47% 11%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 175 85% 32%;
+    --sidebar-background: 0 100% 5%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 0 100% 30%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 33% 17%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217 33% 17%;
-    --sidebar-ring: 175 85% 32%;
+    --sidebar-accent: 0 100% 10%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 0 100% 10%;
+    --sidebar-ring: 0 100% 30%;
 
     /* Custom tokens */
     --indigo: 239 84% 67%;
     --pink: 330 81% 60%;
     --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+
+    /* Brand palette */
+    --brand-primary: #9B0000;
+    --brand-dark: #7A0000;
+    --brand-light: #C41E1E;
+    --brand-sidebar: #1A0000;
+    --brand-bg-tint: #FFF5F5;
   }
 }
 
@@ -75,9 +82,9 @@
   }
   .mesh-gradient {
     background: 
-      radial-gradient(ellipse at 20% 50%, hsl(175 85% 32% / 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, hsl(222 47% 11% / 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 80%, hsl(175 85% 32% / 0.08) 0%, transparent 50%),
-      hsl(210 40% 98%);
+      radial-gradient(ellipse at 20% 50%, hsl(0 100% 30% / 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, hsl(222 47% 11% / 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, hsl(0 100% 30% / 0.05) 0%, transparent 50%),
+      hsl(0 0% 100%);
   }
 }

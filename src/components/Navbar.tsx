@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Building2, Menu, X, ChevronDown, User, LayoutDashboard, LogOut } from "lucide-react";
+import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import LanguageToggle from "@/components/LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
+import rentoLogo from "@/assets/rento-logo.png";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -56,7 +57,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <Link to="/" className="flex items-center gap-2">
-          <Building2 className="h-7 w-7 text-primary" />
+          <img src={rentoLogo} alt="Rento" className="h-9 w-9 rounded-lg object-cover" />
           <span className="text-xl font-heading font-bold text-foreground">Rento</span>
         </Link>
 
@@ -71,6 +72,12 @@ const Navbar = () => {
               {l.label}
             </Link>
           ))}
+          <Link
+            to="/contact"
+            className="text-sm font-medium px-4 py-1.5 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+          >
+            {t("nav.contact")}
+          </Link>
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
@@ -79,14 +86,14 @@ const Navbar = () => {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 h-9 px-3 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+                className="flex items-center gap-2 h-9 px-3 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-colors"
               >
                 <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold">{initials}</span>
                 <ChevronDown className="h-3.5 w-3.5" />
               </button>
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-[#F1F5F9] py-1 z-50">
-                  <div className="px-3 py-2 border-b border-[#F1F5F9]">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-border py-1 z-50">
+                  <div className="px-3 py-2 border-b border-border">
                     <p className="text-sm font-medium text-foreground">{user.name}</p>
                     <p className="text-xs text-muted-foreground">{user.phone}</p>
                   </div>
@@ -107,7 +114,7 @@ const Navbar = () => {
               <Button variant="outline" className="rounded-button text-sm" onClick={() => navigate("/login")}>
                 {t("nav.login")}
               </Button>
-              <Button className="rounded-button text-sm bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => navigate("/register")}>
+              <Button className="rounded-button text-sm bg-primary text-primary-foreground hover:opacity-90" onClick={() => navigate("/register")}>
                 {t("nav.getStarted")}
               </Button>
             </>
@@ -123,6 +130,10 @@ const Navbar = () => {
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="lg:hidden bg-card border-t border-border px-4 pb-4 animate-fade-in-up">
+          <div className="flex items-center gap-2 py-3 border-b border-border mb-2">
+            <img src={rentoLogo} alt="Rento" className="h-8 w-8 rounded-lg object-cover" />
+            <span className="text-lg font-heading font-bold text-foreground">Rento</span>
+          </div>
           {navLinks.map((l) => (
             <Link
               key={l.to}
@@ -135,13 +146,19 @@ const Navbar = () => {
           <div className="flex items-center gap-3 mt-4">
             <LanguageToggle />
           </div>
-          <div className="flex gap-3 mt-3">
+          <div className="flex flex-col gap-3 mt-3">
+            <Link
+              to="/contact"
+              className="w-full text-center text-sm font-medium py-2 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+            >
+              {t("nav.contact")}
+            </Link>
             {user ? (
-              <Button variant="outline" className="flex-1 rounded-button text-sm" onClick={handleLogout}>{t("dash.logout")}</Button>
+              <Button variant="outline" className="w-full rounded-button text-sm" onClick={handleLogout}>{t("dash.logout")}</Button>
             ) : (
               <>
-                <Button variant="outline" className="flex-1 rounded-button text-sm" onClick={() => navigate("/login")}>{t("nav.login")}</Button>
-                <Button className="flex-1 rounded-button text-sm bg-primary text-primary-foreground" onClick={() => navigate("/register")}>{t("nav.getStarted")}</Button>
+                <Button variant="outline" className="w-full rounded-button text-sm" onClick={() => navigate("/login")}>{t("nav.login")}</Button>
+                <Button className="w-full rounded-button text-sm bg-primary text-primary-foreground" onClick={() => navigate("/register")}>{t("nav.getStarted")}</Button>
               </>
             )}
           </div>
