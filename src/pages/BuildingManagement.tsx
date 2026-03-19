@@ -266,9 +266,13 @@ const BuildingManagement = () => {
           ))}
         </nav>
         <div className="p-3 border-t border-white/10">
-          <Link to="/" className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
+          <div className="flex items-center gap-2 px-3 py-2 mb-2">
+            <div className="w-8 h-8 rounded-full bg-[#9B0000] flex items-center justify-center text-white text-xs font-bold">MR</div>
+            <div><p className="text-white text-xs font-medium">M. Rahman</p></div>
+          </div>
+          <Link to="/" className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-gray-400 hover:text-white hover:bg-[#2A0000] transition-colors">
             <LogOut className="h-4 w-4" />
-            Exit Dashboard
+            Log out
           </Link>
         </div>
       </aside>
