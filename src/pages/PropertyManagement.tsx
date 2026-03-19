@@ -22,7 +22,7 @@ const barData = [
 ];
 
 const expensePieData = [
-  { name: "Maintenance", value: 12000, color: "hsl(175,85%,32%)" },
+  { name: "Maintenance", value: 12000, color: "#9B0000" },
   { name: "Utilities", value: 18000, color: "hsl(43,96%,50%)" },
   { name: "Repairs", value: 8000, color: "hsl(0,84%,60%)" },
   { name: "Insurance", value: 5000, color: "hsl(217,91%,60%)" },
