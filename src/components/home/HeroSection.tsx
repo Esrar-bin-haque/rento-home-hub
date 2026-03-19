@@ -13,7 +13,7 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative min-h-screen mesh-gradient flex items-center pt-16">
+    <section className="relative min-h-screen mesh-gradient flex items-center">
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-3xl mx-auto text-center">
           <div className="animate-fade-in-up">
