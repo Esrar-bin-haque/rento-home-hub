@@ -170,7 +170,8 @@ const sidebarKeys = [
   { icon: DollarSign, key: "dash.rentPayments" },
   { icon: FileText, key: "pm.advanceMoney" },
   { icon: FileText, key: "dash.expenses" },
-  { icon: Bell, key: "bm.reminders" },
+  { icon: ArrowUpCircle, key: "pm.accountPayable" },
+  { icon: ArrowDownCircle, key: "pm.accountReceivable" },
   { icon: Settings, key: "dash.settings" },
 ];
 
