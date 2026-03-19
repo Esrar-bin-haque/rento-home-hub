@@ -401,7 +401,7 @@ const DashboardContent = () => {
               <Tooltip formatter={(v: number) => [`BDT ${v.toLocaleString()}`, ""]} />
               <Legend iconType="circle" iconSize={8} formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>} />
               <Bar dataKey="collected" name="Collected" fill="#16A34A" radius={[4, 4, 0, 0]} barSize={18} />
-              <Bar dataKey="notCollected" name="Not Collected" fill="#EF4444" radius={[4, 4, 0, 0]} barSize={18} />
+              <Bar dataKey="notCollected" name="Not Collected" fill="#DC2626" radius={[4, 4, 0, 0]} barSize={18} />
             </BarChart>
           </ResponsiveContainer>
         </div>
