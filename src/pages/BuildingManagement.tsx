@@ -278,7 +278,7 @@ const BuildingManagement = () => {
       </aside>
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[220px]" : ""} transition-all duration-300`}>
+      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[260px]" : ""} transition-all duration-300`}>
         <header className="h-14 bg-white border-b border-border flex items-center justify-between px-5 flex-shrink-0 shadow-sm sticky top-0 z-10">
           <div className="flex items-center gap-3">
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-secondary transition-colors">
