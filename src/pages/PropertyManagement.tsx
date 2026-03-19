@@ -334,7 +334,7 @@ const DashboardContent = () => {
               <YAxis tick={{ fontSize: 11, fill: "#94A3B8" }} axisLine={false} tickLine={false} tickFormatter={v => `${v / 1000}k`} />
               <Tooltip formatter={(v: number) => [`৳${v.toLocaleString()}`, ""]} />
               <Legend iconType="circle" iconSize={8} formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>} />
-              <Bar dataKey="collected" name={t("dash.collected")} fill="hsl(175,85%,32%)" radius={[4, 4, 0, 0]} barSize={20} />
+              <Bar dataKey="collected" name={t("dash.collected")} fill="#16A34A" radius={[4, 4, 0, 0]} barSize={20} />
               <Bar dataKey="due" name={t("dash.due")} fill="hsl(0,84%,60%)" radius={[4, 4, 0, 0]} barSize={20} />
             </BarChart>
           </ResponsiveContainer>

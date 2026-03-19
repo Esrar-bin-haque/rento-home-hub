@@ -923,7 +923,7 @@ const SettingsContent = () => (
       ].map((label, i) => (
         <label key={i} className="flex items-center justify-between">
           <span className="text-xs text-foreground">{label}</span>
-          <input type="checkbox" defaultChecked={i < 3} className="w-4 h-4 rounded border-input text-primary accent-[#0D9488]" />
+          <input type="checkbox" defaultChecked={i < 3} className="w-4 h-4 rounded border-input text-primary accent-[#9B0000]" />
         </label>
       ))}
     </div>
