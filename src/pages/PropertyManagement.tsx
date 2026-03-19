@@ -210,8 +210,8 @@ const PropertyManagement = () => {
             <button
               key={item.key}
               onClick={() => setActiveTab(item.key)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] transition-colors ${
-                activeTab === item.key ? "bg-primary text-white" : "text-slate-400 hover:text-white hover:bg-white/5"
+              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] transition-colors ${
+                activeTab === item.key ? "bg-[#9B0000] text-white border-l-[3px] border-l-[#C41E1E]" : "text-gray-400 hover:text-white hover:bg-[#2A0000]"
               }`}
             >
               <item.icon className="h-4 w-4" />
