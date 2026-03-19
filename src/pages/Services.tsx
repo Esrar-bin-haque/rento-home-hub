@@ -1,5 +1,3 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Search, Star, Wrench, Zap, Sparkles, Paintbrush, Snowflake, Bug, Hammer, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
