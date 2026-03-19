@@ -22,7 +22,7 @@ const barData = [
 ];
 
 const expensePieData = [
-  { name: "Maintenance", value: 12000, color: "hsl(175,85%,32%)" },
+  { name: "Maintenance", value: 12000, color: "#9B0000" },
   { name: "Utilities", value: 18000, color: "hsl(43,96%,50%)" },
   { name: "Repairs", value: 8000, color: "hsl(0,84%,60%)" },
   { name: "Insurance", value: 5000, color: "hsl(217,91%,60%)" },
@@ -197,20 +197,21 @@ const PropertyManagement = () => {
 
   return (
     <div className="flex min-h-screen bg-[#F8FAFC]">
-      <aside className={`${sidebarOpen ? "w-[200px]" : "w-0 overflow-hidden"} transition-all duration-300 bg-[#0F172A] flex flex-col flex-shrink-0 fixed h-full z-20`}>
-        <div className="p-4 pb-6">
+      <aside className={`${sidebarOpen ? "w-[260px]" : "w-0 overflow-hidden"} transition-all duration-300 bg-[#1A0000] flex flex-col flex-shrink-0 fixed h-full z-20`}>
+        <div className="p-4 pb-3">
           <Link to="/" className="flex items-center gap-2">
-            <Building2 className="h-5 w-5 text-primary" />
+            <img src="/src/assets/rento-logo.png" alt="Rento" className="h-8 rounded-lg" />
             <span className="text-base font-heading font-bold text-white">Rento</span>
           </Link>
         </div>
+        <div className="mx-4 mb-3 border-t border-white/10" />
         <nav className="flex-1 px-2 space-y-0.5 overflow-y-auto">
           {sidebarKeys.map(item => (
             <button
               key={item.key}
               onClick={() => setActiveTab(item.key)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] transition-colors ${
-                activeTab === item.key ? "bg-primary text-white" : "text-slate-400 hover:text-white hover:bg-white/5"
+              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] transition-colors ${
+                activeTab === item.key ? "bg-[#9B0000] text-white border-l-[3px] border-l-[#C41E1E]" : "text-gray-400 hover:text-white hover:bg-[#2A0000]"
               }`}
             >
               <item.icon className="h-4 w-4" />
@@ -219,14 +220,18 @@ const PropertyManagement = () => {
           ))}
         </nav>
         <div className="p-3 border-t border-white/10">
-          <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
+          <div className="flex items-center gap-2 px-3 py-2 mb-2">
+            <div className="w-8 h-8 rounded-full bg-[#9B0000] flex items-center justify-center text-white text-xs font-bold">MR</div>
+            <div><p className="text-white text-xs font-medium">M. Rahman</p></div>
+          </div>
+          <Link to="/" className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-gray-400 hover:text-white hover:bg-[#2A0000] transition-colors">
             <LogOut className="h-4 w-4" />
             {t("dash.logout")}
-          </button>
+          </Link>
         </div>
       </aside>
 
-      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[200px]" : ""} transition-all duration-300`}>
+      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[260px]" : ""} transition-all duration-300`}>
         <header className="h-14 bg-white border-b border-border flex items-center justify-between px-5 flex-shrink-0 shadow-sm sticky top-0 z-10">
           <div className="flex items-center gap-3">
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-secondary transition-colors">
@@ -329,7 +334,7 @@ const DashboardContent = () => {
               <YAxis tick={{ fontSize: 11, fill: "#94A3B8" }} axisLine={false} tickLine={false} tickFormatter={v => `${v / 1000}k`} />
               <Tooltip formatter={(v: number) => [`৳${v.toLocaleString()}`, ""]} />
               <Legend iconType="circle" iconSize={8} formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>} />
-              <Bar dataKey="collected" name={t("dash.collected")} fill="hsl(175,85%,32%)" radius={[4, 4, 0, 0]} barSize={20} />
+              <Bar dataKey="collected" name={t("dash.collected")} fill="#16A34A" radius={[4, 4, 0, 0]} barSize={20} />
               <Bar dataKey="due" name={t("dash.due")} fill="hsl(0,84%,60%)" radius={[4, 4, 0, 0]} barSize={20} />
             </BarChart>
           </ResponsiveContainer>

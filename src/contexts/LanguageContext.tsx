@@ -18,17 +18,18 @@ export const useLanguage = () => {
 
 const translations: Record<string, Record<Lang, string>> = {
   // Navbar
-  "nav.rentals": { en: "Rentals", bn: "ভাড়া" },
+  "nav.rentals": { en: "Flat Listing", bn: "ফ্ল্যাট তালিকা" },
   "nav.building": { en: "Building Management", bn: "বিল্ডিং ম্যানেজমেন্ট" },
   "nav.property": { en: "Property Management", bn: "প্রপার্টি ম্যানেজমেন্ট" },
   "nav.services": { en: "Services", bn: "সেবাসমূহ" },
   "nav.pricing": { en: "Pricing", bn: "মূল্য পরিকল্পনা" },
+  "nav.contact": { en: "Contact Us", bn: "যোগাযোগ করুন" },
   "nav.login": { en: "Login", bn: "লগইন" },
   "nav.getStarted": { en: "Get Started", bn: "শুরু করুন" },
 
   // Hero
   "hero.smart": { en: "Smart", bn: "স্মার্ট" },
-  "hero.title1": { en: "Bangladesh's Digital", bn: "বাংলাদেশের ডিজিটাল" },
+  "hero.title1": { en: "Bangladesh's 1st Smart Digital", bn: "বাংলাদেশের ১ম স্মার্ট ডিজিটাল" },
   "hero.title2": { en: "Property Ecosystem", bn: "প্রপার্টি ইকোসিস্টেম" },
   "hero.subtitle": {
     en: "Find rentals, buy property, manage tenants, and book home services — all in one place.",
@@ -59,7 +60,7 @@ const translations: Record<string, Record<Lang, string>> = {
   // Feature Cards
   "features.heading": { en: "Everything You Need, In One Platform", bn: "আপনার যা দরকার, একটি প্ল্যাটফর্মে" },
   "features.subheading": { en: "Built for landlords, renters, and building associations across Bangladesh", bn: "বাংলাদেশজুড়ে বাড়িওয়ালা, ভাড়াটে এবং বিল্ডিং অ্যাসোসিয়েশনের জন্য তৈরি" },
-  "features.rentals.title": { en: "Rental Listings", bn: "ভাড়ার তালিকা" },
+  "features.rentals.title": { en: "Flat Listing", bn: "ফ্ল্যাট তালিকা" },
   "features.rentals.desc": { en: "Find or list verified rental properties across Bangladesh", bn: "বাংলাদেশজুড়ে যাচাইকৃত ভাড়ার সম্পত্তি খুঁজুন বা তালিকাভুক্ত করুন" },
   "features.rentals.tag": { en: "124+ Listings", bn: "১২৪+ তালিকা" },
   "features.building.title": { en: "Building Management", bn: "বিল্ডিং ম্যানেজমেন্ট" },
@@ -68,7 +69,7 @@ const translations: Record<string, Record<Lang, string>> = {
   "features.property.title": { en: "Property Management", bn: "প্রপার্টি ম্যানেজমেন্ট" },
   "features.property.desc": { en: "Track rent payments, tenants & income in one place", bn: "ভাড়া পেমেন্ট, ভাড়াটে এবং আয় একটি জায়গায় ট্র্যাক করুন" },
   "features.property.tag": { en: "Auto Reminders", bn: "অটো রিমাইন্ডার" },
-  "features.services.title": { en: "Home Services", bn: "হোম সার্ভিস" },
+  "features.services.title": { en: "Services", bn: "সেবাসমূহ" },
   "features.services.desc": { en: "Book verified plumbers, cleaners & repair experts on-demand", bn: "যাচাইকৃত প্লাম্বার, ক্লিনার এবং মেরামত বিশেষজ্ঞ অন-ডিমান্ডে বুক করুন" },
   "features.services.tag": { en: "8 Service Types", bn: "৮ ধরনের সেবা" },
 
@@ -156,11 +157,11 @@ const translations: Record<string, Record<Lang, string>> = {
   "pricing.f22": { en: "Custom branding", bn: "কাস্টম ব্র্যান্ডিং" },
 
   // Footer
-  "footer.tagline": { en: "Bangladesh's Digital Property Ecosystem", bn: "বাংলাদেশের ডিজিটাল প্রপার্টি ইকোসিস্টেম" },
+  "footer.tagline": { en: "Bangladesh's 1st Smart Digital Property Ecosystem", bn: "বাংলাদেশের ১ম স্মার্ট ডিজিটাল প্রপার্টি ইকোসিস্টেম" },
   "footer.quickLinks": { en: "Quick Links", bn: "দ্রুত লিঙ্ক" },
-  "footer.contact": { en: "Contact", bn: "যোগাযোগ করুন" },
+  "footer.contact": { en: "Contact", bn: "যোগাযোগ" },
   "footer.home": { en: "Home", bn: "হোম" },
-  "footer.homeServices": { en: "Home Services", bn: "হোম সার্ভিস" },
+  "footer.homeServices": { en: "Services", bn: "সেবাসমূহ" },
   "footer.rights": { en: "© 2026 Rento. All rights reserved.", bn: "© ২০২৬ রেন্টো। সর্বস্বত্ব সংরক্ষিত।" },
   "footer.privacy": { en: "Privacy Policy", bn: "গোপনীয়তা নীতি" },
   "footer.terms": { en: "Terms of Service", bn: "সেবার শর্তাবলী" },
@@ -192,9 +193,13 @@ const translations: Record<string, Record<Lang, string>> = {
   // Building sidebar
   "dash.buildings": { en: "Buildings", bn: "বিল্ডিং" },
   "dash.flats": { en: "Flats", bn: "ফ্ল্যাট" },
+  "dash.flatOwner": { en: "Flat Owner", bn: "ফ্ল্যাট মালিক" },
   "dash.tenantsTab": { en: "Tenants", bn: "ভাড়াটে" },
+  "dash.paymentStatus": { en: "Payment Status", bn: "পেমেন্ট স্ট্যাটাস" },
   "dash.rentPayments": { en: "Rent Payments", bn: "ভাড়া পেমেন্ট" },
   "dash.expenses": { en: "Expenses", bn: "খরচ" },
+  "dash.accountPayable": { en: "Account Payable", bn: "পরিশোধযোগ্য" },
+  "dash.accountReceivable": { en: "Account Receivable", bn: "প্রাপ্য" },
   "dash.reports": { en: "Reports", bn: "রিপোর্ট" },
   "dash.notifications": { en: "Notifications", bn: "বিজ্ঞপ্তি" },
   "dash.settings": { en: "Settings", bn: "সেটিংস" },
@@ -389,6 +394,19 @@ const translations: Record<string, Record<Lang, string>> = {
   "pm.dateReceived": { en: "Date Received", bn: "প্রাপ্তির তারিখ" },
   "pm.adjustmentStatus": { en: "Adjustment Status", bn: "সমন্বয়ের অবস্থা" },
   "pm.notes": { en: "Notes", bn: "মন্তব্য" },
+
+  // Contact page
+  "contact.heading": { en: "Get In Touch", bn: "যোগাযোগ করুন" },
+  "contact.subheading": { en: "Have questions about Rento? We'd love to hear from you.", bn: "রেন্টো সম্পর্কে প্রশ্ন আছে? আমরা আপনার কথা শুনতে চাই।" },
+  "contact.sendMessage": { en: "Send Message", bn: "বার্তা পাঠান" },
+  "contact.office": { en: "Our Office", bn: "আমাদের অফিস" },
+  "contact.callUs": { en: "Call Us", bn: "কল করুন" },
+  "contact.emailUs": { en: "Email Us", bn: "ইমেইল করুন" },
+  "contact.followUs": { en: "Follow Us", bn: "আমাদের অনুসরণ করুন" },
+  "contact.email": { en: "Email Address", bn: "ইমেইল ঠিকানা" },
+  "contact.subject": { en: "Subject", bn: "বিষয়" },
+  "contact.message": { en: "Message", bn: "বার্তা" },
+  "contact.replyTime": { en: "We typically respond within 24 hours", bn: "আমরা সাধারণত ২৪ ঘণ্টার মধ্যে উত্তর দিই" },
 
   // Services page
   "services.heading": { en: "Book Trusted Home Services", bn: "বিশ্বস্ত হোম সার্ভিস বুক করুন" },
