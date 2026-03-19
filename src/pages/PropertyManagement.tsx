@@ -807,6 +807,7 @@ const AccountReceivableContent = () => {
 };
 
 
+const RemindersContentPM = () => {
   const { t } = useLanguage();
   const overdueItems = [
     { name: "Kamal Hossain", flat: "B1", type: "Rent", amount: 22000, days: 10 },
