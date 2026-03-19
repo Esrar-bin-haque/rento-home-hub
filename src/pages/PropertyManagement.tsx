@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Building2, BarChart3, Home, Users, DollarSign, FileText, Bell, Settings,
-  LogOut, Menu, TrendingUp, TrendingDown, LayoutGrid, Plus, X, Eye, Edit
+  LogOut, Menu, TrendingUp, TrendingDown, LayoutGrid, Plus, X, Eye, Edit,
+  ArrowUpCircle, ArrowDownCircle, Send, CreditCard, Receipt
 } from "lucide-react";
 import {
   PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid,
