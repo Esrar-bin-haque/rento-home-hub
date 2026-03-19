@@ -35,8 +35,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <section className="pt-24 pb-12 mesh-gradient">
+      <section className="pt-10 pb-12 mesh-gradient">
         <div className="container mx-auto px-4 text-center">
           <span className="text-sm font-medium text-primary tracking-wide uppercase">{t("nav.contact")}</span>
           <h1 className="text-3xl md:text-5xl font-heading font-bold text-foreground mt-2 mb-3">{t("contact.heading")}</h1>
