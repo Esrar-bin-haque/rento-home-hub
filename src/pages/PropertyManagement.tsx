@@ -686,7 +686,127 @@ const ExpensesContent = () => {
   );
 };
 
-const RemindersContent = () => {
+const accountPayableDataPM = [
+  { date: "Mar 15", description: "Maintenance staff salary", amount: 15000, payTo: "Staff Agency", status: "pending" },
+  { date: "Mar 10", description: "Property insurance premium", amount: 8000, payTo: "Guardian Insurance", status: "pending" },
+  { date: "Mar 5", description: "Cleaning service", amount: 5000, payTo: "CleanPro", status: "paid" },
+  { date: "Feb 28", description: "Pest control", amount: 3500, payTo: "SafeHome", status: "paid" },
+  { date: "Feb 20", description: "Water supply bill", amount: 4200, payTo: "WASA", status: "paid" },
+];
+
+const accountReceivableDataPM = [
+  { tenant: "Kamal Hossain", flat: "B1", building: "Sunset Tower", type: "Rent", amount: 22000, dueDate: "Mar 1, 2026", daysOverdue: 18, status: "overdue" },
+  { tenant: "Arif Rahman", flat: "C1", building: "Sunset Tower", type: "Rent", amount: 20000, dueDate: "Mar 1, 2026", daysOverdue: 18, status: "overdue" },
+  { tenant: "Riya Chowdhury", flat: "D2", building: "City View Apt", type: "Rent", amount: 28000, dueDate: "Mar 1, 2026", daysOverdue: 18, status: "overdue" },
+  { tenant: "Nasrin Akter", flat: "E2", building: "Sunset Tower", type: "Advance", amount: 5000, dueDate: "Apr 1, 2026", daysOverdue: 0, status: "upcoming" },
+];
+
+const AccountPayableContent = () => {
+  const { t } = useLanguage();
+  const total = accountPayableDataPM.reduce((s, a) => s + a.amount, 0);
+  const paid = accountPayableDataPM.filter(a => a.status === "paid").reduce((s, a) => s + a.amount, 0);
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-heading font-bold text-foreground">Account Payable</h1>
+          <p className="text-sm text-muted-foreground">Amounts owed to vendors & service providers</p>
+        </div>
+        <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90"><Plus className="h-3.5 w-3.5" /> Add Payable</button>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Total Payable</span><p className="text-xl font-bold" style={{ color: '#1E293B' }}>BDT {total.toLocaleString()}</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Paid</span><p className="text-xl font-bold" style={{ color: '#16A34A' }}>BDT {paid.toLocaleString()}</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Pending</span><p className="text-xl font-bold" style={{ color: '#CA8A04' }}>BDT {(total - paid).toLocaleString()}</p></div>
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border" style={{ borderColor: '#E2E8F0' }}>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead><tr style={{ background: '#F8FAFC' }}>
+              {["Date", "Description", "Amount", "Pay To", "Status", "Actions"].map(h => (
+                <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#475569' }}>{h}</th>
+              ))}
+            </tr></thead>
+            <tbody>
+              {accountPayableDataPM.map((a, i) => (
+                <tr key={i} className="hover:bg-[#F8FAFC]" style={{ borderTop: '1px solid #F1F5F9' }}>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.date}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>{a.description}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>BDT {a.amount.toLocaleString()}</td>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.payTo}</td>
+                  <td className="p-3">
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium" style={a.status === "paid" ? { background: '#FEF2F2', color: '#C0392B', border: '1px solid #FECACA' } : { background: '#FEFCE8', color: '#CA8A04', border: '1px solid #FDE68A' }}>
+                      {a.status === "paid" ? "Paid" : "Pending"}
+                    </span>
+                  </td>
+                  <td className="p-3">
+                    {a.status === "pending" && <button className="text-xs hover:underline" style={{ color: '#C0392B' }}>Mark Paid</button>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const AccountReceivableContent = () => {
+  const { t } = useLanguage();
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-heading font-bold text-foreground">Account Receivable</h1>
+          <p className="text-sm text-muted-foreground">Outstanding amounts to be collected from tenants</p>
+        </div>
+        <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90"><Plus className="h-3.5 w-3.5" /> Add Entry</button>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Total Receivable</span><p className="text-xl font-bold" style={{ color: '#1E293B' }}>BDT 75,000</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Overdue</span><p className="text-xl font-bold" style={{ color: '#DC2626' }}>BDT 70,000</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Upcoming</span><p className="text-xl font-bold" style={{ color: '#CA8A04' }}>BDT 5,000</p></div>
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border" style={{ borderColor: '#E2E8F0' }}>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead><tr style={{ background: '#F8FAFC' }}>
+              {["Tenant", "Flat", "Property", "Type", "Amount", "Due Date", "Days Overdue", "Status", "Actions"].map(h => (
+                <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#475569' }}>{h}</th>
+              ))}
+            </tr></thead>
+            <tbody>
+              {accountReceivableDataPM.map((a, i) => (
+                <tr key={i} className="hover:bg-[#F8FAFC]" style={{ borderTop: '1px solid #F1F5F9' }}>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>{a.tenant}</td>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.flat}</td>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.building}</td>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.type}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>BDT {a.amount.toLocaleString()}</td>
+                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.dueDate}</td>
+                  <td className="p-3">
+                    {a.daysOverdue > 0 ? <span className="text-xs font-medium" style={{ color: '#DC2626' }}>{a.daysOverdue} days</span> : <span className="text-xs" style={{ color: '#64748B' }}>—</span>}
+                  </td>
+                  <td className="p-3">
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium" style={a.status === "overdue" ? { background: '#FEF2F2', color: '#DC2626', border: '1px solid #FCA5A5' } : { background: '#FEFCE8', color: '#CA8A04', border: '1px solid #FDE68A' }}>
+                      {a.status === "overdue" ? "Overdue" : "Upcoming"}
+                    </span>
+                  </td>
+                  <td className="p-3">
+                    <button onClick={() => toast.success(`Reminder sent to ${a.tenant}`)} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#C0392B' }}><Send className="h-3 w-3" />Remind</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
   const { t } = useLanguage();
   const overdueItems = [
     { name: "Kamal Hossain", flat: "B1", type: "Rent", amount: 22000, days: 10 },
