@@ -33,7 +33,7 @@ const cards = [
     descKey: "features.services.desc",
     route: "/services",
     tagKey: "features.services.tag",
-    gradient: "linear-gradient(145deg, #7048E8 0%, #4C2CB3 100%)",
+    gradient: "linear-gradient(145deg, #4A1A8C 0%, #2D0F5C 100%)",
   },
 ];
 
