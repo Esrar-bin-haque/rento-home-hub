@@ -23,7 +23,7 @@ const barData = [
 ];
 
 const expensePieData = [
-  { name: "Maintenance", value: 12000, color: "#9B0000" },
+  { name: "Maintenance", value: 12000, color: "#3B5BDB" },
   { name: "Utilities", value: 18000, color: "hsl(43,96%,50%)" },
   { name: "Repairs", value: 8000, color: "hsl(0,84%,60%)" },
   { name: "Insurance", value: 5000, color: "hsl(217,91%,60%)" },
@@ -199,10 +199,10 @@ const PropertyManagement = () => {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-60px)]" style={{ background: '#F4F6F8' }}>
+    <div className="flex min-h-[calc(100vh-60px)]" style={{ background: '#F8F9FA' }}>
       <aside
         className={`${sidebarOpen ? "w-[220px]" : "w-0 overflow-hidden"} transition-all duration-300 flex flex-col flex-shrink-0 fixed left-0 z-20 lg:block`}
-        style={{ background: '#1C0F0F', top: '60px', height: 'calc(100vh - 60px)' }}
+        style={{ background: '#1A1D23', top: '60px', height: 'calc(100vh - 60px)' }}
       >
         <div className="px-4 pt-3 pb-2">
           <Link to="/" className="flex items-center gap-2">
@@ -221,11 +221,11 @@ const PropertyManagement = () => {
                 padding: '8px 16px',
                 fontSize: '13px',
                 lineHeight: '1.2',
-                background: activeTab === item.key ? '#C0392B' : 'transparent',
+                background: activeTab === item.key ? '#3B5BDB' : 'transparent',
                 color: activeTab === item.key ? '#FFFFFF' : 'rgba(255,255,255,0.72)',
-                borderLeft: activeTab === item.key ? '3px solid #E74C3C' : '3px solid transparent',
+                borderLeft: activeTab === item.key ? '3px solid #7B9CFF' : '3px solid transparent',
               }}
-              onMouseEnter={(e) => { if (activeTab !== item.key) e.currentTarget.style.background = 'rgba(192,57,43,0.15)'; }}
+              onMouseEnter={(e) => { if (activeTab !== item.key) e.currentTarget.style.background = 'rgba(59,91,219,0.12)'; }}
               onMouseLeave={(e) => { if (activeTab !== item.key) e.currentTarget.style.background = 'transparent'; }}
             >
               <item.icon style={{ width: '15px', height: '15px' }} />
@@ -235,7 +235,7 @@ const PropertyManagement = () => {
         </nav>
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', padding: '12px 16px' }}>
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ background: '#C0392B' }}>MR</div>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ background: '#3B5BDB' }}>MR</div>
             <span className="text-white text-xs">M. Rahman</span>
           </div>
           <Link to="/" className="flex items-center gap-2 text-xs transition-colors" style={{ color: 'rgba(255,255,255,0.72)' }}>
@@ -246,12 +246,12 @@ const PropertyManagement = () => {
       </aside>
 
       <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[220px]" : ""} transition-all duration-300`}>
-        <header className="h-12 bg-white flex items-center justify-between px-5 flex-shrink-0 sticky top-0 z-10" style={{ borderBottom: '1px solid #E2E8F0' }}>
+        <header className="h-12 bg-white flex items-center justify-between px-5 flex-shrink-0 sticky top-0 z-10" style={{ borderBottom: '1px solid #DEE2E6' }}>
           <div className="flex items-center gap-3">
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors lg:hidden">
-              <Menu className="h-4 w-4" style={{ color: '#64748B' }} />
+              <Menu className="h-4 w-4" style={{ color: '#868E96' }} />
             </button>
-            <span className="text-sm" style={{ color: '#64748B' }}>{t("pm.propertyManagement")}</span>
+            <span className="text-sm" style={{ color: '#868E96' }}>{t("pm.propertyManagement")}</span>
           </div>
         </header>
         <main className="flex-1 p-6 overflow-auto">{renderContent()}</main>
@@ -262,7 +262,7 @@ const PropertyManagement = () => {
         <div className="fixed inset-0 z-50 flex justify-end" onClick={() => setSelectedTenant(null)}>
           <div className="absolute inset-0 bg-black/30" />
           <div className="relative w-full max-w-md bg-white h-full shadow-xl overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="p-5 border-b border-[#F1F5F9] flex items-center justify-between">
+            <div className="p-5 border-b border-[#F1F3F5] flex items-center justify-between">
               <h2 className="font-heading font-bold text-foreground">{selectedTenant.name}</h2>
               <button onClick={() => setSelectedTenant(null)} className="p-1 hover:bg-secondary rounded-lg"><X className="h-4 w-4" /></button>
             </div>
@@ -274,11 +274,11 @@ const PropertyManagement = () => {
                 <div><span className="text-muted-foreground">{t("bm.moveIn")}</span><p className="font-medium text-foreground">{selectedTenant.moveIn}</p></div>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-[#F8FAFC] rounded-xl p-3">
+                <div className="bg-[#F8F9FA] rounded-xl p-3">
                   <span className="text-[11px] text-muted-foreground">{t("bm.totalPaidYear")}</span>
                   <p className="text-lg font-bold text-foreground">৳{selectedTenant.totalPaid.toLocaleString()}</p>
                 </div>
-                <div className="bg-[#F8FAFC] rounded-xl p-3">
+                <div className="bg-[#F8F9FA] rounded-xl p-3">
                   <span className="text-[11px] text-muted-foreground">{t("bm.advanceHeld")}</span>
                   <p className="text-lg font-bold text-foreground">৳{selectedTenant.advance.toLocaleString()}</p>
                 </div>
@@ -287,7 +287,7 @@ const PropertyManagement = () => {
                 <h3 className="text-sm font-semibold text-foreground mb-2">{t("bm.paymentHistory")}</h3>
                 <div className="space-y-2">
                   {selectedTenant.paymentHistory.map((ph, i) => (
-                    <div key={i} className="flex items-center justify-between text-xs bg-[#F8FAFC] rounded-lg px-3 py-2">
+                    <div key={i} className="flex items-center justify-between text-xs bg-[#F8F9FA] rounded-lg px-3 py-2">
                       <span className="text-foreground font-medium">{ph.month}</span>
                       <span className="text-muted-foreground">৳{ph.amount.toLocaleString()}</span>
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${ph.status === "Paid" ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"}`}>{ph.status}</span>
@@ -324,7 +324,7 @@ const DashboardContent = () => {
           { label: t("pm.activeTenants"), value: "8", sub: t("pm.allActive"), icon: Users, iconBg: "bg-primary/10 text-primary" },
           { label: t("pm.pendingDues"), value: "3", sub: t("pm.actionNeeded"), icon: TrendingDown, iconBg: "bg-red-100 text-red-600" },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-2xl p-5 border border-[#F1F5F9] shadow-sm">
+          <div key={s.label} className="bg-white rounded-2xl p-5 border border-[#F1F3F5] shadow-sm">
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs text-muted-foreground font-medium">{s.label}</span>
               <div className={`w-9 h-9 rounded-xl ${s.iconBg} flex items-center justify-center`}><s.icon className="h-4 w-4" /></div>
@@ -335,21 +335,21 @@ const DashboardContent = () => {
         ))}
       </div>
       <div className="grid lg:grid-cols-5 gap-5">
-        <div className="lg:col-span-3 bg-white rounded-2xl border border-[#F1F5F9] shadow-sm p-5">
+        <div className="lg:col-span-3 bg-white rounded-2xl border border-[#F1F3F5] shadow-sm p-5">
           <h3 className="font-heading font-semibold text-foreground text-sm mb-4">{t("pm.incomeTrend")}</h3>
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={barData} barGap={4}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
-              <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#94A3B8" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: "#94A3B8" }} axisLine={false} tickLine={false} tickFormatter={v => `${v / 1000}k`} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#F1F3F5" />
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#ADB5BD" }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: "#ADB5BD" }} axisLine={false} tickLine={false} tickFormatter={v => `${v / 1000}k`} />
               <Tooltip formatter={(v: number) => [`৳${v.toLocaleString()}`, ""]} />
               <Legend iconType="circle" iconSize={8} formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>} />
-              <Bar dataKey="collected" name={t("dash.collected")} fill="#16A34A" radius={[4, 4, 0, 0]} barSize={20} />
+              <Bar dataKey="collected" name={t("dash.collected")} fill="#2F9E44" radius={[4, 4, 0, 0]} barSize={20} />
               <Bar dataKey="due" name={t("dash.due")} fill="hsl(0,84%,60%)" radius={[4, 4, 0, 0]} barSize={20} />
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-[#F1F5F9] shadow-sm p-5">
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-[#F1F3F5] shadow-sm p-5">
           <h3 className="font-heading font-semibold text-foreground text-sm mb-4">{t("dash.expenseBreakdown")}</h3>
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
@@ -386,17 +386,17 @@ const PropertiesContent = () => {
           <Plus className="h-3.5 w-3.5" /> {t("pm.addProperty")}
         </button>
       </div>
-      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#F1F3F5] shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {[t("pm.propertyName"), t("bm.address"), t("pm.totalUnits"), t("dash.occupied"), t("dash.vacant"), t("dash.actions")].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {properties.map((p, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA] transition-colors">
                   <td className="p-3 text-foreground text-xs font-medium">{p.name}</td>
                   <td className="p-3 text-muted-foreground text-xs">{p.address}</td>
                   <td className="p-3 text-foreground text-xs">{p.totalUnits}</td>
@@ -446,17 +446,17 @@ const UnitsContent = () => {
           <option value="Vacant">{t("dash.vacant")}</option>
         </select>
       </div>
-      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#F1F3F5] shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {[t("bm.flatNo"), t("pm.property"), t("bm.floor"), t("bm.sizeSqft"), t("bm.rentBDT"), t("dash.status"), t("dash.tenant"), t("dash.actions")].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {filtered.map((f, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA] transition-colors">
                   <td className="p-3 text-foreground text-xs font-medium">{f.flat}</td>
                   <td className="p-3 text-muted-foreground text-xs">{f.building}</td>
                   <td className="p-3 text-muted-foreground text-xs">{f.floor}</td>
@@ -492,17 +492,17 @@ const TenantsContent = ({ onSelectTenant }: { onSelectTenant: (t: typeof tenants
           <Plus className="h-3.5 w-3.5" /> {t("dash.addTenant")}
         </button>
       </div>
-      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#F1F3F5] shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {[t("dash.name"), t("bm.flatNo"), t("pm.property"), t("auth.phoneNumber"), t("bm.moveIn"), t("bm.monthlyRent"), t("dash.status"), t("dash.actions")].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {tenantsList.map((tt, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA] transition-colors">
                   <td className="p-3 text-foreground text-xs font-medium">{tt.name}</td>
                   <td className="p-3 text-muted-foreground text-xs">{tt.flat}</td>
                   <td className="p-3 text-muted-foreground text-xs">{tt.building}</td>
@@ -540,23 +540,23 @@ const RentPaymentsContent = () => {
           { label: t("dash.collected"), value: "৳1,19,000", color: "text-primary" },
           { label: t("dash.due"), value: "৳59,000", color: "text-destructive" },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl p-4 border border-[#F1F5F9] shadow-sm">
+          <div key={s.label} className="bg-white rounded-xl p-4 border border-[#F1F3F5] shadow-sm">
             <span className="text-xs text-muted-foreground">{s.label}</span>
             <p className={`text-lg font-bold ${s.color}`}>{s.value}</p>
           </div>
         ))}
       </div>
-      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#F1F3F5] shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {[t("dash.tenant"), t("dash.flat"), t("pm.property"), t("bm.rentAmount"), t("bm.month"), t("bm.paymentDate"), t("dash.method"), t("dash.status"), t("dash.actions")].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {rentPayments.map((p, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA] transition-colors">
                   <td className="p-3 text-foreground text-xs font-medium">{p.tenant}</td>
                   <td className="p-3 text-muted-foreground text-xs">{p.flat}</td>
                   <td className="p-3 text-muted-foreground text-xs">{p.building}</td>
@@ -599,17 +599,17 @@ const AdvanceMoneyContent = () => {
           <Plus className="h-3.5 w-3.5" /> {t("pm.addAdvance")}
         </button>
       </div>
-      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#F1F3F5] shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {[t("dash.tenant"), t("pm.unit"), t("pm.advanceAmount"), t("pm.dateReceived"), t("pm.adjustmentStatus"), t("pm.notes")].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {advanceRecords.map((ar, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA] transition-colors">
                   <td className="p-3 text-foreground text-xs font-medium">{ar.tenant}</td>
                   <td className="p-3 text-muted-foreground text-xs">{ar.unit}</td>
                   <td className="p-3 text-foreground text-xs font-medium">BDT {ar.amount.toLocaleString()}</td>
@@ -656,17 +656,17 @@ const ExpensesContent = () => {
           </button>
         ))}
       </div>
-      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#F1F3F5] shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {[t("dash.date"), t("dash.description"), t("dash.amount"), t("dash.category"), t("pm.property"), t("bm.addedBy")].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {filtered.map((e, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA] transition-colors">
                   <td className="p-3 text-muted-foreground text-xs">{e.date}</td>
                   <td className="p-3 text-foreground text-xs font-medium">{e.desc}</td>
                   <td className="p-3 text-foreground text-xs font-medium">BDT {e.amount.toLocaleString()}</td>
@@ -678,7 +678,7 @@ const ExpensesContent = () => {
             </tbody>
           </table>
         </div>
-        <div className="p-4 border-t border-[#F1F5F9] flex justify-end">
+        <div className="p-4 border-t border-[#F1F3F5] flex justify-end">
           <span className="text-sm font-bold text-foreground">{t("bm.totalExpenses")}: BDT {total.toLocaleString()}</span>
         </div>
       </div>
@@ -715,32 +715,32 @@ const AccountPayableContent = () => {
         <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90"><Plus className="h-3.5 w-3.5" /> Add Payable</button>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Total Payable</span><p className="text-xl font-bold" style={{ color: '#1E293B' }}>BDT {total.toLocaleString()}</p></div>
-        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Paid</span><p className="text-xl font-bold" style={{ color: '#16A34A' }}>BDT {paid.toLocaleString()}</p></div>
-        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Pending</span><p className="text-xl font-bold" style={{ color: '#CA8A04' }}>BDT {(total - paid).toLocaleString()}</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Payable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT {total.toLocaleString()}</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Paid</span><p className="text-xl font-bold" style={{ color: '#2F9E44' }}>BDT {paid.toLocaleString()}</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Pending</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT {(total - paid).toLocaleString()}</p></div>
       </div>
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border" style={{ borderColor: '#E2E8F0' }}>
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border" style={{ borderColor: '#DEE2E6' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr style={{ background: '#F8FAFC' }}>
+            <thead><tr style={{ background: '#F8F9FA' }}>
               {["Date", "Description", "Amount", "Pay To", "Status", "Actions"].map(h => (
-                <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#475569' }}>{h}</th>
+                <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#495057' }}>{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {accountPayableDataPM.map((a, i) => (
-                <tr key={i} className="hover:bg-[#F8FAFC]" style={{ borderTop: '1px solid #F1F5F9' }}>
-                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.date}</td>
-                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>{a.description}</td>
-                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>BDT {a.amount.toLocaleString()}</td>
-                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.payTo}</td>
+                <tr key={i} className="hover:bg-[#F8F9FA]" style={{ borderTop: '1px solid #F1F3F5' }}>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.date}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{a.description}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>BDT {a.amount.toLocaleString()}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.payTo}</td>
                   <td className="p-3">
-                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium" style={a.status === "paid" ? { background: '#FEF2F2', color: '#C0392B', border: '1px solid #FECACA' } : { background: '#FEFCE8', color: '#CA8A04', border: '1px solid #FDE68A' }}>
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium" style={a.status === "paid" ? { background: '#FEF2F2', color: '#3B5BDB', border: '1px solid #FECACA' } : { background: '#FEFCE8', color: '#E67700', border: '1px solid #FDE68A' }}>
                       {a.status === "paid" ? "Paid" : "Pending"}
                     </span>
                   </td>
                   <td className="p-3">
-                    {a.status === "pending" && <button className="text-xs hover:underline" style={{ color: '#C0392B' }}>Mark Paid</button>}
+                    {a.status === "pending" && <button className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>Mark Paid</button>}
                   </td>
                 </tr>
               ))}
@@ -764,37 +764,37 @@ const AccountReceivableContent = () => {
         <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90"><Plus className="h-3.5 w-3.5" /> Add Entry</button>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Total Receivable</span><p className="text-xl font-bold" style={{ color: '#1E293B' }}>BDT 75,000</p></div>
-        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Overdue</span><p className="text-xl font-bold" style={{ color: '#DC2626' }}>BDT 70,000</p></div>
-        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#E2E8F0' }}><span className="text-[11px]" style={{ color: '#64748B' }}>Upcoming</span><p className="text-xl font-bold" style={{ color: '#CA8A04' }}>BDT 5,000</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Receivable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 75,000</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Overdue</span><p className="text-xl font-bold" style={{ color: '#E03131' }}>BDT 70,000</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Upcoming</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT 5,000</p></div>
       </div>
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border" style={{ borderColor: '#E2E8F0' }}>
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border" style={{ borderColor: '#DEE2E6' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr style={{ background: '#F8FAFC' }}>
+            <thead><tr style={{ background: '#F8F9FA' }}>
               {["Tenant", "Flat", "Property", "Type", "Amount", "Due Date", "Days Overdue", "Status", "Actions"].map(h => (
-                <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#475569' }}>{h}</th>
+                <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#495057' }}>{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {accountReceivableDataPM.map((a, i) => (
-                <tr key={i} className="hover:bg-[#F8FAFC]" style={{ borderTop: '1px solid #F1F5F9' }}>
-                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>{a.tenant}</td>
-                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.flat}</td>
-                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.building}</td>
-                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.type}</td>
-                  <td className="p-3 text-xs font-medium" style={{ color: '#1E293B' }}>BDT {a.amount.toLocaleString()}</td>
-                  <td className="p-3 text-xs" style={{ color: '#64748B' }}>{a.dueDate}</td>
+                <tr key={i} className="hover:bg-[#F8F9FA]" style={{ borderTop: '1px solid #F1F3F5' }}>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{a.tenant}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.flat}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.building}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.type}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>BDT {a.amount.toLocaleString()}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.dueDate}</td>
                   <td className="p-3">
-                    {a.daysOverdue > 0 ? <span className="text-xs font-medium" style={{ color: '#DC2626' }}>{a.daysOverdue} days</span> : <span className="text-xs" style={{ color: '#64748B' }}>—</span>}
+                    {a.daysOverdue > 0 ? <span className="text-xs font-medium" style={{ color: '#E03131' }}>{a.daysOverdue} days</span> : <span className="text-xs" style={{ color: '#868E96' }}>—</span>}
                   </td>
                   <td className="p-3">
-                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium" style={a.status === "overdue" ? { background: '#FEF2F2', color: '#DC2626', border: '1px solid #FCA5A5' } : { background: '#FEFCE8', color: '#CA8A04', border: '1px solid #FDE68A' }}>
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium" style={a.status === "overdue" ? { background: '#FEF2F2', color: '#E03131', border: '1px solid #FCA5A5' } : { background: '#FEFCE8', color: '#E67700', border: '1px solid #FDE68A' }}>
                       {a.status === "overdue" ? "Overdue" : "Upcoming"}
                     </span>
                   </td>
                   <td className="p-3">
-                    <button onClick={() => toast.success(`Reminder sent to ${a.tenant}`)} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#C0392B' }}><Send className="h-3 w-3" />Remind</button>
+                    <button onClick={() => toast.success(`Reminder sent to ${a.tenant}`)} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#3B5BDB' }}><Send className="h-3 w-3" />Remind</button>
                   </td>
                 </tr>
               ))}
@@ -824,7 +824,7 @@ const RemindersContentPM = () => {
         <h3 className="font-heading font-semibold text-foreground text-sm mb-3">{t("bm.pendingReminders")}</h3>
         <div className="grid gap-3 md:grid-cols-2">
           {overdueItems.map((item, i) => (
-            <div key={i} className="bg-white rounded-xl border border-[#F1F5F9] shadow-sm p-4">
+            <div key={i} className="bg-white rounded-xl border border-[#F1F3F5] shadow-sm p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-foreground">{item.name} — {item.flat}</span>
                 <span className="text-[11px] font-medium text-destructive">{item.days} {t("bm.daysOverdue")}</span>
@@ -842,20 +842,20 @@ const RemindersContentPM = () => {
           ))}
         </div>
       </div>
-      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-[#F1F5F9]">
+      <div className="bg-white rounded-2xl border border-[#F1F3F5] shadow-sm overflow-hidden">
+        <div className="p-4 border-b border-[#F1F3F5]">
           <h3 className="font-heading font-semibold text-foreground text-sm">{t("bm.sentRemindersLog")}</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {[t("bm.dateSent"), t("dash.tenant"), t("dash.flat"), t("pm.type"), t("bm.message"), t("dash.status")].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-xs">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {sentReminders.map((sr, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA] transition-colors">
                   <td className="p-3 text-muted-foreground text-xs">{sr.date}</td>
                   <td className="p-3 text-foreground text-xs font-medium">{sr.tenant}</td>
                   <td className="p-3 text-muted-foreground text-xs">{sr.flat}</td>
@@ -882,7 +882,7 @@ const SettingsContent = () => {
         <h1 className="text-xl font-heading font-bold text-foreground">{t("dash.settings")}</h1>
         <p className="text-sm text-muted-foreground">{t("bm.settingsDesc")}</p>
       </div>
-      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm p-5">
+      <div className="bg-white rounded-2xl border border-[#F1F3F5] shadow-sm p-5">
         <h3 className="font-heading font-semibold text-foreground text-sm mb-4">{t("pm.propertyProfile")}</h3>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
@@ -904,7 +904,7 @@ const SettingsContent = () => {
         </div>
         <button className="mt-4 bg-primary text-white text-xs font-medium px-4 py-2 rounded-lg hover:bg-primary/90">{t("bm.saveChanges")}</button>
       </div>
-      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm p-5">
+      <div className="bg-white rounded-2xl border border-[#F1F3F5] shadow-sm p-5">
         <h3 className="font-heading font-semibold text-foreground text-sm mb-4">{t("bm.notificationPrefs")}</h3>
         <div className="space-y-3">
           {[t("bm.rentReminders3Days"), t("bm.overdueAlerts"), t("bm.paymentConfirmations"), t("bm.emailNotifications"), t("bm.smsNotifications")].map((label, i) => (
@@ -915,7 +915,7 @@ const SettingsContent = () => {
           ))}
         </div>
       </div>
-      <div className="bg-white rounded-2xl border border-[#F1F5F9] shadow-sm p-5">
+      <div className="bg-white rounded-2xl border border-[#F1F3F5] shadow-sm p-5">
         <h3 className="font-heading font-semibold text-foreground text-sm mb-4">{t("bm.account")}</h3>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
