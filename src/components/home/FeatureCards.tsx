@@ -17,7 +17,7 @@ const cards = [
     descKey: "features.building.desc",
     route: "/building-management",
     tagKey: "features.building.tag",
-    gradient: "linear-gradient(145deg, #1098AD 0%, #0B7285 100%)",
+    gradient: "linear-gradient(145deg, #1B2A6B 0%, #0D1B4B 100%)",
   },
   {
     icon: Key,
