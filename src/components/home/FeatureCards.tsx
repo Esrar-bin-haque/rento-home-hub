@@ -9,7 +9,7 @@ const cards = [
     descKey: "features.rentals.desc",
     route: "/rentals",
     tagKey: "features.rentals.tag",
-    gradient: "linear-gradient(145deg, #3B5BDB 0%, #1E3799 100%)",
+    gradient: "linear-gradient(145deg, #8B0000 0%, #5C0000 100%)",
   },
   {
     icon: Building2,
