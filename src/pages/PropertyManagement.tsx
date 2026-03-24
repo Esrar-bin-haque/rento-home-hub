@@ -24,10 +24,10 @@ const barData = [
 
 const expensePieData = [
   { name: "Maintenance", value: 12000, color: "#3B5BDB" },
-  { name: "Utilities", value: 18000, color: "hsl(43,96%,50%)" },
-  { name: "Repairs", value: 8000, color: "hsl(0,84%,60%)" },
-  { name: "Insurance", value: 5000, color: "hsl(217,91%,60%)" },
-  { name: "Tax", value: 7000, color: "hsl(271,91%,65%)" },
+  { name: "Utilities", value: 18000, color: "#E67700" },
+  { name: "Repairs", value: 8000, color: "#E03131" },
+  { name: "Insurance", value: 5000, color: "#3B5BDB" },
+  { name: "Tax", value: 7000, color: "#7048E8" },
 ];
 
 const properties = [
@@ -345,7 +345,7 @@ const DashboardContent = () => {
               <Tooltip formatter={(v: number) => [`৳${v.toLocaleString()}`, ""]} />
               <Legend iconType="circle" iconSize={8} formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>} />
               <Bar dataKey="collected" name={t("dash.collected")} fill="#2F9E44" radius={[4, 4, 0, 0]} barSize={20} />
-              <Bar dataKey="due" name={t("dash.due")} fill="hsl(0,84%,60%)" radius={[4, 4, 0, 0]} barSize={20} />
+              <Bar dataKey="due" name={t("dash.due")} fill="#E03131" radius={[4, 4, 0, 0]} barSize={20} />
             </BarChart>
           </ResponsiveContainer>
         </div>
