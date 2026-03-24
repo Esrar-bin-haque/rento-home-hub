@@ -11,28 +11,28 @@ const AboutSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-card">
+    <section className="py-20" style={{ background: '#FFFFFF' }}>
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
           <div>
-            <span className="text-sm font-medium text-primary tracking-wide uppercase">{t("about.label")}</span>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mt-2 mb-4">
+            <span className="inline-block text-sm font-medium tracking-wide uppercase px-3 py-1 rounded-full" style={{ background: '#EDF2FF', color: '#3B5BDB' }}>{t("about.label")}</span>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-3 mb-4" style={{ color: '#1A1D23' }}>
               {t("about.heading")}
             </h2>
-            <p className="text-muted-foreground leading-relaxed mb-6">
+            <p className="leading-relaxed mb-6" style={{ color: '#495057' }}>
               {t("about.body")}
             </p>
             <ul className="space-y-3 mb-6">
               {bullets.map((txt) => (
-                <li key={txt} className="flex items-center gap-3 text-sm text-foreground">
-                  <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Check className="h-3 w-3 text-primary" />
+                <li key={txt} className="flex items-center gap-3 text-sm" style={{ color: '#1A1D23' }}>
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#EBFBEE' }}>
+                    <Check className="h-3 w-3" style={{ color: '#2F9E44' }} />
                   </div>
                   {txt}
                 </li>
               ))}
             </ul>
-            <a href="#" className="text-sm font-medium text-primary hover:underline">{t("about.learnMore")}</a>
+            <a href="#" className="text-sm font-medium hover:underline" style={{ color: '#3B5BDB' }}>{t("about.learnMore")}</a>
           </div>
           <div className="rounded-card overflow-hidden card-shadow">
             <img

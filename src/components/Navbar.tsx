@@ -52,11 +52,11 @@ const Navbar = () => {
   const isActive = (to: string) => location.pathname === to;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[1000] h-[60px] bg-white border-b" style={{ borderColor: '#E2E8F0' }}>
+    <nav className="fixed top-0 left-0 right-0 z-[1000] h-[60px] bg-white border-b" style={{ borderColor: '#DEE2E6' }}>
       <div className="container mx-auto flex items-center justify-between h-full px-4">
         <Link to="/" className="flex items-center gap-2">
           <img src={rentoLogo} alt="Rento" className="h-9 w-9 rounded-lg object-cover" />
-          <span className="text-xl font-heading font-bold" style={{ color: '#1E293B' }}>Rento</span>
+          <span className="text-xl font-heading font-bold" style={{ color: '#1A1D23' }}>Rento</span>
         </Link>
 
         {/* Desktop */}
@@ -65,24 +65,24 @@ const Navbar = () => {
             <Link
               key={l.to}
               to={l.to}
-              className="text-sm font-medium transition-colors"
-              style={{ color: isActive(l.to) ? '#C0392B' : '#475569' }}
-              onMouseEnter={(e) => { if (!isActive(l.to)) (e.target as HTMLElement).style.color = '#C0392B'; }}
-              onMouseLeave={(e) => { if (!isActive(l.to)) (e.target as HTMLElement).style.color = '#475569'; }}
+              className="text-sm transition-colors"
+              style={{ color: isActive(l.to) ? '#3B5BDB' : '#495057', fontWeight: isActive(l.to) ? 600 : 400 }}
+              onMouseEnter={(e) => { if (!isActive(l.to)) (e.target as HTMLElement).style.color = '#3B5BDB'; }}
+              onMouseLeave={(e) => { if (!isActive(l.to)) (e.target as HTMLElement).style.color = '#495057'; }}
             >
               {l.label}
             </Link>
           ))}
           <Link
             to="/contact"
-            className="text-sm font-medium px-4 py-1.5 rounded-full transition-colors"
+            className="text-sm font-medium px-4 py-1.5 rounded-full transition-all"
             style={{
-              border: '1.5px solid #C0392B',
-              color: isActive('/contact') ? '#FFFFFF' : '#C0392B',
-              background: isActive('/contact') ? '#C0392B' : 'transparent',
+              border: '1.5px solid #3B5BDB',
+              color: isActive('/contact') ? '#FFFFFF' : '#3B5BDB',
+              background: isActive('/contact') ? '#3B5BDB' : 'transparent',
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#C0392B'; (e.currentTarget as HTMLElement).style.color = '#FFFFFF'; }}
-            onMouseLeave={(e) => { if (!isActive('/contact')) { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#C0392B'; }}}
+            onMouseEnter={(e) => { (e.currentTarget).style.background = '#3B5BDB'; (e.currentTarget).style.color = '#FFFFFF'; }}
+            onMouseLeave={(e) => { if (!isActive('/contact')) { (e.currentTarget).style.background = 'transparent'; (e.currentTarget).style.color = '#3B5BDB'; }}}
           >
             {t("nav.contact")}
           </Link>
@@ -95,24 +95,24 @@ const Navbar = () => {
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center gap-2 h-9 px-3 rounded-full text-sm font-medium hover:opacity-90 transition-colors"
-                style={{ background: '#C0392B', color: '#FFFFFF' }}
+                style={{ background: '#3B5BDB', color: '#FFFFFF' }}
               >
                 <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold">{initials}</span>
                 <ChevronDown className="h-3.5 w-3.5" />
               </button>
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border py-1 z-50" style={{ borderColor: '#E2E8F0' }}>
-                  <div className="px-3 py-2 border-b" style={{ borderColor: '#E2E8F0' }}>
-                    <p className="text-sm font-medium" style={{ color: '#1E293B' }}>{user.name}</p>
-                    <p className="text-xs" style={{ color: '#64748B' }}>{user.phone}</p>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border py-1 z-50" style={{ borderColor: '#DEE2E6' }}>
+                  <div className="px-3 py-2 border-b" style={{ borderColor: '#DEE2E6' }}>
+                    <p className="text-sm font-medium" style={{ color: '#1A1D23' }}>{user.name}</p>
+                    <p className="text-xs" style={{ color: '#868E96' }}>{user.phone}</p>
                   </div>
-                  <Link to="/building-management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#1E293B' }}>
+                  <Link to="/building-management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#1A1D23' }}>
                     <LayoutDashboard className="h-4 w-4" /> {t("auth.dashboard")}
                   </Link>
-                  <Link to="/management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#1E293B' }}>
+                  <Link to="/management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#1A1D23' }}>
                     <User className="h-4 w-4" /> {t("auth.myProfile")}
                   </Link>
-                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#DC2626' }}>
+                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#E03131' }}>
                     <LogOut className="h-4 w-4" /> {t("dash.logout")}
                   </button>
                 </div>
@@ -120,10 +120,10 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <Button variant="outline" className="rounded-lg text-sm" style={{ borderColor: '#E2E8F0', color: '#475569' }} onClick={() => navigate("/login")}>
+              <Button variant="outline" className="rounded-lg text-sm" style={{ borderColor: '#DEE2E6', color: '#495057' }} onClick={() => navigate("/login")}>
                 {t("nav.login")}
               </Button>
-              <Button className="rounded-lg text-sm" style={{ background: '#C0392B', color: '#FFFFFF' }} onClick={() => navigate("/register")}>
+              <Button className="rounded-lg text-sm shadow-sm" style={{ background: '#3B5BDB', color: '#FFFFFF' }} onClick={() => navigate("/register")}>
                 {t("nav.getStarted")}
               </Button>
             </>
@@ -138,17 +138,17 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-white border-t px-4 pb-4 animate-fade-in-up" style={{ borderColor: '#E2E8F0' }}>
-          <div className="flex items-center gap-2 py-3 border-b mb-2" style={{ borderColor: '#E2E8F0' }}>
+        <div className="lg:hidden bg-white border-t px-4 pb-4 animate-fade-in-up" style={{ borderColor: '#DEE2E6' }}>
+          <div className="flex items-center gap-2 py-3 border-b mb-2" style={{ borderColor: '#DEE2E6' }}>
             <img src={rentoLogo} alt="Rento" className="h-8 w-8 rounded-lg object-cover" />
-            <span className="text-lg font-heading font-bold" style={{ color: '#1E293B' }}>Rento</span>
+            <span className="text-lg font-heading font-bold" style={{ color: '#1A1D23' }}>Rento</span>
           </div>
           {navLinks.map((l) => (
             <Link
               key={l.to}
               to={l.to}
               className="block py-3 text-sm font-medium border-b last:border-0"
-              style={{ color: isActive(l.to) ? '#C0392B' : '#475569', borderColor: '#F1F5F9' }}
+              style={{ color: isActive(l.to) ? '#3B5BDB' : '#495057', borderColor: '#F1F3F5' }}
             >
               {l.label}
             </Link>
@@ -160,7 +160,7 @@ const Navbar = () => {
             <Link
               to="/contact"
               className="w-full text-center text-sm font-medium py-2 rounded-full transition-colors"
-              style={{ border: '1.5px solid #C0392B', color: '#C0392B' }}
+              style={{ border: '1.5px solid #3B5BDB', color: '#3B5BDB' }}
             >
               {t("nav.contact")}
             </Link>
@@ -169,7 +169,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Button variant="outline" className="w-full rounded-lg text-sm" onClick={() => navigate("/login")}>{t("nav.login")}</Button>
-                <Button className="w-full rounded-lg text-sm" style={{ background: '#C0392B', color: '#FFFFFF' }} onClick={() => navigate("/register")}>{t("nav.getStarted")}</Button>
+                <Button className="w-full rounded-lg text-sm" style={{ background: '#3B5BDB', color: '#FFFFFF' }} onClick={() => navigate("/register")}>{t("nav.getStarted")}</Button>
               </>
             )}
           </div>

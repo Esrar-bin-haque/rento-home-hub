@@ -48,9 +48,9 @@ const ServicesDetail = () => {
   ];
 
   return (
-    <section className="py-20 bg-background">
+    <section className="py-20" style={{ background: '#F8F9FA' }}>
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground text-center mb-14">
+        <h2 className="text-3xl md:text-4xl font-heading font-bold text-center mb-14" style={{ color: '#1A1D23' }}>
           {t("servicesDetail.heading")}
         </h2>
         <div className="space-y-16 max-w-5xl mx-auto">
@@ -68,11 +68,11 @@ const ServicesDetail = () => {
                 />
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-heading font-bold text-foreground mb-3">{t(r.titleKey)}</h3>
-                <p className="text-muted-foreground leading-relaxed mb-5">{t(r.bodyKey)}</p>
+                <h3 className="text-2xl font-heading font-bold mb-3" style={{ color: '#1A1D23' }}>{t(r.titleKey)}</h3>
+                <p className="leading-relaxed mb-5" style={{ color: '#495057' }}>{t(r.bodyKey)}</p>
                 <div className="flex flex-wrap gap-3">
                   {r.highlights.map((h) => (
-                    <div key={h.labelKey} className="flex items-center gap-2 bg-primary/5 text-primary rounded-full px-3 py-1.5 text-xs font-medium">
+                    <div key={h.labelKey} className="flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium" style={{ background: '#EDF2FF', color: '#3B5BDB' }}>
                       <h.icon className="h-3.5 w-3.5" />
                       {t(h.labelKey)}
                     </div>

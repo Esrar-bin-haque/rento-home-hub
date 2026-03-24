@@ -9,7 +9,7 @@ const cards = [
     descKey: "features.rentals.desc",
     route: "/rentals",
     tagKey: "features.rentals.tag",
-    gradient: "linear-gradient(135deg, #1A56DB 0%, #1E3A8A 100%)",
+    gradient: "linear-gradient(145deg, #3B5BDB 0%, #1E3799 100%)",
   },
   {
     icon: Building2,
@@ -17,7 +17,7 @@ const cards = [
     descKey: "features.building.desc",
     route: "/building-management",
     tagKey: "features.building.tag",
-    gradient: "linear-gradient(135deg, #0F766E 0%, #134E4A 100%)",
+    gradient: "linear-gradient(145deg, #1098AD 0%, #0B7285 100%)",
   },
   {
     icon: Key,
@@ -25,7 +25,7 @@ const cards = [
     descKey: "features.property.desc",
     route: "/management",
     tagKey: "features.property.tag",
-    gradient: "linear-gradient(135deg, #92400E 0%, #78350F 100%)",
+    gradient: "linear-gradient(145deg, #F76707 0%, #D9480F 100%)",
   },
   {
     icon: Wrench,
@@ -33,7 +33,7 @@ const cards = [
     descKey: "features.services.desc",
     route: "/services",
     tagKey: "features.services.tag",
-    gradient: "linear-gradient(135deg, #5B21B6 0%, #3B0764 100%)",
+    gradient: "linear-gradient(145deg, #7048E8 0%, #4C2CB3 100%)",
   },
 ];
 
@@ -41,13 +41,13 @@ const FeatureCards = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-20" style={{ background: '#F9FAFB' }}>
+    <section className="py-20" style={{ background: '#F1F3F5' }}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-3" style={{ color: '#1E293B' }}>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-3" style={{ color: '#1A1D23' }}>
             {t("features.heading")}
           </h2>
-          <p style={{ color: '#64748B' }} className="max-w-xl mx-auto">
+          <p style={{ color: '#868E96' }} className="max-w-xl mx-auto">
             {t("features.subheading")}
           </p>
         </div>
@@ -63,14 +63,12 @@ const FeatureCards = () => {
                 transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-8px)";
+                e.currentTarget.style.transform = "translateY(-6px)";
                 e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,0,0,0.25)";
-                e.currentTarget.style.filter = "brightness(1.05)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
                 e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.15)";
-                e.currentTarget.style.filter = "brightness(1)";
               }}
             >
               <div
@@ -81,16 +79,16 @@ const FeatureCards = () => {
               />
               <div
                 className="absolute pointer-events-none rounded-full"
-                style={{ width: 150, height: 150, bottom: -30, right: -30, background: "rgba(255,255,255,0.08)" }}
+                style={{ width: 150, height: 150, bottom: -30, right: -30, background: "rgba(255,255,255,0.07)" }}
               />
               <div className="relative z-10 flex items-start justify-between">
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-sm"
-                  style={{ background: "rgba(255,255,255,0.2)", boxShadow: "0 0 0 8px rgba(255,255,255,0.1)" }}
+                  style={{ background: "rgba(255,255,255,0.18)", boxShadow: "0 0 0 8px rgba(255,255,255,0.08)" }}
                 >
                   <c.icon className="h-6 w-6 text-white" />
                 </div>
-                <span className="px-3 py-1 rounded-full text-xs font-medium text-white" style={{ background: "rgba(255,255,255,0.2)" }}>
+                <span className="px-3 py-1 rounded-full text-xs font-medium text-white" style={{ background: "rgba(255,255,255,0.20)" }}>
                   {t(c.tagKey)}
                 </span>
               </div>

@@ -4,64 +4,64 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 215 25% 17%;
+    --background: 210 17% 98%;
+    --foreground: 220 16% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 17%;
+    --card-foreground: 220 16% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 17%;
+    --popover-foreground: 220 16% 12%;
 
-    --primary: 4 66% 44%;
+    --primary: 228 68% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 215 25% 17%;
+    --secondary: 210 17% 95%;
+    --secondary-foreground: 220 16% 12%;
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 210 17% 95%;
+    --muted-foreground: 215 9% 51%;
 
-    --accent: 4 66% 44%;
+    --accent: 228 68% 55%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 74% 54%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 20% 89%;
-    --input: 214 20% 89%;
-    --ring: 4 66% 44%;
+    --border: 210 14% 87%;
+    --input: 210 14% 87%;
+    --ring: 228 68% 55%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 28% 8%;
+    --sidebar-background: 220 16% 12%;
     --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 4 66% 44%;
+    --sidebar-primary: 228 68% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 4 66% 44%;
+    --sidebar-accent: 228 68% 55%;
     --sidebar-accent-foreground: 0 0% 96%;
     --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 4 66% 44%;
+    --sidebar-ring: 228 68% 55%;
 
     /* Custom tokens */
-    --indigo: 239 84% 67%;
+    --indigo: 228 68% 55%;
     --pink: 330 81% 60%;
     --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
 
     /* Brand palette */
-    --brand-primary: #C0392B;
-    --brand-dark: #A93226;
-    --brand-light: rgba(192, 57, 43, 0.08);
-    --brand-sidebar: #1C0F0F;
-    --brand-bg-tint: #F9FAFB;
+    --brand-primary: #3B5BDB;
+    --brand-dark: #2F4AC2;
+    --brand-light: rgba(59, 91, 219, 0.08);
+    --brand-sidebar: #1A1D23;
+    --brand-bg-tint: #F8F9FA;
 
     /* Semantic colors */
-    --success: #16A34A;
-    --success-bg: #F0FDF4;
-    --danger: #DC2626;
-    --danger-bg: #FEF2F2;
-    --warning: #CA8A04;
-    --warning-bg: #FEFCE8;
+    --success: #2F9E44;
+    --success-bg: #EBFBEE;
+    --danger: #E03131;
+    --danger-bg: #FFF5F5;
+    --warning: #E67700;
+    --warning-bg: #FFF9DB;
   }
 }
 
@@ -89,10 +89,6 @@
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   }
   .mesh-gradient {
-    background: 
-      radial-gradient(ellipse at 20% 50%, hsl(210 20% 96% / 0.5) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, hsl(215 25% 17% / 0.03) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 80%, hsl(210 20% 96% / 0.3) 0%, transparent 50%),
-      hsl(210 20% 98%);
+    background: #F8F9FA;
   }
 }
