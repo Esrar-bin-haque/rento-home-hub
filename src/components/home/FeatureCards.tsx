@@ -25,7 +25,7 @@ const cards = [
     descKey: "features.property.desc",
     route: "/management",
     tagKey: "features.property.tag",
-    gradient: "linear-gradient(145deg, #F76707 0%, #D9480F 100%)",
+    gradient: "linear-gradient(145deg, #1A4731 0%, #0D2B1D 100%)",
   },
   {
     icon: Wrench,
