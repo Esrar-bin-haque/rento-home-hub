@@ -21,7 +21,6 @@ const PricingSection = () => {
       ],
       ctaKey: "pricing.plan1.cta",
       popular: false,
-      variant: "outline" as const,
     },
     {
       nameKey: "pricing.plan2.name",
@@ -39,7 +38,6 @@ const PricingSection = () => {
       ],
       ctaKey: "pricing.plan2.cta",
       popular: true,
-      variant: "default" as const,
     },
     {
       nameKey: "pricing.plan3.name",
@@ -57,62 +55,63 @@ const PricingSection = () => {
       ],
       ctaKey: "pricing.plan3.cta",
       popular: false,
-      variant: "secondary" as const,
     },
   ];
 
   return (
-    <section id="pricing" className="py-20" style={{ background: '#FFFFFF' }}>
+    <section id="pricing" className="py-20" style={{ background: '#F8F9FA' }}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-3">
+          <span className="text-sm font-medium mb-2 inline-block" style={{ color: '#3B5BDB' }}>Pricing</span>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-3" style={{ color: '#1A1D23' }}>
             {t("pricing.heading")}
           </h2>
-          <p className="text-muted-foreground">{t("pricing.subheading")}</p>
+          <p style={{ color: '#868E96' }}>{t("pricing.subheading")}</p>
         </div>
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto items-start">
           {plans.map((p) => (
             <div
               key={p.nameKey}
-              className={`relative rounded-card bg-card p-6 border ${
-                p.popular ? "border-primary card-shadow scale-[1.02]" : "border-border"
-              }`}
+              className="relative rounded-card bg-white p-6"
+              style={{
+                border: p.popular ? '2px solid #3B5BDB' : '1.5px solid #DEE2E6',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.07)',
+                transform: p.popular ? 'scale(1.02)' : 'none',
+              }}
             >
               {p.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-medium px-3 py-1 rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-medium px-3 py-1 rounded-full" style={{ background: '#3B5BDB', color: '#FFFFFF' }}>
                   {t("pricing.mostPopular")}
                 </div>
               )}
-              <h3 className="font-heading font-semibold text-lg text-foreground">{t(p.nameKey)}</h3>
-              <p className="text-sm text-muted-foreground mb-4">{t(p.subtitleKey)}</p>
+              <h3 className="font-heading font-semibold text-lg" style={{ color: '#1A1D23' }}>{t(p.nameKey)}</h3>
+              <p className="text-sm mb-4" style={{ color: '#868E96' }}>{t(p.subtitleKey)}</p>
               <div className="mb-6">
-                <span className="text-3xl font-heading font-bold text-foreground">BDT {p.price}</span>
-                <span className="text-muted-foreground text-sm"> {t("pricing.perMonth")}</span>
+                <span className="text-3xl font-heading font-bold" style={{ color: '#1A1D23' }}>BDT {p.price}</span>
+                <span className="text-sm" style={{ color: '#868E96' }}> {t("pricing.perMonth")}</span>
               </div>
               <ul className="space-y-2.5 mb-6">
                 {p.features.map((f) => (
-                  <li key={f.key} className={`flex items-start gap-2 text-sm ${f.ok ? "text-foreground" : "text-muted-foreground/50"}`}>
+                  <li key={f.key} className="flex items-start gap-2 text-sm" style={{ color: f.ok ? '#1A1D23' : '#ADB5BD', textDecoration: f.ok ? 'none' : 'line-through' }}>
                     {f.ok ? (
-                      <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                      <Check className="h-4 w-4 flex-shrink-0 mt-0.5" style={{ color: '#2F9E44' }} />
                     ) : (
-                      <X className="h-4 w-4 text-muted-foreground/30 flex-shrink-0 mt-0.5" />
+                      <X className="h-4 w-4 flex-shrink-0 mt-0.5" style={{ color: '#ADB5BD' }} />
                     )}
                     {t(f.key)}
                   </li>
                 ))}
               </ul>
               <Button
-                className={`w-full rounded-button ${
-                  p.popular ? "bg-primary text-primary-foreground hover:bg-primary/90" : ""
-                } ${p.variant === "secondary" ? "bg-foreground text-background hover:bg-foreground/90" : ""}`}
-                variant={p.variant === "secondary" ? "default" : p.variant}
+                className="w-full rounded-lg"
+                style={p.popular ? { background: '#3B5BDB', color: '#FFFFFF' } : { background: 'transparent', border: '1.5px solid #3B5BDB', color: '#3B5BDB' }}
               >
                 {t(p.ctaKey)}
               </Button>
             </div>
           ))}
         </div>
-        <p className="text-center text-sm text-muted-foreground mt-8">
+        <p className="text-center text-sm mt-8" style={{ color: '#868E96' }}>
           {t("pricing.trial")}
         </p>
       </div>

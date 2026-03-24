@@ -34,12 +34,12 @@ const incomeExpenseData = [
 ];
 
 const expensePieData = [
-  { name: "Cleaning", value: 5000, color: "#0F766E" },
-  { name: "Security", value: 8000, color: "#1A56DB" },
-  { name: "Electricity", value: 6500, color: "#CA8A04" },
-  { name: "Lift Maintenance", value: 3800, color: "#7C3AED" },
-  { name: "Repairs", value: 2500, color: "#DC2626" },
-  { name: "Generator", value: 2000, color: "#374151" },
+  { name: "Cleaning", value: 5000, color: "#1098AD" },
+  { name: "Security", value: 8000, color: "#3B5BDB" },
+  { name: "Electricity", value: 6500, color: "#E67700" },
+  { name: "Lift Maintenance", value: 3800, color: "#7048E8" },
+  { name: "Repairs", value: 2500, color: "#E03131" },
+  { name: "Generator", value: 2000, color: "#495057" },
 ];
 
 const dashPayments = [
@@ -241,11 +241,11 @@ const BuildingManagement = () => {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-60px)]" style={{ background: '#F4F6F8' }}>
+    <div className="flex min-h-[calc(100vh-60px)]" style={{ background: '#F8F9FA' }}>
       {/* Sidebar */}
       <aside
         className={`${sidebarOpen ? "w-[220px]" : "w-0 overflow-hidden"} transition-all duration-300 flex flex-col flex-shrink-0 fixed left-0 z-20 lg:block`}
-        style={{ background: '#1C0F0F', top: '60px', height: 'calc(100vh - 60px)' }}
+        style={{ background: '#1A1D23', top: '60px', height: 'calc(100vh - 60px)' }}
       >
         <div className="px-4 pt-3 pb-2">
           <Link to="/" className="flex items-center gap-2">
@@ -264,11 +264,11 @@ const BuildingManagement = () => {
                 padding: '8px 16px',
                 fontSize: '13px',
                 lineHeight: '1.2',
-                background: activeTab === item.key ? '#C0392B' : 'transparent',
+                background: activeTab === item.key ? '#3B5BDB' : 'transparent',
                 color: activeTab === item.key ? '#FFFFFF' : 'rgba(255,255,255,0.72)',
-                borderLeft: activeTab === item.key ? '3px solid #E74C3C' : '3px solid transparent',
+                borderLeft: activeTab === item.key ? '3px solid #7B9CFF' : '3px solid transparent',
               }}
-              onMouseEnter={(e) => { if (activeTab !== item.key) e.currentTarget.style.background = 'rgba(192,57,43,0.15)'; }}
+              onMouseEnter={(e) => { if (activeTab !== item.key) e.currentTarget.style.background = 'rgba(59,91,219,0.12)'; }}
               onMouseLeave={(e) => { if (activeTab !== item.key) e.currentTarget.style.background = 'transparent'; }}
             >
               <item.icon style={{ width: '15px', height: '15px' }} />
@@ -278,7 +278,7 @@ const BuildingManagement = () => {
         </nav>
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', padding: '12px 16px' }}>
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ background: '#C0392B' }}>MR</div>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ background: '#3B5BDB' }}>MR</div>
             <span className="text-white text-xs">M. Rahman</span>
           </div>
           <Link to="/" className="flex items-center gap-2 text-xs transition-colors" style={{ color: 'rgba(255,255,255,0.72)' }}>
@@ -290,16 +290,16 @@ const BuildingManagement = () => {
 
       {/* Main Content */}
       <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[220px]" : ""} transition-all duration-300`}>
-        <header className="h-12 bg-white flex items-center justify-between px-5 flex-shrink-0 sticky top-0 z-10" style={{ borderBottom: '1px solid #E2E8F0' }}>
+        <header className="h-12 bg-white flex items-center justify-between px-5 flex-shrink-0 sticky top-0 z-10" style={{ borderBottom: '1px solid #DEE2E6' }}>
           <div className="flex items-center gap-3">
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors lg:hidden">
-              <Menu className="h-4 w-4" style={{ color: '#64748B' }} />
+              <Menu className="h-4 w-4" style={{ color: '#868E96' }} />
             </button>
-            <span className="text-sm" style={{ color: '#64748B' }}>Building Management Dashboard</span>
+            <span className="text-sm" style={{ color: '#868E96' }}>Building Management Dashboard</span>
           </div>
           <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
-            <Bell className="h-4 w-4" style={{ color: '#64748B' }} />
-            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: '#DC2626' }} />
+            <Bell className="h-4 w-4" style={{ color: '#868E96' }} />
+            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: '#E03131' }} />
           </button>
         </header>
         <main className="flex-1 p-6 overflow-auto">{renderContent()}</main>
@@ -310,7 +310,7 @@ const BuildingManagement = () => {
         <div className="fixed inset-0 z-50 flex justify-end" onClick={() => setSelectedTenant(null)}>
           <div className="absolute inset-0 bg-black/30" />
           <div className="relative w-full max-w-md bg-white h-full shadow-xl overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="p-5 border-b border-[#F1F5F9] flex items-center justify-between">
+            <div className="p-5 border-b border-[#F1F3F5] flex items-center justify-between">
               <h2 className="font-heading font-bold text-foreground">{selectedTenant.name}</h2>
               <button onClick={() => setSelectedTenant(null)} className="p-1 hover:bg-secondary rounded-lg"><X className="h-4 w-4" /></button>
             </div>
@@ -322,11 +322,11 @@ const BuildingManagement = () => {
                 <div><span className="text-muted-foreground">Move-in</span><p className="font-medium text-foreground">{selectedTenant.moveIn}</p></div>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-[#F8FAFC] rounded-xl p-3">
+                <div className="bg-[#F8F9FA] rounded-xl p-3">
                   <span className="text-[11px] text-muted-foreground">Total Paid This Year</span>
                   <p className="text-lg font-bold text-foreground">৳{selectedTenant.totalPaid.toLocaleString()}</p>
                 </div>
-                <div className="bg-[#F8FAFC] rounded-xl p-3">
+                <div className="bg-[#F8F9FA] rounded-xl p-3">
                   <span className="text-[11px] text-muted-foreground">Advance Held</span>
                   <p className="text-lg font-bold text-foreground">৳{selectedTenant.advance.toLocaleString()}</p>
                 </div>
@@ -335,7 +335,7 @@ const BuildingManagement = () => {
                 <h3 className="text-sm font-semibold text-foreground mb-2">Payment History</h3>
                 <div className="space-y-2">
                   {selectedTenant.paymentHistory.map((ph, i) => (
-                    <div key={i} className="flex items-center justify-between text-xs bg-[#F8FAFC] rounded-lg px-3 py-2">
+                    <div key={i} className="flex items-center justify-between text-xs bg-[#F8F9FA] rounded-lg px-3 py-2">
                       <span className="text-foreground font-medium">{ph.month}</span>
                       <span className="text-muted-foreground">৳{ph.amount.toLocaleString()}</span>
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${ph.status === "Paid" ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"}`}>{ph.status}</span>
@@ -395,13 +395,13 @@ const DashboardContent = () => {
           <p className="text-[11px] text-muted-foreground mb-4">Monthly collected vs uncollected</p>
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={collectionTrendData} barGap={4}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
-              <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#94A3B8" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: "#94A3B8" }} axisLine={false} tickLine={false} tickFormatter={v => `${v / 1000}k`} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#F1F3F5" />
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#ADB5BD" }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: "#ADB5BD" }} axisLine={false} tickLine={false} tickFormatter={v => `${v / 1000}k`} />
               <Tooltip formatter={(v: number) => [`BDT ${v.toLocaleString()}`, ""]} />
               <Legend iconType="circle" iconSize={8} formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>} />
-              <Bar dataKey="collected" name="Collected" fill="#16A34A" radius={[4, 4, 0, 0]} barSize={18} />
-              <Bar dataKey="notCollected" name="Not Collected" fill="#DC2626" radius={[4, 4, 0, 0]} barSize={18} />
+              <Bar dataKey="collected" name="Collected" fill="#2F9E44" radius={[4, 4, 0, 0]} barSize={18} />
+              <Bar dataKey="notCollected" name="Not Collected" fill="#E03131" radius={[4, 4, 0, 0]} barSize={18} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -434,14 +434,14 @@ const DashboardContent = () => {
         <p className="text-[11px] text-muted-foreground mb-4">Monthly financial health overview</p>
         <ResponsiveContainer width="100%" height={280}>
           <BarChart data={incomeExpenseData} barGap={4}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
-            <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#94A3B8" }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: "#94A3B8" }} axisLine={false} tickLine={false} tickFormatter={v => `${v / 1000}k`} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#F1F3F5" />
+            <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#ADB5BD" }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 11, fill: "#ADB5BD" }} axisLine={false} tickLine={false} tickFormatter={v => `${v / 1000}k`} />
             <Tooltip formatter={(v: number) => [`BDT ${v.toLocaleString()}`, ""]} />
             <Legend iconType="circle" iconSize={8} formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>} />
-             <Bar dataKey="income" name="Income" fill="#16A34A" radius={[4, 4, 0, 0]} barSize={16} />
-            <Bar dataKey="expense" name="Expense" fill="#DC2626" radius={[4, 4, 0, 0]} barSize={16} />
-            <Bar dataKey="payable" name="Account Payable" fill="#CA8A04" radius={[4, 4, 0, 0]} barSize={16} />
+             <Bar dataKey="income" name="Income" fill="#2F9E44" radius={[4, 4, 0, 0]} barSize={16} />
+            <Bar dataKey="expense" name="Expense" fill="#E03131" radius={[4, 4, 0, 0]} barSize={16} />
+            <Bar dataKey="payable" name="Account Payable" fill="#E67700" radius={[4, 4, 0, 0]} barSize={16} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -454,14 +454,14 @@ const DashboardContent = () => {
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {["Resident Name", "Flat Number", "Amount", "Method", "Status"].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-[11px] uppercase tracking-wide">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {dashPayments.map((p, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA] transition-colors">
                   <td className="p-3 text-foreground text-xs font-medium">{p.tenant}</td>
                   <td className="p-3 text-muted-foreground text-xs">{p.flat}</td>
                   <td className="p-3 text-foreground text-xs font-medium">BDT {p.amount.toLocaleString()}</td>
@@ -492,14 +492,14 @@ const BuildingsContent = () => (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead><tr className="bg-[#F8FAFC]">
+          <thead><tr className="bg-[#F8F9FA]">
             {["Building Name", "Address", "Total Flats", "Occupied", "Vacant", "Monthly Fund", "Actions"].map(h => (
               <th key={h} className="text-left p-3 font-semibold text-foreground text-[11px] uppercase tracking-wide">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {buildings.map((b, i) => (
-              <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC]">
+              <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA]">
                 <td className="p-3 text-foreground text-xs font-medium">{b.name}</td>
                 <td className="p-3 text-muted-foreground text-xs">{b.address}</td>
                 <td className="p-3 text-foreground text-xs">{b.totalFlats}</td>
@@ -548,14 +548,14 @@ const FlatsContent = () => {
       <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {["Flat No.", "Building", "Floor", "Size (sqft)", "Service Charge", "Status", "Current Tenant", "Actions"].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-[11px] uppercase tracking-wide">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {filtered.map((f, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC]">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA]">
                   <td className="p-3 text-foreground text-xs font-medium">{f.flat}</td>
                   <td className="p-3 text-muted-foreground text-xs">{f.building}</td>
                   <td className="p-3 text-muted-foreground text-xs">{f.floor}</td>
@@ -591,14 +591,14 @@ const FlatOwnerContent = () => (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead><tr className="bg-[#F8FAFC]">
+          <thead><tr className="bg-[#F8F9FA]">
             {["Owner Name", "Phone Number", "Flat No.", "Building", "Ownership Since", "Tenant Living", "Status", "Actions"].map(h => (
               <th key={h} className="text-left p-3 font-semibold text-foreground text-[11px] uppercase tracking-wide">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {flatOwners.map((o, i) => (
-              <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC]">
+              <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA]">
                 <td className="p-3 text-foreground text-xs font-medium">{o.name}</td>
                 <td className="p-3 text-muted-foreground text-xs">{o.phone}</td>
                 <td className="p-3 text-foreground text-xs">{o.flat}</td>
@@ -632,14 +632,14 @@ const TenantsContent = ({ onSelectTenant }: { onSelectTenant: (t: typeof tenants
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead><tr className="bg-[#F8FAFC]">
+          <thead><tr className="bg-[#F8F9FA]">
             {["Name", "Flat No.", "Building", "Phone Number", "Move-in Date", "Service Charge", "Status", "Actions"].map(h => (
               <th key={h} className="text-left p-3 font-semibold text-foreground text-[11px] uppercase tracking-wide">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {tenantsList.map((tt, i) => (
-              <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC]">
+              <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA]">
                 <td className="p-3 text-foreground text-xs font-medium">{tt.name}</td>
                 <td className="p-3 text-muted-foreground text-xs">{tt.flat}</td>
                 <td className="p-3 text-muted-foreground text-xs">{tt.building}</td>
@@ -685,14 +685,14 @@ const PaymentStatusContent = () => {
       <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {["Tenant", "Flat", "Building", "Amount", "Month", "Payment Date", "Method", "Status", "Actions"].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-[11px] uppercase tracking-wide">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {filtered.map((p, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC]">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA]">
                   <td className="p-3 text-foreground text-xs font-medium">{p.tenant}</td>
                   <td className="p-3 text-muted-foreground text-xs">{p.flat}</td>
                   <td className="p-3 text-muted-foreground text-xs">{p.building}</td>
@@ -743,14 +743,14 @@ const ExpensesContent = () => {
       <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F8FAFC]">
+            <thead><tr className="bg-[#F8F9FA]">
               {["Date", "Description", "Amount", "Category", "Building", "Added By"].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-foreground text-[11px] uppercase tracking-wide">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {filtered.map((e, i) => (
-                <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC]">
+                <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA]">
                   <td className="p-3 text-muted-foreground text-xs">{e.date}</td>
                   <td className="p-3 text-foreground text-xs font-medium">{e.desc}</td>
                   <td className="p-3 text-foreground text-xs font-medium">BDT {e.amount.toLocaleString()}</td>
@@ -762,7 +762,7 @@ const ExpensesContent = () => {
             </tbody>
           </table>
         </div>
-        <div className="p-4 border-t border-[#F1F5F9] flex justify-end">
+        <div className="p-4 border-t border-[#F1F3F5] flex justify-end">
           <span className="text-sm font-bold text-foreground">Total: BDT {total.toLocaleString()}</span>
         </div>
       </div>
@@ -789,14 +789,14 @@ const AccountPayableContent = () => (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead><tr className="bg-[#F8FAFC]">
+          <thead><tr className="bg-[#F8F9FA]">
             {["Date", "Description", "Amount", "Pay To", "Status", "Actions"].map(h => (
               <th key={h} className="text-left p-3 font-semibold text-foreground text-[11px] uppercase tracking-wide">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {accountPayableData.map((a, i) => (
-              <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC]">
+              <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA]">
                 <td className="p-3 text-muted-foreground text-xs">{a.date}</td>
                 <td className="p-3 text-foreground text-xs font-medium">{a.description}</td>
                 <td className="p-3 text-foreground text-xs font-medium">BDT {a.amount.toLocaleString()}</td>
@@ -839,14 +839,14 @@ const AccountReceivableContent = () => (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead><tr className="bg-[#F8FAFC]">
+          <thead><tr className="bg-[#F8F9FA]">
             {["Tenant", "Flat", "Building", "Type", "Amount", "Due Date", "Days Overdue", "Status", "Actions"].map(h => (
               <th key={h} className="text-left p-3 font-semibold text-foreground text-[11px] uppercase tracking-wide">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {accountReceivableData.map((a, i) => (
-              <tr key={i} className="border-t border-[#F1F5F9] hover:bg-[#F8FAFC]">
+              <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA]">
                 <td className="p-3 text-foreground text-xs font-medium">{a.tenant}</td>
                 <td className="p-3 text-muted-foreground text-xs">{a.flat}</td>
                 <td className="p-3 text-muted-foreground text-xs">{a.building}</td>
@@ -934,7 +934,7 @@ const SettingsContent = () => (
       ].map((label, i) => (
         <label key={i} className="flex items-center justify-between">
           <span className="text-xs text-foreground">{label}</span>
-          <input type="checkbox" defaultChecked={i < 3} className="w-4 h-4 rounded border-input text-primary accent-[#9B0000]" />
+          <input type="checkbox" defaultChecked={i < 3} className="w-4 h-4 rounded border-input text-primary accent-[#3B5BDB]" />
         </label>
       ))}
     </div>
