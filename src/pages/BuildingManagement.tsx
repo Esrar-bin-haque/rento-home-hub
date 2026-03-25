@@ -426,25 +426,18 @@ const DashboardContent = () => {
   const [editChargeValue, setEditChargeValue] = useState("48000");
   const [payablePanel, setPayablePanel] = useState(false);
   const [cashPanel, setCashPanel] = useState(false);
-  const [selectedPeriod, setSelectedPeriod] = useState(6);
-  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState("Mar");
   const [showMonthlyInvoice, setShowMonthlyInvoice] = useState(false);
   const [showFullInvoice, setShowFullInvoice] = useState(false);
 
-  const periods = [2, 3, 4, 5, 6, 9, 12];
-  const visibleMonths = allMonths.slice(-Math.min(selectedPeriod, allMonths.length));
+  const md = monthlyData[selectedMonth];
+  const isFutureMonth = md.service_charge === 0 && md.collected === 0;
 
-  const chartData = selectedMonth
-    ? [{ month: selectedMonth, ...monthlyData[selectedMonth] }]
-    : visibleMonths.map(m => ({ month: m, ...monthlyData[m] }));
+  const collectionRate = md.service_charge > 0 ? Math.round((md.collected / md.service_charge) * 100) : 0;
 
-  const incomeExpenseChartData = selectedMonth
-    ? [{ month: selectedMonth, income: monthlyData[selectedMonth].income, expense: monthlyData[selectedMonth].expense, payable: monthlyData[selectedMonth].payable }]
-    : visibleMonths.map(m => ({ month: m, income: monthlyData[m].income, expense: monthlyData[m].expense, payable: monthlyData[m].payable }));
-
-  const collected = 34500;
-  const totalExpense = 27800;
-  const cashInHand = collected - totalExpense;
+  // Chart data: show only selected month as single bar
+  const chartData = [{ month: selectedMonth, collected: md.collected, notCollected: md.notCollected }];
+  const incomeExpenseChartData = [{ month: selectedMonth, income: md.income, expense: md.expense, payable: md.payable }];
 
   return (
     <div className="space-y-5">
@@ -453,38 +446,23 @@ const DashboardContent = () => {
         <p className="text-sm" style={{ color: '#868E96' }}>Building management overview</p>
       </div>
 
-      {/* Time Filter Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}>
-        <div className="flex flex-wrap gap-2">
-          {periods.map(p => (
-            <button
-              key={p}
-              onClick={() => { setSelectedPeriod(p); setSelectedMonth(null); }}
-              className="px-3.5 py-1.5 rounded-md text-[13px] font-medium transition-colors"
-              style={{
-                background: selectedPeriod === p && !selectedMonth ? '#3B5BDB' : '#F1F3F5',
-                color: selectedPeriod === p && !selectedMonth ? '#FFFFFF' : '#495057',
-                border: selectedPeriod === p && !selectedMonth ? 'none' : '1px solid #DEE2E6',
-              }}
-            >
-              {p} Months
-            </button>
-          ))}
-        </div>
-        <div className="flex items-center gap-2">
-          {selectedMonth && (
-            <button onClick={() => setSelectedMonth(null)} className="text-xs text-[#E03131] hover:underline">✕ Clear Month Filter</button>
-          )}
-          <div className="flex gap-1">
-            {visibleMonths.map(m => (
+      {/* Month Toggle Bar */}
+      <div className="bg-white rounded-xl p-3 shadow-sm" style={{ border: '1px solid #DEE2E6' }}>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-xs font-medium flex-shrink-0" style={{ color: '#868E96' }}>Filter by Month:</span>
+          <div className="flex flex-wrap gap-2">
+            {allMonths.map(m => (
               <button
                 key={m}
                 onClick={() => setSelectedMonth(m)}
-                className="px-3 py-1 rounded-full text-[12px] font-medium transition-colors"
+                className="px-4 py-[7px] rounded-full text-[13px] font-medium transition-all duration-150 ease-in-out"
                 style={{
                   background: selectedMonth === m ? '#3B5BDB' : '#F1F3F5',
                   color: selectedMonth === m ? '#FFFFFF' : '#495057',
+                  border: selectedMonth === m ? '1px solid #3B5BDB' : '1px solid #DEE2E6',
                 }}
+                onMouseEnter={e => { if (selectedMonth !== m) { e.currentTarget.style.background = '#E9ECEF'; e.currentTarget.style.borderColor = '#CED4DA'; } }}
+                onMouseLeave={e => { if (selectedMonth !== m) { e.currentTarget.style.background = '#F1F3F5'; e.currentTarget.style.borderColor = '#DEE2E6'; } }}
               >
                 {m}
               </button>
@@ -492,6 +470,13 @@ const DashboardContent = () => {
           </div>
         </div>
       </div>
+
+      {/* Future month empty state note */}
+      {isFutureMonth && (
+        <div className="text-center py-2">
+          <span className="text-xs" style={{ color: '#868E96' }}>No data available for this month yet.</span>
+        </div>
+      )}
 
       {/* 6 Stat Cards — 3+3 grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -504,8 +489,8 @@ const DashboardContent = () => {
               <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#EDF2FF' }}><Receipt className="h-4 w-4" style={{ color: '#3B5BDB' }} /></div>
             </div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>BDT {serviceChargeTotal.toLocaleString()}</p>
-          <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>This month's total</p>
+          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${(md.service_charge || serviceChargeTotal).toLocaleString()}`}</p>
+          <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{selectedMonth} 2026</p>
           {editingCharge && (
             <div className="absolute inset-0 bg-white rounded-xl p-4 z-10 flex flex-col gap-2" style={{ border: '2px solid #3B5BDB' }}>
               <label className="text-xs font-medium" style={{ color: '#1A1D23' }}>Enter total monthly service charge</label>
@@ -524,8 +509,8 @@ const DashboardContent = () => {
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Collected</span>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#EBFBEE' }}><CheckCircle2 className="h-4 w-4" style={{ color: '#2F9E44' }} /></div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>BDT 34,500</p>
-          <p className="text-[11px] mt-0.5" style={{ color: '#2F9E44' }}>72% collection rate</p>
+          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.collected.toLocaleString()}`}</p>
+          <p className="text-[11px] mt-0.5" style={{ color: '#2F9E44' }}>{isFutureMonth ? "—" : `${collectionRate}% collection rate`}</p>
         </div>
 
         {/* Card 3: Account Receivable */}
@@ -534,12 +519,14 @@ const DashboardContent = () => {
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Account Receivable</span>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF5F5' }}><ArrowDownCircle className="h-4 w-4" style={{ color: '#E03131' }} /></div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>BDT 13,500</p>
-          <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>3 flats pending</p>
-          <div className="mt-1 space-y-0.5">
-            <p className="text-[10px]" style={{ color: '#E67700' }}>1 month overdue: 2 flats</p>
-            <p className="text-[10px]" style={{ color: '#E03131' }}>2+ months overdue: 1 flat</p>
-          </div>
+          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.receivable.toLocaleString()}`}</p>
+          <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "3 flats pending"}</p>
+          {!isFutureMonth && (
+            <div className="mt-1 space-y-0.5">
+              <p className="text-[10px]" style={{ color: '#E67700' }}>1 month overdue: 2 flats</p>
+              <p className="text-[10px]" style={{ color: '#E03131' }}>2+ months overdue: 1 flat</p>
+            </div>
+          )}
         </div>
 
         {/* Card 4: Total Expense */}
@@ -548,8 +535,8 @@ const DashboardContent = () => {
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Expense</span>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF9DB' }}><TrendingDown className="h-4 w-4" style={{ color: '#E67700' }} /></div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>BDT 27,800</p>
-          <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>6 expense entries</p>
+          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.expense.toLocaleString()}`}</p>
+          <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "6 expense entries"}</p>
         </div>
 
         {/* Card 5: Account Payable */}
@@ -561,8 +548,8 @@ const DashboardContent = () => {
               <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#F8F0FC' }}><ArrowUpCircle className="h-4 w-4" style={{ color: '#7048E8' }} /></div>
             </div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>BDT 8,200</p>
-          <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>Association owes</p>
+          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.payable.toLocaleString()}`}</p>
+          <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "Association owes"}</p>
         </div>
 
         {/* Card 6: Cash In Hand */}
@@ -574,8 +561,8 @@ const DashboardContent = () => {
               <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#E6FCF5' }}><Wallet className="h-4 w-4" style={{ color: '#0CA678' }} /></div>
             </div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>BDT {cashInHand.toLocaleString()}</p>
-          <p className="text-[10px] mt-0.5" style={{ color: '#868E96' }}>= Collected − Expense</p>
+          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.cash_in_hand.toLocaleString()}`}</p>
+          <p className="text-[10px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "= Collected − Expense"}</p>
         </div>
       </div>
 
