@@ -15,16 +15,22 @@ import { toast } from "sonner";
 
 // ─── Mock Data ──────────────────────────────────────────
 
-const monthlyData: Record<string, { collected: number; notCollected: number; income: number; expense: number; payable: number }> = {
-  Oct: { collected: 42000, notCollected: 6000, income: 42000, expense: 25000, payable: 3000 },
-  Nov: { collected: 44000, notCollected: 4000, income: 44000, expense: 27000, payable: 2000 },
-  Dec: { collected: 40000, notCollected: 8000, income: 40000, expense: 30000, payable: 5000 },
-  Jan: { collected: 45000, notCollected: 3000, income: 45000, expense: 24000, payable: 1000 },
-  Feb: { collected: 43000, notCollected: 5000, income: 43000, expense: 26000, payable: 4000 },
-  Mar: { collected: 34500, notCollected: 13500, income: 34500, expense: 27800, payable: 8200 },
-};
+const allMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-const allMonths = ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
+const monthlyData: Record<string, { service_charge: number; collected: number; receivable: number; expense: number; payable: number; cash_in_hand: number; notCollected: number; income: number }> = {
+  Jan: { service_charge: 48000, collected: 41000, receivable: 7000, expense: 24000, payable: 5000, cash_in_hand: 17000, notCollected: 7000, income: 41000 },
+  Feb: { service_charge: 48000, collected: 43000, receivable: 5000, expense: 26000, payable: 3000, cash_in_hand: 17000, notCollected: 5000, income: 43000 },
+  Mar: { service_charge: 48000, collected: 34500, receivable: 13500, expense: 27800, payable: 8200, cash_in_hand: 6700, notCollected: 13500, income: 34500 },
+  Apr: { service_charge: 0, collected: 0, receivable: 0, expense: 0, payable: 0, cash_in_hand: 0, notCollected: 0, income: 0 },
+  May: { service_charge: 0, collected: 0, receivable: 0, expense: 0, payable: 0, cash_in_hand: 0, notCollected: 0, income: 0 },
+  Jun: { service_charge: 0, collected: 0, receivable: 0, expense: 0, payable: 0, cash_in_hand: 0, notCollected: 0, income: 0 },
+  Jul: { service_charge: 0, collected: 0, receivable: 0, expense: 0, payable: 0, cash_in_hand: 0, notCollected: 0, income: 0 },
+  Aug: { service_charge: 0, collected: 0, receivable: 0, expense: 0, payable: 0, cash_in_hand: 0, notCollected: 0, income: 0 },
+  Sep: { service_charge: 0, collected: 0, receivable: 0, expense: 0, payable: 0, cash_in_hand: 0, notCollected: 0, income: 0 },
+  Oct: { service_charge: 0, collected: 0, receivable: 0, expense: 0, payable: 0, cash_in_hand: 0, notCollected: 0, income: 0 },
+  Nov: { service_charge: 0, collected: 0, receivable: 0, expense: 0, payable: 0, cash_in_hand: 0, notCollected: 0, income: 0 },
+  Dec: { service_charge: 0, collected: 0, receivable: 0, expense: 0, payable: 0, cash_in_hand: 0, notCollected: 0, income: 0 },
+};
 
 const expensePieData = [
   { name: "Cleaning", value: 5000, color: "#1098AD" },
