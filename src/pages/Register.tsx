@@ -6,9 +6,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import rentoLogo from "@/assets/rento-logo.png";
 
 const roles = [
-  { value: "owner" as const, labelKey: "auth.propertyOwner" },
-  { value: "manager" as const, labelKey: "auth.buildingManager" },
-  { value: "tenant" as const, labelKey: "auth.tenant" },
+  { value: "owner" as const, labelKey: "register_role_owner" },
+  { value: "manager" as const, labelKey: "register_role_manager" },
+  { value: "tenant" as const, labelKey: "register_role_tenant" },
 ];
 
 const Register = () => {
@@ -25,10 +25,10 @@ const Register = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) { setError(t("auth.nameRequired")); return; }
-    if (!/^01\d{9}$/.test(phone)) { setError(t("auth.invalidPhone")); return; }
-    if (password.length < 6) { setError(t("auth.passwordMin")); return; }
-    if (password !== confirmPw) { setError(t("auth.passwordMismatch")); return; }
+    if (!name.trim()) { setError(t("register_name_required")); return; }
+    if (!/^01\d{9}$/.test(phone)) { setError(t("login_invalid_phone")); return; }
+    if (password.length < 6) { setError(t("register_password_min")); return; }
+    if (password !== confirmPw) { setError(t("register_password_mismatch")); return; }
     register(name, phone, role, password);
     navigate("/");
   };
@@ -41,27 +41,27 @@ const Register = () => {
             <img src={rentoLogo} alt="Rento" className="h-10 w-10 rounded-lg object-cover" />
             <span className="text-2xl font-heading font-bold text-foreground">Rento</span>
           </Link>
-          <h1 className="text-xl font-heading font-bold text-foreground">{t("auth.createAccount")}</h1>
-          <p className="text-sm text-muted-foreground">{t("auth.registerSubtitle")}</p>
+          <h1 className="text-xl font-heading font-bold text-foreground">{t("register_title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("register_sub")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-sm font-medium text-foreground mb-1.5 block">{t("auth.fullName")}</label>
+            <label className="text-sm font-medium text-foreground mb-1.5 block">{t("register_name")}</label>
             <input type="text" value={name} onChange={(e) => { setName(e.target.value); setError(""); }}
               className="w-full h-10 rounded-lg border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring" />
           </div>
           <div>
-            <label className="text-sm font-medium text-foreground mb-1.5 block">{t("auth.phoneNumber")}</label>
+            <label className="text-sm font-medium text-foreground mb-1.5 block">{t("login_phone_label")}</label>
             <div className="flex">
               <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-input bg-muted text-sm text-muted-foreground">+880</span>
-              <input type="tel" placeholder="01XXXXXXXXX" value={phone}
+              <input type="tel" placeholder={t("login_phone_placeholder")} value={phone}
                 onChange={(e) => { setPhone(e.target.value); setError(""); }}
                 className="flex-1 h-10 rounded-r-lg border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring" />
             </div>
           </div>
           <div>
-            <label className="text-sm font-medium text-foreground mb-1.5 block">{t("auth.selectRole")}</label>
+            <label className="text-sm font-medium text-foreground mb-1.5 block">{t("register_role")}</label>
             <div className="grid grid-cols-3 gap-2">
               {roles.map((r) => (
                 <button key={r.value} type="button" onClick={() => setRole(r.value)}
@@ -74,7 +74,7 @@ const Register = () => {
             </div>
           </div>
           <div>
-            <label className="text-sm font-medium text-foreground mb-1.5 block">{t("auth.password")}</label>
+            <label className="text-sm font-medium text-foreground mb-1.5 block">{t("register_password")}</label>
             <div className="relative">
               <input type={showPw ? "text" : "password"} value={password}
                 onChange={(e) => { setPassword(e.target.value); setError(""); }}
@@ -85,18 +85,18 @@ const Register = () => {
             </div>
           </div>
           <div>
-            <label className="text-sm font-medium text-foreground mb-1.5 block">{t("auth.confirmPassword")}</label>
+            <label className="text-sm font-medium text-foreground mb-1.5 block">{t("register_confirm")}</label>
             <input type="password" value={confirmPw} onChange={(e) => { setConfirmPw(e.target.value); setError(""); }}
               className="w-full h-10 rounded-lg border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring" />
           </div>
           {error && <p className="text-xs text-destructive">{error}</p>}
           <button type="submit" className="w-full h-10 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-colors text-sm">
-            {t("auth.createAccount")}
+            {t("register_btn")}
           </button>
         </form>
         <p className="text-center text-sm text-muted-foreground mt-5">
-          {t("auth.hasAccount")}{" "}
-          <Link to="/login" className="text-primary font-medium hover:underline">{t("nav.login")}</Link>
+          {t("register_have_account")}{" "}
+          <Link to="/login" className="text-primary font-medium hover:underline">{t("register_login_link")}</Link>
         </p>
       </div>
     </div>

@@ -18,11 +18,11 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   const navLinks = [
-    { label: t("nav.rentals"), to: "/rentals" },
-    { label: t("nav.building"), to: "/building-management" },
-    { label: t("nav.property"), to: "/management" },
-    { label: t("nav.services"), to: "/services" },
-    { label: t("nav.pricing"), to: "/#pricing" },
+    { label: t("nav_flat_listing"), to: "/rentals" },
+    { label: t("nav_building_management"), to: "/building-management" },
+    { label: t("nav_property_management"), to: "/management" },
+    { label: t("nav_services"), to: "/services" },
+    { label: t("nav_pricing"), to: "/#pricing" },
   ];
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const Navbar = () => {
             onMouseEnter={(e) => { (e.currentTarget).style.background = '#3B5BDB'; (e.currentTarget).style.color = '#FFFFFF'; }}
             onMouseLeave={(e) => { if (!isActive('/contact')) { (e.currentTarget).style.background = 'transparent'; (e.currentTarget).style.color = '#3B5BDB'; }}}
           >
-            {t("nav.contact")}
+            {t("nav_contact")}
           </Link>
         </div>
 
@@ -107,13 +107,13 @@ const Navbar = () => {
                     <p className="text-xs" style={{ color: '#868E96' }}>{user.phone}</p>
                   </div>
                   <Link to="/building-management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#1A1D23' }}>
-                    <LayoutDashboard className="h-4 w-4" /> {t("auth.dashboard")}
+                    <LayoutDashboard className="h-4 w-4" /> {t("auth_dashboard")}
                   </Link>
                   <Link to="/management" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#1A1D23' }}>
-                    <User className="h-4 w-4" /> {t("auth.myProfile")}
+                    <User className="h-4 w-4" /> {t("auth_my_profile")}
                   </Link>
                   <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors" style={{ color: '#E03131' }}>
-                    <LogOut className="h-4 w-4" /> {t("dash.logout")}
+                    <LogOut className="h-4 w-4" /> {t("sidebar_logout")}
                   </button>
                 </div>
               )}
@@ -121,10 +121,10 @@ const Navbar = () => {
           ) : (
             <>
               <Button variant="outline" className="rounded-lg text-sm" style={{ borderColor: '#DEE2E6', color: '#495057' }} onClick={() => navigate("/login")}>
-                {t("nav.login")}
+                {t("nav_login")}
               </Button>
               <Button className="rounded-lg text-sm shadow-sm" style={{ background: '#3B5BDB', color: '#FFFFFF' }} onClick={() => navigate("/register")}>
-                {t("nav.getStarted")}
+                {t("nav_get_started")}
               </Button>
             </>
           )}
@@ -162,14 +162,14 @@ const Navbar = () => {
               className="w-full text-center text-sm font-medium py-2 rounded-full transition-colors"
               style={{ border: '1.5px solid #3B5BDB', color: '#3B5BDB' }}
             >
-              {t("nav.contact")}
+              {t("nav_contact")}
             </Link>
             {user ? (
-              <Button variant="outline" className="w-full rounded-lg text-sm" onClick={handleLogout}>{t("dash.logout")}</Button>
+              <Button variant="outline" className="w-full rounded-lg text-sm" onClick={handleLogout}>{t("sidebar_logout")}</Button>
             ) : (
               <>
-                <Button variant="outline" className="w-full rounded-lg text-sm" onClick={() => navigate("/login")}>{t("nav.login")}</Button>
-                <Button className="w-full rounded-lg text-sm" style={{ background: '#3B5BDB', color: '#FFFFFF' }} onClick={() => navigate("/register")}>{t("nav.getStarted")}</Button>
+                <Button variant="outline" className="w-full rounded-lg text-sm" onClick={() => navigate("/login")}>{t("nav_login")}</Button>
+                <Button className="w-full rounded-lg text-sm" style={{ background: '#3B5BDB', color: '#FFFFFF' }} onClick={() => navigate("/register")}>{t("nav_get_started")}</Button>
               </>
             )}
           </div>

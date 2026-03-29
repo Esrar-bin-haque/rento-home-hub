@@ -17,8 +17,8 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!/^01\d{9}$/.test(phone)) { setError(t("auth.invalidPhone")); return; }
-    if (!password) { setError(t("auth.passwordRequired")); return; }
+    if (!/^01\d{9}$/.test(phone)) { setError(t("login_invalid_phone")); return; }
+    if (!password) { setError(t("login_password_required")); return; }
     login(phone, password);
     navigate("/");
   };
@@ -31,8 +31,8 @@ const Login = () => {
             <img src={rentoLogo} alt="Rento" className="h-10 w-10 rounded-lg object-cover" />
             <span className="text-2xl font-heading font-bold" style={{ color: '#1A1D23' }}>Rento</span>
           </Link>
-          <h1 className="text-xl font-heading font-bold" style={{ color: '#1A1D23' }}>{t("auth.welcomeBack")}</h1>
-          <p className="text-sm" style={{ color: '#868E96' }}>{t("auth.loginSubtitle")}</p>
+          <h1 className="text-xl font-heading font-bold" style={{ color: '#1A1D23' }}>{t("login_welcome")}</h1>
+          <p className="text-sm" style={{ color: '#868E96' }}>{t("login_sub")}</p>
         </div>
 
         <div className="flex rounded-lg p-1 mb-6" style={{ background: '#F1F3F5' }}>
@@ -43,17 +43,17 @@ const Login = () => {
                 background: tab === r ? '#3B5BDB' : 'transparent',
                 color: tab === r ? '#FFFFFF' : '#495057',
               }}>
-              {r === "owner" ? t("auth.ownerManager") : t("auth.tenant")}
+              {r === "owner" ? t("login_tab_owner") : t("login_tab_tenant")}
             </button>
           ))}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-sm font-medium mb-1.5 block" style={{ color: '#1A1D23' }}>{t("auth.phoneNumber")}</label>
+            <label className="text-sm font-medium mb-1.5 block" style={{ color: '#1A1D23' }}>{t("login_phone_label")}</label>
             <div className="flex">
               <span className="inline-flex items-center px-3 rounded-l-lg text-sm" style={{ border: '1px solid #DEE2E6', borderRight: 'none', background: '#F1F3F5', color: '#868E96' }}>+880</span>
-              <input type="tel" placeholder="01XXXXXXXXX" value={phone}
+              <input type="tel" placeholder={t("login_phone_placeholder")} value={phone}
                 onChange={(e) => { setPhone(e.target.value); setError(""); }}
                 className="flex-1 h-10 rounded-r-lg px-3 text-sm outline-none" style={{ border: '1px solid #DEE2E6' }}
                 onFocus={(e) => e.currentTarget.style.borderColor = '#3B5BDB'}
@@ -61,7 +61,7 @@ const Login = () => {
             </div>
           </div>
           <div>
-            <label className="text-sm font-medium mb-1.5 block" style={{ color: '#1A1D23' }}>{t("auth.password")}</label>
+            <label className="text-sm font-medium mb-1.5 block" style={{ color: '#1A1D23' }}>{t("login_password_label")}</label>
             <div className="relative">
               <input type={showPw ? "text" : "password"} value={password}
                 onChange={(e) => { setPassword(e.target.value); setError(""); }}
@@ -73,17 +73,17 @@ const Login = () => {
               </button>
             </div>
             <div className="flex justify-end mt-1.5">
-              <button type="button" className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>{t("auth.forgotPassword")}</button>
+              <button type="button" className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>{t("login_forgot")}</button>
             </div>
           </div>
           {error && <p className="text-xs" style={{ color: '#E03131' }}>{error}</p>}
           <button type="submit" className="w-full h-10 font-semibold rounded-lg transition-colors text-sm" style={{ background: '#3B5BDB', color: '#FFFFFF' }}>
-            {t("nav.login")}
+            {t("login_btn")}
           </button>
         </form>
         <p className="text-center text-sm mt-5" style={{ color: '#868E96' }}>
-          {t("auth.noAccount")}{" "}
-          <Link to="/register" className="font-medium hover:underline" style={{ color: '#3B5BDB' }}>{t("auth.register")}</Link>
+          {t("login_no_account")}{" "}
+          <Link to="/register" className="font-medium hover:underline" style={{ color: '#3B5BDB' }}>{t("login_register_link")}</Link>
         </p>
       </div>
     </div>
