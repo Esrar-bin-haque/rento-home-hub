@@ -15,7 +15,7 @@ const Footer = () => {
               <img src={rentoLogo} alt="Rento" className="h-9 w-9 rounded-lg object-cover" />
               <span className="text-xl font-heading font-bold" style={{ color: '#F8F9FA' }}>Rento</span>
             </div>
-            <p className="text-sm mb-6" style={{ color: '#ADB5BD' }}>{t("footer.tagline")}</p>
+            <p className="text-sm mb-6" style={{ color: '#ADB5BD' }}>{t("footer_tagline")}</p>
             <div className="flex gap-4">
               {[Facebook, Linkedin, Instagram].map((Icon, i) => (
                 <a key={i} href="#" className="transition-colors" style={{ color: '#868E96' }}
@@ -27,16 +27,16 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            <h4 className="font-heading font-semibold mb-4" style={{ color: '#F8F9FA' }}>{t("footer.quickLinks")}</h4>
+            <h4 className="font-heading font-semibold mb-4" style={{ color: '#F8F9FA' }}>{t("footer_links_title")}</h4>
             <ul className="space-y-2 text-sm" style={{ color: '#ADB5BD' }}>
               {[
-                [t("footer.home"), "/"],
-                [t("nav.rentals"), "/rentals"],
-                [t("nav.building"), "/building-management"],
-                [t("nav.property"), "/management"],
-                [t("nav.services"), "/services"],
-                [t("nav.pricing"), "/#pricing"],
-                [t("nav.contact"), "/contact"],
+                [t("footer_home"), "/"],
+                [t("nav_flat_listing"), "/rentals"],
+                [t("nav_building_management"), "/building-management"],
+                [t("nav_property_management"), "/management"],
+                [t("nav_services"), "/services"],
+                [t("nav_pricing"), "/#pricing"],
+                [t("nav_contact"), "/contact"],
               ].map(([label, to]) => (
                 <li key={to}>
                   <Link to={to} className="hover:text-white transition-colors">{label}</Link>
@@ -45,7 +45,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h4 className="font-heading font-semibold mb-4" style={{ color: '#F8F9FA' }}>{t("footer.contact")}</h4>
+            <h4 className="font-heading font-semibold mb-4" style={{ color: '#F8F9FA' }}>{t("footer_contact_title")}</h4>
             <ul className="space-y-2 text-sm" style={{ color: '#ADB5BD' }}>
               <li>contact@rento.com.bd</li>
               <li>Dhaka, Bangladesh</li>
@@ -54,10 +54,10 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-12 pt-8 flex flex-col md:flex-row justify-between text-xs" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', color: '#868E96' }}>
-          <span>{t("footer.rights")}</span>
+          <span>© 2026 Rento. {t("footer_rights")}</span>
           <div className="flex gap-4 mt-2 md:mt-0">
-            <a href="#" className="hover:text-white transition-colors">{t("footer.privacy")}</a>
-            <a href="#" className="hover:text-white transition-colors">{t("footer.terms")}</a>
+            <a href="#" className="hover:text-white transition-colors">{t("footer_privacy")}</a>
+            <a href="#" className="hover:text-white transition-colors">{t("footer_terms")}</a>
           </div>
         </div>
       </div>

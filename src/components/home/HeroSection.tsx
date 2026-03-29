@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const HeroSection = () => {
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
 
   const stats = [
-    { value: t("hero.statValue1"), label: t("hero.stat1") },
-    { value: t("hero.statValue2"), label: t("hero.stat2") },
-    { value: t("hero.statValue3"), label: t("hero.stat3") },
+    { label: t("hero_stat_1") },
+    { label: t("hero_stat_2") },
+    { label: t("hero_stat_3") },
   ];
 
   return (
@@ -18,28 +18,25 @@ const HeroSection = () => {
         <div className="max-w-3xl mx-auto text-center">
           <div className="animate-fade-in-up">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6">
-              <span style={{ color: '#1A1D23' }}>{t("hero.title1")}</span>
+              <span style={{ color: '#1A1D23' }}>{t("hero_headline_1")}</span>
               <br />
-              <span style={{ color: '#3B5BDB' }}>{t("hero.title2")}</span>
+              <span style={{ color: '#3B5BDB' }}>{t("hero_headline_2")}</span>
             </h1>
             <p className="text-lg mb-8 max-w-xl mx-auto" style={{ color: '#495057' }}>
-              {t("hero.subtitle")}
+              {t("hero_sub")}
             </p>
             <div className="flex flex-wrap justify-center gap-4 mb-12">
               <Button asChild className="rounded-lg px-6 py-3 text-base shadow-sm" style={{ background: '#3B5BDB', color: '#FFFFFF' }}>
-                <Link to="/rentals"><Search className="mr-2 h-4 w-4" />{t("hero.exploreRentals")}</Link>
+                <Link to="/rentals"><Search className="mr-2 h-4 w-4" />{t("hero_btn_explore")}</Link>
               </Button>
               <Button variant="outline" asChild className="rounded-lg px-6 py-3 text-base" style={{ borderColor: '#DEE2E6', color: '#495057' }}>
-                <a href="#how-it-works">{t("hero.howItWorks")}</a>
+                <a href="#how-it-works">{t("hero_btn_how")}</a>
               </Button>
             </div>
             <div className="flex flex-wrap justify-center gap-8">
               {stats.map((s) => (
                 <div key={s.label} className="text-center px-4 py-2 rounded-full" style={{ background: '#F1F3F5', border: '1px solid #DEE2E6' }}>
-                  <span className="text-xl md:text-2xl font-heading font-bold" style={{ color: '#1A1D23' }}>
-                    {s.value}
-                  </span>
-                  <p className="text-xs mt-0.5" style={{ color: '#868E96' }}>{s.label}</p>
+                  <p className="text-sm font-medium" style={{ color: '#1A1D23' }}>{s.label}</p>
                 </div>
               ))}
             </div>
