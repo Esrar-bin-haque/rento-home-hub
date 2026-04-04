@@ -258,9 +258,17 @@ const sidebarItems: { icon: typeof BarChart3; key: SidebarKey; label: string }[]
 const SlidePanel = ({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: React.ReactNode }) => {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex justify-end" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-end md:justify-end" onClick={onClose}>
       <div className="absolute inset-0 bg-black/30" />
-      <div className="relative w-full max-w-[420px] bg-white h-full shadow-xl overflow-y-auto" onClick={e => e.stopPropagation()}>
+      {/* Desktop: slide from right. Mobile: slide from bottom, full width */}
+      <div
+        className="relative w-full bg-white shadow-xl overflow-y-auto md:max-w-[420px] md:h-full md:rounded-none max-h-[85vh] rounded-t-2xl md:max-h-full self-end md:self-stretch"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Mobile drag indicator */}
+        <div className="md:hidden flex justify-center pt-2 pb-1">
+          <div className="w-10 h-1 rounded-full bg-[#DEE2E6]" />
+        </div>
         <div className="p-5 border-b border-[#F1F3F5] flex items-center justify-between sticky top-0 bg-white z-10">
           <h2 className="font-heading font-bold text-[#1A1D23] text-sm">{title}</h2>
           <button onClick={onClose} className="p-1 hover:bg-[#F1F3F5] rounded-lg"><X className="h-4 w-4" /></button>
