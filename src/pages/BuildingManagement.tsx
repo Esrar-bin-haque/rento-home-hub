@@ -625,11 +625,11 @@ const DashboardContent = () => {
       </div>
 
       {/* Chart Row 1: 60/40 */}
-      <div className="grid lg:grid-cols-5 gap-5">
-        <div className="lg:col-span-3 bg-white rounded-2xl shadow-sm p-5" style={{ border: '1px solid #DEE2E6' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+        <div className="lg:col-span-3 bg-white rounded-2xl shadow-sm p-4 md:p-5" style={{ border: '1px solid #DEE2E6' }}>
           <h3 className="font-heading font-semibold text-sm" style={{ color: '#1A1D23' }}>Service Charge Collection Trend</h3>
           <p className="text-[11px] mb-4" style={{ color: '#868E96' }}>Monthly collected vs uncollected</p>
-          <ResponsiveContainer width="100%" height={260}>
+          <ResponsiveContainer width="100%" height={200}>
             <BarChart data={chartData} barGap={4}>
               <CartesianGrid strokeDasharray="3 3" stroke="#F1F3F5" />
               <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#ADB5BD" }} axisLine={false} tickLine={false} />
