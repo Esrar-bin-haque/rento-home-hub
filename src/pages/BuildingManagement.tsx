@@ -521,7 +521,7 @@ const DashboardContent = () => {
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Collected</span>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#EBFBEE' }}><CheckCircle2 className="h-4 w-4" style={{ color: '#2F9E44' }} /></div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.collected.toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.collected.toLocaleString()}`}</p>
           <p className="text-[11px] mt-0.5" style={{ color: '#2F9E44' }}>{isFutureMonth ? "—" : `${collectionRate}% collection rate`}</p>
         </div>
 
