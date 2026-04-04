@@ -85,9 +85,68 @@ const Rentals = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <aside className="lg:w-[260px] flex-shrink-0">
+      <div className="container mx-auto px-3 md:px-4 py-6 md:py-8">
+        {/* Mobile filter toggle */}
+        <button
+          onClick={() => setShowFilters(true)}
+          className="lg:hidden w-full flex items-center justify-center gap-2 mb-4 py-3 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+        >
+          <Search className="h-4 w-4" /> {t("rentals.filterResults")}
+        </button>
+
+        {/* Mobile filter bottom sheet */}
+        {showFilters && (
+          <div className="fixed inset-0 z-50 lg:hidden" onClick={() => setShowFilters(false)}>
+            <div className="absolute inset-0 bg-black/30" />
+            <div
+              className="absolute bottom-0 left-0 right-0 bg-card rounded-t-2xl max-h-[80vh] overflow-y-auto"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex justify-center pt-2 pb-1">
+                <div className="w-10 h-1 rounded-full bg-border" />
+              </div>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-heading font-semibold text-foreground">{t("rentals.filterResults")}</h3>
+                  <button onClick={() => setShowFilters(false)} className="p-1"><X className="h-5 w-5" /></button>
+                </div>
+                <div className="space-y-5 text-sm">
+                  <div>
+                    <p className="font-medium text-foreground mb-2">{t("rentals.city")}</p>
+                    {Object.keys(cityAreas).map(c => (
+                      <label key={c} className="flex items-center gap-2 py-1 text-muted-foreground cursor-pointer">
+                        <input type="radio" name="city" checked={c === city} onChange={() => handleCityChange(c)} className="accent-primary" /> {c}
+                      </label>
+                    ))}
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground mb-2">{t("rentals.area")}</p>
+                    <select className="w-full text-sm border border-border rounded-button px-3 py-2 bg-card text-foreground outline-none" value={area} onChange={e => { setArea(e.target.value); setPage(1); }}>
+                      <option value="">{t("rentals.allAreas")}</option>
+                      {areas.map(a => <option key={a} value={a}>{a}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground mb-2">{t("rentals.bedrooms")}</p>
+                    <div className="flex gap-2">
+                      {["1", "2", "3", "4+"].map(b => (
+                        <button key={b} className="px-3 py-1.5 rounded-button border border-border text-muted-foreground hover:border-primary hover:text-primary transition-colors text-xs">{b}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="sticky bottom-0 bg-card pt-3 pb-2 flex gap-3">
+                    <Button className="flex-1 rounded-button bg-primary text-primary-foreground text-sm h-11" onClick={() => setShowFilters(false)}>{t("rentals.applyFilters")}</Button>
+                    <button className="text-sm text-muted-foreground hover:text-primary" onClick={() => { setArea(""); setPage(1); setShowFilters(false); }}>{t("rentals.reset")}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          {/* Desktop sidebar */}
+          <aside className="hidden lg:block lg:w-[260px] flex-shrink-0">
             <div className="bg-card rounded-card card-shadow p-5 border border-border sticky top-24">
               <h3 className="font-heading font-semibold text-foreground mb-4">{t("rentals.filterResults")}</h3>
               <div className="space-y-5 text-sm">
