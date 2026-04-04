@@ -542,30 +542,30 @@ const DashboardContent = () => {
         </div>
 
         {/* Card 4: Total Expense */}
-        <div className="bg-white rounded-xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(230,119,0,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(230,119,0,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Expense</span>
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF9DB' }}><TrendingDown className="h-4 w-4" style={{ color: '#E67700' }} /></div>
+            <div className="w-7 h-7 md:w-8 md:h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF9DB' }}><TrendingDown className="h-4 w-4" style={{ color: '#E67700' }} /></div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.expense.toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.expense.toLocaleString()}`}</p>
           <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "6 expense entries"}</p>
         </div>
 
         {/* Card 5: Account Payable */}
-        <div className="bg-white rounded-xl p-4 shadow-sm relative" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(112,72,232,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm relative" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(112,72,232,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Account Payable</span>
             <div className="flex items-center gap-1">
               <button onClick={() => setPayablePanel(true)} className="p-1 hover:bg-[#F1F3F5] rounded"><Eye className="h-3 w-3" style={{ color: '#868E96' }} /></button>
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#F8F0FC' }}><ArrowUpCircle className="h-4 w-4" style={{ color: '#7048E8' }} /></div>
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-xl flex items-center justify-center" style={{ background: '#F8F0FC' }}><ArrowUpCircle className="h-4 w-4" style={{ color: '#7048E8' }} /></div>
             </div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.payable.toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.payable.toLocaleString()}`}</p>
           <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "Association owes"}</p>
         </div>
 
         {/* Card 6: Cash In Hand */}
-        <div className="bg-white rounded-xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(12,166,120,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(12,166,120,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Cash In Hand</span>
             <div className="flex items-center gap-1">
