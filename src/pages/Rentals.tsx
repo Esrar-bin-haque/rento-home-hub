@@ -255,9 +255,9 @@ const Rentals = () => {
               </div>
             )}
           </div>
+          </div>
         </div>
       </div>
-      
     </div>
   );
 };
