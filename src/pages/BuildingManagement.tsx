@@ -501,7 +501,7 @@ const DashboardContent = () => {
               <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#EDF2FF' }}><Receipt className="h-4 w-4" style={{ color: '#3B5BDB' }} /></div>
             </div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${(md.service_charge || serviceChargeTotal).toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${(md.service_charge || serviceChargeTotal).toLocaleString()}`}</p>
           <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{selectedMonth} 2026</p>
           {editingCharge && (
             <div className="absolute inset-0 bg-white rounded-xl p-4 z-10 flex flex-col gap-2" style={{ border: '2px solid #3B5BDB' }}>
