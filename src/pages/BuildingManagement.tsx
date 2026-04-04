@@ -531,7 +531,7 @@ const DashboardContent = () => {
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Account Receivable</span>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF5F5' }}><ArrowDownCircle className="h-4 w-4" style={{ color: '#E03131' }} /></div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.receivable.toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.receivable.toLocaleString()}`}</p>
           <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "3 flats pending"}</p>
           {!isFutureMonth && (
             <div className="mt-1 space-y-0.5">
