@@ -526,7 +526,7 @@ const DashboardContent = () => {
         </div>
 
         {/* Card 3: Account Receivable */}
-        <div className="bg-white rounded-xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(224,49,49,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(224,49,49,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Account Receivable</span>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF5F5' }}><ArrowDownCircle className="h-4 w-4" style={{ color: '#E03131' }} /></div>
