@@ -516,7 +516,7 @@ const DashboardContent = () => {
         </div>
 
         {/* Card 2: Total Collected */}
-        <div className="bg-white rounded-xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(47,158,68,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(47,158,68,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Collected</span>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#EBFBEE' }}><CheckCircle2 className="h-4 w-4" style={{ color: '#2F9E44' }} /></div>
