@@ -81,7 +81,6 @@ const Rentals = () => {
               <Search className="h-4 w-4 mr-2 md:mr-0" /><span className="md:hidden">Search</span>
             </Button>
           </div>
-          </div>
         </div>
       </div>
 
