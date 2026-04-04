@@ -689,7 +689,7 @@ const DashboardContent = () => {
           <button className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>View All</button>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-xs md:text-sm" style={{ minWidth: '500px' }}>
             <thead><tr style={{ background: '#F8F9FA' }}>
               {["Resident Name", "Flat Number", "Amount", "Method", "Status"].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#495057' }}>{h}</th>
