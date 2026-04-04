@@ -641,9 +641,9 @@ const DashboardContent = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm p-5" style={{ border: '1px solid #DEE2E6' }}>
+        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm p-4 md:p-5" style={{ border: '1px solid #DEE2E6' }}>
           <h3 className="font-heading font-semibold text-sm mb-4" style={{ color: '#1A1D23' }}>Expense Breakdown</h3>
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie data={expensePieData} cx="50%" cy="50%" innerRadius={70} outerRadius={110} dataKey="value" paddingAngle={2}>
                 {expensePieData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
