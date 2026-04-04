@@ -47,36 +47,39 @@ const Rentals = () => {
     });
   }, [city, area]);
 
+  const [showFilters, setShowFilters] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
       <div className="pt-6 pb-6 bg-card border-b border-border">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col sm:flex-row items-stretch bg-card rounded-full border border-border card-shadow overflow-hidden max-w-4xl mx-auto">
-            <div className="flex-1 px-5 py-3 border-b sm:border-b-0 sm:border-r border-border">
+        <div className="container mx-auto px-3 md:px-4">
+          <div className="flex flex-col gap-2 md:flex-row md:items-stretch bg-card rounded-2xl md:rounded-full border border-border card-shadow overflow-hidden max-w-4xl mx-auto">
+            <div className="flex-1 px-4 md:px-5 py-3 border-b md:border-b-0 md:border-r border-border">
               <p className="text-[10px] font-medium text-muted-foreground uppercase">{t("rentals.city")}</p>
               <select className="text-sm font-medium bg-transparent outline-none w-full text-foreground" value={city} onChange={e => handleCityChange(e.target.value)}>
                 {Object.keys(cityAreas).map(c => <option key={c}>{c}</option>)}
               </select>
             </div>
-            <div className="flex-1 px-5 py-3 border-b sm:border-b-0 sm:border-r border-border">
+            <div className="flex-1 px-4 md:px-5 py-3 border-b md:border-b-0 md:border-r border-border">
               <p className="text-[10px] font-medium text-muted-foreground uppercase">{t("rentals.area")}</p>
               <select className="text-sm font-medium bg-transparent outline-none w-full text-foreground" value={area} onChange={e => { setArea(e.target.value); setPage(1); }}>
                 <option value="">{t("rentals.allAreas")}</option>
                 {areas.map(a => <option key={a} value={a}>{a}</option>)}
               </select>
             </div>
-            <div className="flex-1 px-5 py-3 border-b sm:border-b-0 sm:border-r border-border">
+            <div className="flex-1 px-4 md:px-5 py-3 border-b md:border-b-0 md:border-r border-border">
               <p className="text-[10px] font-medium text-muted-foreground uppercase">{t("rentals.propertyType")}</p>
               <select className="text-sm font-medium bg-transparent outline-none w-full text-foreground">
                 {["Apartment", "House", "Room", "Studio"].map(tt => <option key={tt}>{tt}</option>)}
               </select>
             </div>
-            <div className="flex-1 px-5 py-3 border-b sm:border-b-0 sm:border-r border-border">
+            <div className="flex-1 px-4 md:px-5 py-3 border-b md:border-b-0 md:border-r border-border">
               <p className="text-[10px] font-medium text-muted-foreground uppercase">{t("rentals.budget")}</p>
               <input placeholder="BDT min – max" className="text-sm font-medium bg-transparent outline-none w-full text-foreground placeholder:text-muted-foreground" />
             </div>
-            <Button className="m-2 rounded-full bg-primary text-primary-foreground px-6">
-              <Search className="h-4 w-4" />
+            <Button className="m-2 rounded-full bg-primary text-primary-foreground px-6 w-full md:w-auto">
+              <Search className="h-4 w-4 mr-2 md:mr-0" /><span className="md:hidden">Search</span>
+            </Button>
             </Button>
           </div>
         </div>
