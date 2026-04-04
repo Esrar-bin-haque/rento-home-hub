@@ -1117,7 +1117,7 @@ const AccountReceivableContent = () => (
       </div>
       <button className="flex items-center gap-1.5 text-white text-xs font-medium px-3 py-2 rounded-lg" style={{ background: '#3B5BDB' }}><Plus className="h-3.5 w-3.5" /> Add Entry</button>
     </div>
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
       <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Receivable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 17,500</p></div>
       <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Overdue</span><p className="text-xl font-bold" style={{ color: '#E03131' }}>BDT 14,000</p></div>
       <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Upcoming</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT 3,500</p></div>

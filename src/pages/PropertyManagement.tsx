@@ -334,7 +334,7 @@ const DashboardContent = () => {
           </div>
         ))}
       </div>
-      <div className="grid lg:grid-cols-5 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         <div className="lg:col-span-3 bg-white rounded-2xl border border-[#F1F3F5] shadow-sm p-5">
           <h3 className="font-heading font-semibold text-foreground text-sm mb-4">{t("pm.incomeTrend")}</h3>
           <ResponsiveContainer width="100%" height={260}>
