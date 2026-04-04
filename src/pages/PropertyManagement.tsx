@@ -714,7 +714,7 @@ const AccountPayableContent = () => {
         </div>
         <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90"><Plus className="h-3.5 w-3.5" /> Add Payable</button>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Payable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT {total.toLocaleString()}</p></div>
         <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Paid</span><p className="text-xl font-bold" style={{ color: '#2F9E44' }}>BDT {paid.toLocaleString()}</p></div>
         <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Pending</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT {(total - paid).toLocaleString()}</p></div>
