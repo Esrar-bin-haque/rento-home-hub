@@ -55,7 +55,7 @@ const Services = () => {
       <section className="py-14">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-heading font-bold text-foreground text-center mb-8">{t("services.categories")}</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 max-w-3xl mx-auto">
             {categories.map(c => (
               <button key={c.labelKey} className="flex flex-col items-center gap-3 bg-card rounded-card border border-border p-5 hover-lift cursor-pointer">
                 <div className={`w-12 h-12 rounded-xl ${c.color} flex items-center justify-center`}>
@@ -71,7 +71,7 @@ const Services = () => {
       <section className="py-14 bg-card">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-heading font-bold text-foreground text-center mb-8">{t("services.featured")}</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 max-w-5xl mx-auto">
             {providers.map(p => (
               <div key={p.name} className="bg-card rounded-card border border-border p-5 hover-lift">
                 <div className="flex items-center gap-4 mb-4">

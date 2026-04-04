@@ -258,9 +258,17 @@ const sidebarItems: { icon: typeof BarChart3; key: SidebarKey; label: string }[]
 const SlidePanel = ({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: React.ReactNode }) => {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex justify-end" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-end md:justify-end" onClick={onClose}>
       <div className="absolute inset-0 bg-black/30" />
-      <div className="relative w-full max-w-[420px] bg-white h-full shadow-xl overflow-y-auto" onClick={e => e.stopPropagation()}>
+      {/* Desktop: slide from right. Mobile: slide from bottom, full width */}
+      <div
+        className="relative w-full bg-white shadow-xl overflow-y-auto md:max-w-[420px] md:h-full md:rounded-none max-h-[85vh] rounded-t-2xl md:max-h-full self-end md:self-stretch"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Mobile drag indicator */}
+        <div className="md:hidden flex justify-center pt-2 pb-1">
+          <div className="w-10 h-1 rounded-full bg-[#DEE2E6]" />
+        </div>
         <div className="p-5 border-b border-[#F1F3F5] flex items-center justify-between sticky top-0 bg-white z-10">
           <h2 className="font-heading font-bold text-[#1A1D23] text-sm">{title}</h2>
           <button onClick={onClose} className="p-1 hover:bg-[#F1F3F5] rounded-lg"><X className="h-4 w-4" /></button>
@@ -299,13 +307,19 @@ const BuildingManagement = () => {
     <div className="flex min-h-[calc(100vh-60px)]" style={{ background: '#F8F9FA' }}>
       {/* Mobile overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 bg-black/30 z-10 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-0 bg-black/30 z-[9998] lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
       {/* Sidebar */}
       <aside
-        className={`${sidebarOpen ? "w-[220px] translate-x-0" : "w-0 -translate-x-full lg:w-0"} transition-all duration-300 flex flex-col flex-shrink-0 fixed left-0 z-20`}
+        className={`${sidebarOpen ? "w-[260px] lg:w-[220px] translate-x-0" : "-translate-x-full lg:translate-x-0 lg:w-0"} transition-all duration-300 flex flex-col flex-shrink-0 fixed left-0 z-[9999] lg:z-20`}
         style={{ background: '#1A1D23', top: '60px', height: 'calc(100vh - 60px)' }}
       >
+        {/* Mobile close button */}
+        <div className="lg:hidden absolute top-3 right-3">
+          <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-white/10">
+            <X className="h-5 w-5 text-white" />
+          </button>
+        </div>
         <div className="px-4 pt-3 pb-2">
           <Link to="/" className="flex items-center gap-2">
             <span className="text-sm font-heading font-bold text-white">Rento</span>
@@ -347,20 +361,20 @@ const BuildingManagement = () => {
       </aside>
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[220px]" : ""} transition-all duration-300`}>
-        <header className="h-12 bg-white flex items-center justify-between px-5 flex-shrink-0 sticky top-[60px] z-10" style={{ borderBottom: '1px solid #DEE2E6' }}>
+      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarOpen ? "lg:ml-[220px]" : ""}`}>
+        <header className="h-14 md:h-12 bg-white flex items-center justify-between px-3 md:px-5 flex-shrink-0 sticky top-[60px] z-10" style={{ borderBottom: '1px solid #DEE2E6' }}>
           <div className="flex items-center gap-3">
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
-              <Menu className="h-4 w-4" style={{ color: '#868E96' }} />
+              <Menu className="h-5 w-5 md:h-4 md:w-4" style={{ color: '#868E96' }} />
             </button>
-            <span className="text-sm" style={{ color: '#868E96' }}>Building Management Dashboard</span>
+            <span className="text-xs md:text-sm truncate" style={{ color: '#868E96' }}>Building Management Dashboard</span>
           </div>
           <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
             <Bell className="h-4 w-4" style={{ color: '#868E96' }} />
             <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: '#E03131' }} />
           </button>
         </header>
-        <main className="flex-1 p-6 overflow-auto">{renderContent()}</main>
+        <main className="flex-1 p-3 md:p-6 overflow-auto">{renderContent()}</main>
       </div>
 
       {/* Tenant Detail Slide Panel */}
@@ -448,14 +462,13 @@ const DashboardContent = () => {
 
       {/* Month Toggle Bar */}
       <div className="bg-white rounded-xl p-3 shadow-sm" style={{ border: '1px solid #DEE2E6' }}>
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-xs font-medium flex-shrink-0" style={{ color: '#868E96' }}>Filter by Month:</span>
-          <div className="flex flex-wrap gap-2">
+        <span className="text-xs font-medium block mb-2 md:mb-0 md:inline md:mr-3 flex-shrink-0" style={{ color: '#868E96' }}>Filter by Month:</span>
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
             {allMonths.map(m => (
               <button
                 key={m}
                 onClick={() => setSelectedMonth(m)}
-                className="px-4 py-[7px] rounded-full text-[13px] font-medium transition-all duration-150 ease-in-out"
+                className="px-4 py-[7px] rounded-full text-[13px] font-medium transition-all duration-150 ease-in-out flex-shrink-0 whitespace-nowrap"
                 style={{
                   background: selectedMonth === m ? '#3B5BDB' : '#F1F3F5',
                   color: selectedMonth === m ? '#FFFFFF' : '#495057',
@@ -467,7 +480,6 @@ const DashboardContent = () => {
                 {m}
               </button>
             ))}
-          </div>
         </div>
       </div>
 
@@ -479,9 +491,9 @@ const DashboardContent = () => {
       )}
 
       {/* 6 Stat Cards — 3+3 grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         {/* Card 1: Total Monthly Service Charge (editable) */}
-        <div className="bg-white rounded-xl p-4 shadow-sm relative" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(59,91,219,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm relative" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(59,91,219,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Monthly Service Charge</span>
             <div className="flex items-center gap-1">
@@ -489,7 +501,7 @@ const DashboardContent = () => {
               <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#EDF2FF' }}><Receipt className="h-4 w-4" style={{ color: '#3B5BDB' }} /></div>
             </div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${(md.service_charge || serviceChargeTotal).toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${(md.service_charge || serviceChargeTotal).toLocaleString()}`}</p>
           <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{selectedMonth} 2026</p>
           {editingCharge && (
             <div className="absolute inset-0 bg-white rounded-xl p-4 z-10 flex flex-col gap-2" style={{ border: '2px solid #3B5BDB' }}>
@@ -504,22 +516,22 @@ const DashboardContent = () => {
         </div>
 
         {/* Card 2: Total Collected */}
-        <div className="bg-white rounded-xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(47,158,68,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(47,158,68,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Collected</span>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#EBFBEE' }}><CheckCircle2 className="h-4 w-4" style={{ color: '#2F9E44' }} /></div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.collected.toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.collected.toLocaleString()}`}</p>
           <p className="text-[11px] mt-0.5" style={{ color: '#2F9E44' }}>{isFutureMonth ? "—" : `${collectionRate}% collection rate`}</p>
         </div>
 
         {/* Card 3: Account Receivable */}
-        <div className="bg-white rounded-xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(224,49,49,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(224,49,49,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Account Receivable</span>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF5F5' }}><ArrowDownCircle className="h-4 w-4" style={{ color: '#E03131' }} /></div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.receivable.toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.receivable.toLocaleString()}`}</p>
           <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "3 flats pending"}</p>
           {!isFutureMonth && (
             <div className="mt-1 space-y-0.5">
@@ -530,30 +542,30 @@ const DashboardContent = () => {
         </div>
 
         {/* Card 4: Total Expense */}
-        <div className="bg-white rounded-xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(230,119,0,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(230,119,0,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Expense</span>
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF9DB' }}><TrendingDown className="h-4 w-4" style={{ color: '#E67700' }} /></div>
+            <div className="w-7 h-7 md:w-8 md:h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF9DB' }}><TrendingDown className="h-4 w-4" style={{ color: '#E67700' }} /></div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.expense.toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.expense.toLocaleString()}`}</p>
           <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "6 expense entries"}</p>
         </div>
 
         {/* Card 5: Account Payable */}
-        <div className="bg-white rounded-xl p-4 shadow-sm relative" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(112,72,232,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm relative" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(112,72,232,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Account Payable</span>
             <div className="flex items-center gap-1">
               <button onClick={() => setPayablePanel(true)} className="p-1 hover:bg-[#F1F3F5] rounded"><Eye className="h-3 w-3" style={{ color: '#868E96' }} /></button>
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#F8F0FC' }}><ArrowUpCircle className="h-4 w-4" style={{ color: '#7048E8' }} /></div>
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-xl flex items-center justify-center" style={{ background: '#F8F0FC' }}><ArrowUpCircle className="h-4 w-4" style={{ color: '#7048E8' }} /></div>
             </div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.payable.toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.payable.toLocaleString()}`}</p>
           <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "Association owes"}</p>
         </div>
 
         {/* Card 6: Cash In Hand */}
-        <div className="bg-white rounded-xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(12,166,120,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(12,166,120,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Cash In Hand</span>
             <div className="flex items-center gap-1">
@@ -561,7 +573,7 @@ const DashboardContent = () => {
               <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#E6FCF5' }}><Wallet className="h-4 w-4" style={{ color: '#0CA678' }} /></div>
             </div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.cash_in_hand.toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.cash_in_hand.toLocaleString()}`}</p>
           <p className="text-[10px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "= Collected − Expense"}</p>
         </div>
       </div>
@@ -574,7 +586,7 @@ const DashboardContent = () => {
           <span className="text-[11px]" style={{ color: '#868E96' }}>— Residents who haven't paid for 1 or more months</span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-xs md:text-sm" style={{ minWidth: '600px' }}>
             <thead><tr style={{ background: '#F8F9FA' }}>
               {["Resident Name", "Flat", "Months Overdue", "Total Due", "Last Paid", "Action"].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#495057' }}>{h}</th>
@@ -613,11 +625,11 @@ const DashboardContent = () => {
       </div>
 
       {/* Chart Row 1: 60/40 */}
-      <div className="grid lg:grid-cols-5 gap-5">
-        <div className="lg:col-span-3 bg-white rounded-2xl shadow-sm p-5" style={{ border: '1px solid #DEE2E6' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+        <div className="lg:col-span-3 bg-white rounded-2xl shadow-sm p-4 md:p-5" style={{ border: '1px solid #DEE2E6' }}>
           <h3 className="font-heading font-semibold text-sm" style={{ color: '#1A1D23' }}>Service Charge Collection Trend</h3>
           <p className="text-[11px] mb-4" style={{ color: '#868E96' }}>Monthly collected vs uncollected</p>
-          <ResponsiveContainer width="100%" height={260}>
+          <ResponsiveContainer width="100%" height={200}>
             <BarChart data={chartData} barGap={4}>
               <CartesianGrid strokeDasharray="3 3" stroke="#F1F3F5" />
               <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#ADB5BD" }} axisLine={false} tickLine={false} />
@@ -629,9 +641,9 @@ const DashboardContent = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm p-5" style={{ border: '1px solid #DEE2E6' }}>
+        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm p-4 md:p-5" style={{ border: '1px solid #DEE2E6' }}>
           <h3 className="font-heading font-semibold text-sm mb-4" style={{ color: '#1A1D23' }}>Expense Breakdown</h3>
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie data={expensePieData} cx="50%" cy="50%" innerRadius={70} outerRadius={110} dataKey="value" paddingAngle={2}>
                 {expensePieData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
@@ -653,10 +665,10 @@ const DashboardContent = () => {
       </div>
 
       {/* Chart Row 2: Full width */}
-      <div className="bg-white rounded-2xl shadow-sm p-5" style={{ border: '1px solid #DEE2E6' }}>
+      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-5" style={{ border: '1px solid #DEE2E6' }}>
         <h3 className="font-heading font-semibold text-sm" style={{ color: '#1A1D23' }}>Income vs Expense vs Account Payable</h3>
         <p className="text-[11px] mb-4" style={{ color: '#868E96' }}>Monthly financial health overview</p>
-        <ResponsiveContainer width="100%" height={280}>
+        <ResponsiveContainer width="100%" height={200}>
           <BarChart data={incomeExpenseChartData} barGap={4}>
             <CartesianGrid strokeDasharray="3 3" stroke="#F1F3F5" />
             <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#ADB5BD" }} axisLine={false} tickLine={false} />
@@ -677,7 +689,7 @@ const DashboardContent = () => {
           <button className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>View All</button>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-xs md:text-sm" style={{ minWidth: '500px' }}>
             <thead><tr style={{ background: '#F8F9FA' }}>
               {["Resident Name", "Flat Number", "Amount", "Method", "Status"].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#495057' }}>{h}</th>
@@ -946,7 +958,7 @@ const PaymentStatusContent = () => {
         <h1 className="text-xl font-heading font-bold" style={{ color: '#1A1D23' }}>Payment Status</h1>
         <button className="flex items-center gap-1.5 text-white text-xs font-medium px-3 py-2 rounded-lg" style={{ background: '#3B5BDB' }}><Plus className="h-3.5 w-3.5" /> Record Payment</button>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Collectable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 48,000</p></div>
         <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Collected</span><p className="text-xl font-bold" style={{ color: '#2F9E44' }}>BDT 34,500</p></div>
         <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Due</span><p className="text-xl font-bold" style={{ color: '#E03131' }}>BDT 13,500</p></div>
@@ -1055,7 +1067,7 @@ const AccountPayableContent = () => (
       </div>
       <button className="flex items-center gap-1.5 text-white text-xs font-medium px-3 py-2 rounded-lg" style={{ background: '#3B5BDB' }}><Plus className="h-3.5 w-3.5" /> Add Payable</button>
     </div>
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
       <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Payable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 39,200</p></div>
       <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Paid</span><p className="text-xl font-bold" style={{ color: '#2F9E44' }}>BDT 12,700</p></div>
       <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Pending</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT 26,500</p></div>
@@ -1105,7 +1117,7 @@ const AccountReceivableContent = () => (
       </div>
       <button className="flex items-center gap-1.5 text-white text-xs font-medium px-3 py-2 rounded-lg" style={{ background: '#3B5BDB' }}><Plus className="h-3.5 w-3.5" /> Add Entry</button>
     </div>
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
       <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Receivable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 17,500</p></div>
       <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Overdue</span><p className="text-xl font-bold" style={{ color: '#E03131' }}>BDT 14,000</p></div>
       <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Upcoming</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT 3,500</p></div>

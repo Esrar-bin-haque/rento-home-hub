@@ -334,7 +334,7 @@ const DashboardContent = () => {
           </div>
         ))}
       </div>
-      <div className="grid lg:grid-cols-5 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         <div className="lg:col-span-3 bg-white rounded-2xl border border-[#F1F3F5] shadow-sm p-5">
           <h3 className="font-heading font-semibold text-foreground text-sm mb-4">{t("pm.incomeTrend")}</h3>
           <ResponsiveContainer width="100%" height={260}>
@@ -534,7 +534,7 @@ const RentPaymentsContent = () => {
           <Plus className="h-3.5 w-3.5" /> {t("dash.recordPayment")}
         </button>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         {[
           { label: t("bm.totalCollectable"), value: "৳1,78,000", color: "text-foreground" },
           { label: t("dash.collected"), value: "৳1,19,000", color: "text-primary" },
@@ -714,7 +714,7 @@ const AccountPayableContent = () => {
         </div>
         <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90"><Plus className="h-3.5 w-3.5" /> Add Payable</button>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Payable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT {total.toLocaleString()}</p></div>
         <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Paid</span><p className="text-xl font-bold" style={{ color: '#2F9E44' }}>BDT {paid.toLocaleString()}</p></div>
         <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Pending</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT {(total - paid).toLocaleString()}</p></div>
@@ -763,7 +763,7 @@ const AccountReceivableContent = () => {
         </div>
         <button className="flex items-center gap-1.5 bg-primary text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/90"><Plus className="h-3.5 w-3.5" /> Add Entry</button>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Receivable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 75,000</p></div>
         <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Overdue</span><p className="text-xl font-bold" style={{ color: '#E03131' }}>BDT 70,000</p></div>
         <div className="bg-white rounded-2xl p-4 shadow-sm border" style={{ borderColor: '#DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Upcoming</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT 5,000</p></div>
