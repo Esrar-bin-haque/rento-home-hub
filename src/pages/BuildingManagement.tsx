@@ -462,14 +462,13 @@ const DashboardContent = () => {
 
       {/* Month Toggle Bar */}
       <div className="bg-white rounded-xl p-3 shadow-sm" style={{ border: '1px solid #DEE2E6' }}>
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-xs font-medium flex-shrink-0" style={{ color: '#868E96' }}>Filter by Month:</span>
-          <div className="flex flex-wrap gap-2">
+        <span className="text-xs font-medium block mb-2 md:mb-0 md:inline md:mr-3 flex-shrink-0" style={{ color: '#868E96' }}>Filter by Month:</span>
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
             {allMonths.map(m => (
               <button
                 key={m}
                 onClick={() => setSelectedMonth(m)}
-                className="px-4 py-[7px] rounded-full text-[13px] font-medium transition-all duration-150 ease-in-out"
+                className="px-4 py-[7px] rounded-full text-[13px] font-medium transition-all duration-150 ease-in-out flex-shrink-0 whitespace-nowrap"
                 style={{
                   background: selectedMonth === m ? '#3B5BDB' : '#F1F3F5',
                   color: selectedMonth === m ? '#FFFFFF' : '#495057',
@@ -481,7 +480,6 @@ const DashboardContent = () => {
                 {m}
               </button>
             ))}
-          </div>
         </div>
       </div>
 
