@@ -493,7 +493,7 @@ const DashboardContent = () => {
       {/* 6 Stat Cards — 3+3 grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         {/* Card 1: Total Monthly Service Charge (editable) */}
-        <div className="bg-white rounded-xl p-4 shadow-sm relative" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(59,91,219,0.6)' }}>
+        <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm relative" style={{ border: '1px solid #DEE2E6', borderTop: '3px solid rgba(59,91,219,0.6)' }}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Monthly Service Charge</span>
             <div className="flex items-center gap-1">
