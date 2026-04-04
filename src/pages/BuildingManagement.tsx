@@ -307,13 +307,19 @@ const BuildingManagement = () => {
     <div className="flex min-h-[calc(100vh-60px)]" style={{ background: '#F8F9FA' }}>
       {/* Mobile overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 bg-black/30 z-10 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-0 bg-black/30 z-[9998] lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
       {/* Sidebar */}
       <aside
-        className={`${sidebarOpen ? "w-[220px] translate-x-0" : "w-0 -translate-x-full lg:w-0"} transition-all duration-300 flex flex-col flex-shrink-0 fixed left-0 z-20`}
+        className={`${sidebarOpen ? "w-[260px] lg:w-[220px] translate-x-0" : "-translate-x-full lg:translate-x-0 lg:w-0"} transition-all duration-300 flex flex-col flex-shrink-0 fixed left-0 z-[9999] lg:z-20`}
         style={{ background: '#1A1D23', top: '60px', height: 'calc(100vh - 60px)' }}
       >
+        {/* Mobile close button */}
+        <div className="lg:hidden absolute top-3 right-3">
+          <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-white/10">
+            <X className="h-5 w-5 text-white" />
+          </button>
+        </div>
         <div className="px-4 pt-3 pb-2">
           <Link to="/" className="flex items-center gap-2">
             <span className="text-sm font-heading font-bold text-white">Rento</span>
@@ -355,20 +361,20 @@ const BuildingManagement = () => {
       </aside>
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col min-w-0 ${sidebarOpen ? "ml-[220px]" : ""} transition-all duration-300`}>
-        <header className="h-12 bg-white flex items-center justify-between px-5 flex-shrink-0 sticky top-[60px] z-10" style={{ borderBottom: '1px solid #DEE2E6' }}>
+      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarOpen ? "lg:ml-[220px]" : ""}`}>
+        <header className="h-14 md:h-12 bg-white flex items-center justify-between px-3 md:px-5 flex-shrink-0 sticky top-[60px] z-10" style={{ borderBottom: '1px solid #DEE2E6' }}>
           <div className="flex items-center gap-3">
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
-              <Menu className="h-4 w-4" style={{ color: '#868E96' }} />
+              <Menu className="h-5 w-5 md:h-4 md:w-4" style={{ color: '#868E96' }} />
             </button>
-            <span className="text-sm" style={{ color: '#868E96' }}>Building Management Dashboard</span>
+            <span className="text-xs md:text-sm truncate" style={{ color: '#868E96' }}>Building Management Dashboard</span>
           </div>
           <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
             <Bell className="h-4 w-4" style={{ color: '#868E96' }} />
             <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: '#E03131' }} />
           </button>
         </header>
-        <main className="flex-1 p-6 overflow-auto">{renderContent()}</main>
+        <main className="flex-1 p-3 md:p-6 overflow-auto">{renderContent()}</main>
       </div>
 
       {/* Tenant Detail Slide Panel */}
