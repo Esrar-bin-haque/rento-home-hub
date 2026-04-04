@@ -586,7 +586,7 @@ const DashboardContent = () => {
           <span className="text-[11px]" style={{ color: '#868E96' }}>— Residents who haven't paid for 1 or more months</span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-xs md:text-sm" style={{ minWidth: '600px' }}>
             <thead><tr style={{ background: '#F8F9FA' }}>
               {["Resident Name", "Flat", "Months Overdue", "Total Due", "Last Paid", "Action"].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#495057' }}>{h}</th>
