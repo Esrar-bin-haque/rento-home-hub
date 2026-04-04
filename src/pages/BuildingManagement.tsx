@@ -573,7 +573,7 @@ const DashboardContent = () => {
               <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#E6FCF5' }}><Wallet className="h-4 w-4" style={{ color: '#0CA678' }} /></div>
             </div>
           </div>
-          <p className="text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.cash_in_hand.toLocaleString()}`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.cash_in_hand.toLocaleString()}`}</p>
           <p className="text-[10px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "= Collected − Expense"}</p>
         </div>
       </div>
