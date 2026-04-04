@@ -80,7 +80,7 @@ const Rentals = () => {
             <Button className="m-2 rounded-full bg-primary text-primary-foreground px-6 w-full md:w-auto">
               <Search className="h-4 w-4 mr-2 md:mr-0" /><span className="md:hidden">Search</span>
             </Button>
-            </Button>
+          </div>
           </div>
         </div>
       </div>
