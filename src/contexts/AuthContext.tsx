@@ -1,42 +1,91 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { api } from '@/lib/api';
 
 interface User {
+  id: string;
   name: string;
   phone: string;
-  role: "owner" | "manager" | "tenant";
+  email?: string;
+}
+
+interface Org {
+  id: string;
+  name: string;
+  slug: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (phone: string, password: string) => void;
-  register: (name: string, phone: string, role: User["role"], password: string) => void;
-  logout: () => void;
+  orgs: Org[];
+  currentOrg: string | null;
+  setCurrentOrg: (orgId: string) => void;
+  login: (phone: string, password: string) => Promise<void>;
+  register: (name: string, phone: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const useAuth = () => {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
-  return ctx;
-};
-
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [orgs, setOrgs] = useState<Org[]>([]);
+  const [currentOrg, setCurrentOrgState] = useState<string | null>(api.getOrgId());
+  const [isLoading, setIsLoading] = useState(true);
 
-  const login = (phone: string, _password: string) => {
-    setUser({ name: "Mushfiqur Rahman", phone, role: "owner" });
+  const refreshUser = async () => {
+    try {
+      const data = await api.get('/auth/me');
+      setUser(data.user);
+      setOrgs(data.orgs || []);
+      if (data.orgs?.length && !currentOrg) {
+        setCurrentOrgState(data.orgs[0].id);
+        api.setOrgId(data.orgs[0].id);
+      }
+    } catch {
+      setUser(null);
+      setOrgs([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const register = (name: string, phone: string, role: User["role"], _password: string) => {
-    setUser({ name, phone, role });
+  useEffect(() => {
+    refreshUser();
+  }, []);
+
+  const setCurrentOrg = (orgId: string) => {
+    setCurrentOrgState(orgId);
+    api.setOrgId(orgId);
   };
 
-  const logout = () => setUser(null);
+  const login = async (phone: string, password: string) => {
+    await api.post('/auth/login', { phone, password });
+    await refreshUser();
+  };
+
+  const register = async (name: string, phone: string, password: string) => {
+    await api.post('/auth/register', { name, phone, password });
+    await refreshUser();
+  };
+
+  const logout = async () => {
+    await api.post('/auth/logout');
+    setUser(null);
+    setOrgs([]);
+    setCurrentOrgState(null);
+    api.setOrgId(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, orgs, currentOrg, setCurrentOrg, login, register, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
+}
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
+  return context;
 };

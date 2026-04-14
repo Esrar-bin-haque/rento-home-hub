@@ -15,12 +15,16 @@ const Login = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^01\d{9}$/.test(phone)) { setError(t("login_invalid_phone")); return; }
     if (!password) { setError(t("login_password_required")); return; }
-    login(phone, password);
-    navigate("/");
+    try {
+      await login(phone, password);
+      navigate("/");
+    } catch (err: any) {
+      setError(err.message || t("login_failed") || "Login failed");
+    }
   };
 
   return (

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import LanguageToggle from "@/components/LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { OrgSelector } from "@/components/OrgSelector";
 import rentoLogo from "@/assets/rento-logo.png";
 
 const Navbar = () => {
@@ -90,6 +91,7 @@ const Navbar = () => {
 
         <div className="hidden lg:flex items-center gap-3">
           <LanguageToggle />
+          <OrgSelector />
           {user ? (
             <div className="relative" ref={dropdownRef}>
               <button
