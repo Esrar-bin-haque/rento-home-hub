@@ -1,73 +1,250 @@
-# Welcome to your Lovable project
+# Rento - Property Rental Platform
 
-## Project info
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/anomalyco/rento-home-hub)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![React](https://img.shields.io/badge/React-18-blue)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescript.org)
+[![Vite](https://img.shields.io/badge/Vite-5-purple)](https://vitejs.dev)
+[![Tailwind_CSS](https://img.shields.io/badge/Tailwind_CSS-3-cyan)](https://tailwindcss.com)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org)
+[![Express](https://img.shields.io/badge/Express-4-green)](https://expressjs.com)
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+A Bangladesh-focused property rental platform built with React 18 (frontend) and Express.js (backend).
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Rental Marketplace** - Browse available rental properties with filtering and search
+- **Building Management** - HOA/Association dashboard for community management
+- **Landlord Dashboard** - Property manager dashboard for managing rentals
+- **Service Marketplace** - Find service providers for property needs
+- **Bilingual Support** - Full English and Bengali language support
+- **Dark Mode** - Dark/Light theme switching
+- **Responsive Design** - Mobile-first design that works on all devices
+- **User Authentication** - JWT-based auth with local and Google OAuth
 
-**Use Lovable**
+## Technologies
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### Frontend
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Framework**: React 18
+- **Language**: TypeScript
+- **Build Tool**: Vite
+- **Routing**: React Router v6
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Icons**: Lucide React
+- **Toasts**: sonner
+- **State Management**: React Context + TanStack React Query
 
-**Use your preferred IDE**
+### Backend
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Runtime**: Node.js 18+
+- **Framework**: Express.js
+- **Database**: SQLite (sql.js)
+- **Authentication**: JWT, Passport (Local + Google OAuth)
+- **Validation**: Zod
+- **Password Hashing**: bcryptjs
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Getting Started
 
-Follow these steps:
+### Prerequisites
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- Node.js 18+
+- npm 9+
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Frontend Installation
 
-# Step 3: Install the necessary dependencies.
-npm i
+```bash
+# Clone the repository
+git clone https://github.com/anomalyco/rento-home-hub.git
+cd rento-home-hub
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Install dependencies
+npm install
+```
+
+### Backend Installation
+
+```bash
+cd backend
+
+# Install dependencies
+npm install
+```
+
+### Development
+
+#### Frontend
+
+```bash
+# Start development server on port 8080
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The frontend will be available at `http://localhost:8080`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+#### Backend
 
-**Use GitHub Codespaces**
+```bash
+cd backend
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Start backend server on port 3000
+npm run dev
+```
 
-## What technologies are used for this project?
+The backend API will be available at `http://localhost:3000`.
 
-This project is built with:
+### Building
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+#### Frontend
 
-## How can I deploy this project?
+```bash
+npm run build
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Build output will be in the `dist` directory.
 
-## Can I connect a custom domain to my Lovable project?
+#### Backend
 
-Yes, you can!
+```bash
+cd backend
+npm run build
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Build output will be in the `backend/dist` directory.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Testing
+
+```bash
+# Run unit tests (Vitest)
+npm run test
+
+# Run unit tests in watch mode
+npm run test:watch
+
+# Run E2E tests (Playwright)
+npx playwright test
+```
+
+### Linting
+
+```bash
+npm run lint
+```
+
+## Deployment to VPS
+
+### Backend Deployment
+
+```bash
+cd backend
+npm install --production
+npm run build
+```
+
+Create a systemd service at `/etc/systemd/system/rento-backend.service`:
+
+```ini
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/rento-home-hub/backend
+ExecStart=/usr/bin/node dist/index.js
+Environment=NODE_ENV=production
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Enable and start the service:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable rento-backend
+sudo systemctl start rento-backend
+```
+
+### Frontend Deployment
+
+Build the frontend and upload to your web server:
+
+```bash
+npm run build
+```
+
+Upload the contents of the `dist` folder to `/var/www/rento` (or your web root).
+
+#### Nginx Configuration
+
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    # Backend API
+    location /api/ {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Frontend static files
+    root /var/www/rento;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+}
+```
+
+Enable the site and restart Nginx:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/rento /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+### SSL Certificate (Optional)
+
+```bash
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d your-domain.com --redirect
+```
+
+## Project Structure
+
+```
+rento-home-hub/
+├── src/                    # Frontend source
+│   ├── components/         # Reusable UI components
+│   ├── contexts/          # React Context providers
+│   ├── hooks/            # Custom React hooks
+│   ├── lib/              # Utilities and helpers
+│   ├── pages/            # Page components
+│   ├── App.tsx           # Main app with routing
+│   └── main.tsx          # Entry point
+├── backend/
+│   ├── src/              # Backend source
+│   │   ├── routes/       # API routes
+│   │   ├── middleware/   # Express middleware
+│   │   ├── db/           # Database setup
+│   │   └── index.ts      # Entry point
+│   └── package.json
+├── dist/                  # Frontend build output
+└── README.md
+```
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.

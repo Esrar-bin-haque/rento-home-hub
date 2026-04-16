@@ -23,14 +23,18 @@ const Register = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) { setError(t("register_name_required")); return; }
     if (!/^01\d{9}$/.test(phone)) { setError(t("login_invalid_phone")); return; }
     if (password.length < 6) { setError(t("register_password_min")); return; }
     if (password !== confirmPw) { setError(t("register_password_mismatch")); return; }
-    register(name, phone, role, password);
-    navigate("/");
+    try {
+      await register(name, phone, password);
+      navigate("/");
+    } catch (err: any) {
+      setError(err.message || "Registration failed");
+    }
   };
 
   return (
