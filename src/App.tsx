@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import PageTransition from "@/components/PageTransition";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import OrgGuard from "@/components/OrgGuard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Index from "./pages/Index";
@@ -17,6 +19,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import CreateOrg from "./pages/CreateOrg";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -42,11 +45,12 @@ const AppRoutes = () => {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/rentals" element={<Rentals />} />
-            <Route path="/building-management" element={<BuildingManagement />} />
-            <Route path="/management" element={<PropertyManagement />} />
+            <Route path="/building-management" element={<ErrorBoundary><BuildingManagement /></ErrorBoundary>} />
+            <Route path="/management" element={<ErrorBoundary><OrgGuard><PropertyManagement /></OrgGuard></ErrorBoundary>} />
             <Route path="/services" element={<Services />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/orgs/new" element={<CreateOrg />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -1,20 +1,34 @@
 import { Router, Request, Response } from 'express';
+import { z } from 'zod';
 import { requireAuth } from '../middleware/auth.js';
 import { requireOrgMember } from '../middleware/orgScope.js';
 import { requirePermission } from '../middleware/rbac.js';
 import { createTenant, listTenants, findTenantById, updateTenant, deactivateTenant } from '../services/tenant.service.js';
 
+const createTenantSchema = z.object({
+  name: z.string().min(1, 'Name required'),
+  email: z.string().email().optional(),
+  phone: z.string().optional(),
+  unit_id: z.string().min(1, 'Unit ID required'),
+  move_in_date: z.string().optional(),
+  lease_end_date: z.string().optional()
+});
+
 const router = Router();
 
 router.get('/', requireAuth, requireOrgMember, requirePermission('tenants.read'), (req: Request, res: Response) => {
-  res.json(listTenants(req.org!.id));
+  res.json({ data: listTenants(req.org!.id) });
 });
 
 router.post('/', requireAuth, requireOrgMember, requirePermission('tenants.write'), async (req: Request, res: Response) => {
   try {
-    const tenant = createTenant(req.org!.id, req.body);
+    const data = createTenantSchema.parse(req.body);
+    const tenant = createTenant(req.org!.id, data);
     res.status(201).json(tenant);
   } catch (err: any) {
+    if (err instanceof z.ZodError) {
+      return res.status(400).json({ error: err.errors[0].message });
+    }
     res.status(500).json({ error: err.message || 'Failed to create tenant' });
   }
 });

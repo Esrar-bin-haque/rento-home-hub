@@ -19,6 +19,7 @@ const Register = () => {
   const [confirmPw, setConfirmPw] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -29,11 +30,14 @@ const Register = () => {
     if (!/^01\d{9}$/.test(phone)) { setError(t("login_invalid_phone")); return; }
     if (password.length < 6) { setError(t("register_password_min")); return; }
     if (password !== confirmPw) { setError(t("register_password_mismatch")); return; }
+    setIsLoading(true);
     try {
       await register(name, phone, password);
       navigate("/");
     } catch (err: any) {
       setError(err.message || "Registration failed");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -94,8 +98,8 @@ const Register = () => {
               className="w-full h-10 rounded-lg border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring" />
           </div>
           {error && <p className="text-xs text-destructive">{error}</p>}
-          <button type="submit" className="w-full h-10 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-colors text-sm">
-            {t("register_btn")}
+          <button type="submit" disabled={isLoading} className="w-full h-10 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-colors text-sm disabled:opacity-50">
+            {isLoading ? t("register_loading") || 'Creating account...' : t("register_btn")}
           </button>
         </form>
         <p className="text-center text-sm text-muted-foreground mt-5">

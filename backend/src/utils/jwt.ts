@@ -14,7 +14,7 @@ export function generateAccessToken(user: JwtPayload): string {
   return jwt.sign(
     { sub: user.userId, email: user.email, phone: user.phone, is_super_admin: user.is_super_admin },
     config.jwtSecret,
-    { expiresIn: config.jwtExpiresIn || '15m' } as any
+    { expiresIn: config.jwtExpiresIn || '15m', algorithm: 'HS256' } as any
   );
 }
 

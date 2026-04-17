@@ -22,6 +22,7 @@ interface AuthContextType {
   login: (phone: string, password: string) => Promise<void>;
   register: (name: string, phone: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -36,13 +37,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshUser = async () => {
     try {
       const data = await api.get('/auth/me');
+      console.log('Auth refreshUser data:', data);
       setUser(data.user);
       setOrgs(data.orgs || []);
       if (data.orgs?.length && !currentOrg) {
+        console.log('Auto-setting currentOrg to:', data.orgs[0].id);
         setCurrentOrgState(data.orgs[0].id);
         api.setOrgId(data.orgs[0].id);
       }
-    } catch {
+    } catch (e) {
+      console.error('refreshUser error:', e);
       setUser(null);
       setOrgs([]);
     } finally {
@@ -52,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     refreshUser();
-  }, []);
+  }, [currentOrg]);
 
   const setCurrentOrg = (orgId: string) => {
     setCurrentOrgState(orgId);
@@ -70,15 +74,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    await api.post('/auth/logout');
-    setUser(null);
-    setOrgs([]);
-    setCurrentOrgState(null);
-    api.setOrgId(null);
+    try {
+      await api.post('/auth/logout');
+    } catch {
+      // continue even if API fails
+    } finally {
+      setUser(null);
+      setOrgs([]);
+      setCurrentOrgState(null);
+      api.setOrgId(null);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, orgs, currentOrg, setCurrentOrg, login, register, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, orgs, currentOrg, setCurrentOrg, login, register, logout, refreshUser, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

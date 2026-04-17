@@ -11,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -19,11 +20,14 @@ const Login = () => {
     e.preventDefault();
     if (!/^01\d{9}$/.test(phone)) { setError(t("login_invalid_phone")); return; }
     if (!password) { setError(t("login_password_required")); return; }
+    setIsLoading(true);
     try {
       await login(phone, password);
       navigate("/");
     } catch (err: any) {
       setError(err.message || t("login_failed") || "Login failed");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -81,8 +85,8 @@ const Login = () => {
             </div>
           </div>
           {error && <p className="text-xs" style={{ color: '#E03131' }}>{error}</p>}
-          <button type="submit" className="w-full h-10 font-semibold rounded-lg transition-colors text-sm" style={{ background: '#3B5BDB', color: '#FFFFFF' }}>
-            {t("login_btn")}
+          <button type="submit" disabled={isLoading} className="w-full h-10 font-semibold rounded-lg transition-colors text-sm disabled:opacity-50" style={{ background: '#3B5BDB', color: '#FFFFFF' }}>
+            {isLoading ? t("login_loading") || 'Signing in...' : t("login_btn")}
           </button>
         </form>
         <p className="text-center text-sm mt-5" style={{ color: '#868E96' }}>

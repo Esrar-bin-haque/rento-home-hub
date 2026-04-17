@@ -29,7 +29,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   }
   
   try {
-    const payload = jwt.verify(token, config.jwtSecret) as any;
+    const payload = jwt.verify(token, config.jwtSecret, { algorithms: ['HS256'] }) as any;
     req.user = {
       userId: payload.sub,
       email: payload.email,
@@ -50,7 +50,7 @@ export function optionalAuth(req: Request, res: Response, next: NextFunction) {
   }
   
   try {
-    const payload = jwt.verify(token, config.jwtSecret) as any;
+    const payload = jwt.verify(token, config.jwtSecret, { algorithms: ['HS256'] }) as any;
     req.user = {
       userId: payload.sub,
       email: payload.email,

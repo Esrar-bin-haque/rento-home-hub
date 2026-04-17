@@ -1,20 +1,34 @@
 import { Router, Request, Response } from 'express';
+import { z } from 'zod';
 import { requireAuth } from '../middleware/auth.js';
 import { requireOrgMember } from '../middleware/orgScope.js';
 import { requirePermission } from '../middleware/rbac.js';
 import { createPayment, listPayments, findPaymentById, updatePayment, deletePayment } from '../services/payment.service.js';
 
+const createPaymentSchema = z.object({
+  amount: z.number().nonnegative('Amount must be positive'),
+  date: z.string().optional(),
+  payment_method: z.enum(['cash', 'bank_transfer', 'mobile_money', 'check']).optional(),
+  unit_id: z.string().min(1, 'Unit ID required'),
+  tenant_id: z.string().min(1, 'Tenant ID required'),
+  payment_type: z.enum(['rent', 'deposit', 'utility', 'other']).optional()
+});
+
 const router = Router();
 
 router.get('/', requireAuth, requireOrgMember, requirePermission('payments.read'), (req: Request, res: Response) => {
-  res.json(listPayments(req.org!.id));
+  res.json({ data: listPayments(req.org!.id) });
 });
 
 router.post('/', requireAuth, requireOrgMember, requirePermission('payments.write'), async (req: Request, res: Response) => {
   try {
-    const payment = createPayment(req.org!.id, { ...req.body, recorded_by: req.user!.userId });
+    const data = createPaymentSchema.parse(req.body);
+    const payment = createPayment(req.org!.id, { ...data, recorded_by: req.user!.userId });
     res.status(201).json(payment);
   } catch (err: any) {
+    if (err instanceof z.ZodError) {
+      return res.status(400).json({ error: err.errors[0].message });
+    }
     res.status(500).json({ error: err.message || 'Failed to create payment' });
   }
 });
