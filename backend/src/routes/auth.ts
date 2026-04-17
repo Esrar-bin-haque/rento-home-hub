@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
+import passport from 'passport';
 import { registerSchema, loginSchema } from '../schemas/auth.schema.js';
-import { registerUser, loginUser, findUserById, findUserByPhone } from '../services/auth.service.js';
+import { registerUser, loginUser, findUserById, findUserByPhone, findUserByEmail } from '../services/auth.service.js';
 import { listUserOrgs } from '../services/org.service.js';
 import { generateAccessToken, generateRefreshToken, saveRefreshToken, deleteRefreshToken, verifyRefreshToken, ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../utils/jwt.js';
 import { requireAuth } from '../middleware/auth.js';
@@ -126,5 +127,47 @@ router.post('/refresh', (req: Request, res: Response) => {
   
   res.json({ accessToken });
 });
+
+router.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+
+router.get('/google/callback',
+  passport.authenticate('google', { session: false, failureRedirect: '/login?error=oauth_failed' }),
+  (req: Request, res: Response) => {
+    const user = req.user as any;
+    if (!user) {
+      return res.redirect('/login?error=oauth_failed');
+    }
+
+    const phone = user.phone || undefined;
+    const accessToken = generateAccessToken({ userId: user.id, phone, is_super_admin: !!user.is_super_admin });
+    const refreshToken = generateRefreshToken(user.id);
+    saveRefreshToken(user.id, refreshToken);
+
+    setCookies(res, accessToken, refreshToken);
+
+    res.redirect('/?oauth=success');
+  }
+);
+
+router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+
+router.get('/facebook/callback',
+  passport.authenticate('facebook', { session: false, failureRedirect: '/login?error=oauth_failed' }),
+  (req: Request, res: Response) => {
+    const user = req.user as any;
+    if (!user) {
+      return res.redirect('/login?error=oauth_failed');
+    }
+
+    const phone = user.phone || undefined;
+    const accessToken = generateAccessToken({ userId: user.id, phone, is_super_admin: !!user.is_super_admin });
+    const refreshToken = generateRefreshToken(user.id);
+    saveRefreshToken(user.id, refreshToken);
+
+    setCookies(res, accessToken, refreshToken);
+
+    res.redirect('/?oauth=success');
+  }
+);
 
 export default router;

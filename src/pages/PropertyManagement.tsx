@@ -552,8 +552,8 @@ const PropertiesContent = () => {
                     <td className="p-3 text-foreground text-xs">-</td>
                     <td className="p-3 text-foreground text-xs">-</td>
                     <td className="p-3 flex gap-2">
-                      <button className="text-xs text-primary hover:underline flex items-center gap-1"><Eye className="h-3 w-3" />{t("bm.view")}</button>
-                      <button className="text-xs text-muted-foreground hover:underline flex items-center gap-1"><Edit className="h-3 w-3" />{t("bm.edit")}</button>
+                      <Link to={`/management/property/${p.id}`} className="text-xs text-primary hover:underline flex items-center gap-1"><Eye className="h-3 w-3" />{t("bm.view")}</Link>
+                      <Link to={`/management/property/${p.id}/edit`} className="text-xs text-muted-foreground hover:underline flex items-center gap-1"><Edit className="h-3 w-3" />{t("bm.edit")}</Link>
                     </td>
                   </tr>
                 ))
@@ -613,11 +613,16 @@ const UnitsContent = () => {
     );
   }
 
+  const buildingsList = buildings?.data || [];
+  const getBuildingName = (id: string) => buildingsList.find((b: any) => b.id === id)?.name || "—";
+
   const allUnits = unitsData?.data || [];
 
-  const filtered = allUnits.filter((f: any) =>
-    true
-  );
+  const filtered = allUnits.filter((f: any) => {
+    const matchesBuilding = buildingFilter === "All" || f.building_id === buildingFilter;
+    const matchesStatus = statusFilter === "All" || f.status?.toLowerCase() === statusFilter.toLowerCase();
+    return matchesBuilding && matchesStatus;
+  });
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -632,7 +637,7 @@ const UnitsContent = () => {
       <div className="flex gap-3">
         <select value={buildingFilter} onChange={e => setBuildingFilter(e.target.value)} className="h-9 rounded-lg border border-input bg-background px-3 text-xs">
           <option value="All">{t("bm.allBuildings")}</option>
-          {properties.map(b => <option key={b.name} value={b.name}>{b.name}</option>)}
+          {buildingsList.map((b: any) => <option key={b.id} value={b.id}>{b.name}</option>)}
         </select>
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="h-9 rounded-lg border border-input bg-background px-3 text-xs">
           <option value="All">{t("bm.allStatus")}</option>
@@ -652,7 +657,7 @@ const UnitsContent = () => {
               {filtered.map((f, i) => (
                 <tr key={i} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA] transition-colors">
                   <td className="p-3 text-foreground text-xs font-medium">{f.unit_number}</td>
-                  <td className="p-3 text-muted-foreground text-xs">{f.building_id || "—"}</td>
+                  <td className="p-3 text-muted-foreground text-xs">{getBuildingName(f.building_id)}</td>
                   <td className="p-3 text-muted-foreground text-xs">{f.floor || "—"}</td>
                   <td className="p-3 text-muted-foreground text-xs">{f.size_sqft || "—"}</td>
                   <td className="p-3 text-foreground text-xs font-medium">৳{(f.rent_amount || 0).toLocaleString()}</td>
@@ -662,7 +667,7 @@ const UnitsContent = () => {
                     </span>
                   </td>
                   <td className="p-3 text-muted-foreground text-xs">—</td>
-                  <td className="p-3"><button className="text-xs text-primary hover:underline">{f.status === "occupied" ? t("bm.view") : t("bm.assign")}</button></td>
+                  <td className="p-3"><Link to={`/management/unit/${f.id}`} className="text-xs text-primary hover:underline">{f.status === "occupied" ? t("bm.view") : t("bm.assign")}</Link></td>
                 </tr>
               ))}
             </tbody>
@@ -884,7 +889,7 @@ const TenantsContent = ({ onSelectTenant }: { onSelectTenant: (t: any) => void }
                       </span>
                     </td>
                     <td className="p-3">
-                      <button onClick={() => onSelectTenant(tt)} className="text-xs text-primary hover:underline mr-2">{t("bm.view")}</button>
+                      <Link to={`/management/tenant/${tt.id}`} className="text-xs text-primary hover:underline mr-2">{t("bm.view")}</Link>
                       <button 
                         onClick={() => tt.id && handleDeleteTenant(tt.id)} 
                         className="text-xs text-destructive hover:underline"
