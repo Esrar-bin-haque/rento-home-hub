@@ -14,6 +14,12 @@ import Index from "./pages/Index";
 import Rentals from "./pages/Rentals";
 import BuildingManagement from "./pages/BuildingManagement";
 import PropertyManagement from "./pages/PropertyManagement";
+import PropertyDetail from "./pages/PropertyDetail";
+import PropertyEdit from "./pages/PropertyEdit";
+import TenantDetail from "./pages/TenantDetail";
+import TenantEdit from "./pages/TenantEdit";
+import UnitDetail from "./pages/UnitDetail";
+import UnitEdit from "./pages/UnitEdit";
 import Services from "./pages/Services";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -47,6 +53,12 @@ const AppRoutes = () => {
             <Route path="/rentals" element={<Rentals />} />
             <Route path="/building-management" element={<ErrorBoundary><BuildingManagement /></ErrorBoundary>} />
             <Route path="/management" element={<ErrorBoundary><OrgGuard><PropertyManagement /></OrgGuard></ErrorBoundary>} />
+            <Route path="/management/property/:id" element={<ErrorBoundary><OrgGuard><PropertyDetail /></OrgGuard></ErrorBoundary>} />
+            <Route path="/management/property/:id/edit" element={<ErrorBoundary><OrgGuard><PropertyEdit /></OrgGuard></ErrorBoundary>} />
+            <Route path="/management/tenant/:id" element={<ErrorBoundary><OrgGuard><TenantDetail /></OrgGuard></ErrorBoundary>} />
+            <Route path="/management/tenant/:id/edit" element={<ErrorBoundary><OrgGuard><TenantEdit /></OrgGuard></ErrorBoundary>} />
+            <Route path="/management/unit/:id" element={<ErrorBoundary><OrgGuard><UnitDetail /></OrgGuard></ErrorBoundary>} />
+            <Route path="/management/unit/:id/edit" element={<ErrorBoundary><OrgGuard><UnitEdit /></OrgGuard></ErrorBoundary>} />
             <Route path="/services" element={<Services />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -68,7 +80,7 @@ const App = () => (
         <AuthProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <AppRoutes />
           </BrowserRouter>
         </AuthProvider>

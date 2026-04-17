@@ -320,3 +320,62 @@ export interface PaginatedResponse<T> {
   page: number;
   limit: number;
 }
+
+export interface FlatOwner {
+  id: string;
+  org_id: string;
+  unit_id: string;
+  user_id: string | null;
+  name: string;
+  phone: string | null;
+  nid: string | null;
+  since: string | null;
+  status: string;
+  created_at: string;
+  unit_number?: string;
+}
+
+export interface FlatOwnerCreateInput {
+  unit_id: string;
+  user_id?: string;
+  name: string;
+  phone?: string;
+  nid?: string;
+}
+
+export interface FlatOwnerUpdateInput {
+  name?: string;
+  phone?: string;
+  nid?: string;
+  status?: string;
+}
+
+export interface OrgMember {
+  id: string;
+  org_id: string;
+  user_id: string;
+  role_id: string;
+  invited_by: string | null;
+  joined_at: string;
+  user?: {
+    id: string;
+    name: string;
+    phone: string | null;
+    email: string | null;
+  };
+  role?: {
+    id: string;
+    name: string;
+    permissions: string[];
+  };
+}
+
+export interface OrgMemberInviteInput {
+  phone?: string;
+  email?: string;
+  role_id: string;
+}
+
+export interface OrgMemberUpdateInput {
+  role_id: string;
+}

@@ -9,6 +9,7 @@ export interface User {
   name: string;
   password_hash: string | null;
   google_id: string | null;
+  facebook_id: string | null;
   is_super_admin: number;
   is_verified: number;
   created_at: string;
@@ -32,6 +33,32 @@ export async function registerUser(data: { name: string; phone: string; password
     throw err;
   }
 
+return findUserById(id)!;
+}
+
+export function findUserByFacebookId(facebookId: string): User | null {
+  const users = prepare('SELECT * FROM users WHERE facebook_id = ?').all([facebookId]) as unknown as User[];
+  return users[0] || null;
+}
+
+export async function upsertFacebookUser(data: { name: string; email: string; facebookId: string }): Promise<User> {
+  let user = findUserByFacebookId(data.facebookId);
+  
+  if (user) {
+    return user;
+  }
+  
+  const existingEmail = findUserByEmail(data.email);
+  if (existingEmail) {
+    return existingEmail;
+  }
+  
+  const id = uuid();
+  run(
+    'INSERT INTO users (id, name, email, facebook_id, is_verified) VALUES (?, ?, ?, ?, 1)',
+    [id, data.name, data.email, data.facebookId]
+  );
+  
   return findUserById(id)!;
 }
 

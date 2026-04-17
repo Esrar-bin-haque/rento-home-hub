@@ -11,6 +11,22 @@ import {
   Tooltip, ResponsiveContainer, Legend
 } from "recharts";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  useDashboard,
+  useBuildings,
+  useUnits,
+  useTenants,
+  usePayments,
+  useExpenses,
+  usePayables,
+  useInvoices,
+  useFlatOwners,
+  useOrgMembers,
+  useInviteMember,
+  useUpdateMemberRole,
+  useRemoveMember,
+} from "@/hooks/api";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -290,6 +306,7 @@ const SlidePanel = ({ open, onClose, title, children }: { open: boolean; onClose
 
 // ─── Main Component ──────────────────────────────────────
 const BuildingManagement = () => {
+  const { currentOrg } = useAuth();
   const [activeTab, setActiveTab] = useState<SidebarKey>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [selectedTenant, setSelectedTenant] = useState<typeof tenantsList[0] | null>(null);
@@ -297,16 +314,16 @@ const BuildingManagement = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case "dashboard": return <DashboardContent />;
-      case "buildings": return <BuildingsContent />;
-      case "flatOwner": return <FlatOwnerContent onSelectOwner={setSelectedOwner} />;
-      case "tenants": return <TenantsContent onSelectTenant={setSelectedTenant} />;
-      case "paymentStatus": return <PaymentStatusContent />;
-      case "expenses": return <ExpensesContent />;
-      case "accountPayable": return <AccountPayableContent />;
-      case "accountReceivable": return <AccountReceivableContent />;
+      case "dashboard": return <DashboardContent orgId={currentOrg ?? null} />;
+      case "buildings": return <BuildingsContent orgId={currentOrg ?? null} />;
+      case "flatOwner": return <FlatOwnerContent orgId={currentOrg ?? null} onSelectOwner={setSelectedOwner} />;
+      case "tenants": return <TenantsContent orgId={currentOrg ?? null} onSelectTenant={setSelectedTenant} />;
+      case "paymentStatus": return <PaymentStatusContent orgId={currentOrg ?? null} />;
+      case "expenses": return <ExpensesContent orgId={currentOrg ?? null} />;
+      case "accountPayable": return <AccountPayableContent orgId={currentOrg ?? null} />;
+      case "accountReceivable": return <AccountReceivableContent orgId={currentOrg ?? null} />;
       case "reports": return <ReportsContent />;
-      case "association": return <AssociationContent />;
+      case "association": return <AssociationContent orgId={currentOrg ?? null} />;
       case "settings": return <SettingsContent />;
       default: return null;
     }
@@ -443,7 +460,8 @@ const BuildingManagement = () => {
 
 // ─── TAB 1: Dashboard ────────────────────────────────────
 
-const DashboardContent = () => {
+const DashboardContent = ({ orgId }: { orgId: string | null }) => {
+  const { data: dashboardData, isLoading } = useDashboard(orgId);
   const [serviceChargeTotal, setServiceChargeTotal] = useState(48000);
   const [editingCharge, setEditingCharge] = useState(false);
   const [editChargeValue, setEditChargeValue] = useState("48000");
@@ -453,12 +471,26 @@ const DashboardContent = () => {
   const [showMonthlyInvoice, setShowMonthlyInvoice] = useState(false);
   const [showFullInvoice, setShowFullInvoice] = useState(false);
 
-  const md = monthlyData[selectedMonth];
+  const monthlyData = dashboardData?.monthlyData || {
+    Jan: { service_charge: 48000, collected: 41000, receivable: 7000, expense: 24000, payable: 5000, cash_in_hand: 17000, notCollected: 7000, income: 41000 },
+    Feb: { service_charge: 48000, collected: 43000, receivable: 5000, expense: 26000, payable: 3000, cash_in_hand: 17000, notCollected: 5000, income: 43000 },
+    Mar: { service_charge: 48000, collected: 34500, receivable: 13500, expense: 27800, payable: 8200, cash_in_hand: 6700, notCollected: 13500, income: 34500 },
+  };
+
+  const stats = {
+    totalUnits: dashboardData?.totalUnits || 0,
+    occupiedUnits: dashboardData?.occupiedUnits || 0,
+    vacantUnits: dashboardData?.vacantUnits || 0,
+    activeTenants: dashboardData?.activeTenants || 0,
+    totalPaymentsCollected: dashboardData?.totalPaymentsCollected || 0,
+    totalExpenses: dashboardData?.totalExpenses || 0,
+  };
+
+  const md = monthlyData[selectedMonth as keyof typeof monthlyData] || monthlyData['Mar'];
   const isFutureMonth = md.service_charge === 0 && md.collected === 0;
 
   const collectionRate = md.service_charge > 0 ? Math.round((md.collected / md.service_charge) * 100) : 0;
 
-  // Chart data: show only selected month as single bar
   const chartData = [{ month: selectedMonth, collected: md.collected, notCollected: md.notCollected }];
   const incomeExpenseChartData = [{ month: selectedMonth, income: md.income, expense: md.expense, payable: md.payable }];
 
@@ -530,8 +562,8 @@ const DashboardContent = () => {
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Collected</span>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#EBFBEE' }}><CheckCircle2 className="h-4 w-4" style={{ color: '#2F9E44' }} /></div>
           </div>
-          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.collected.toLocaleString()}`}</p>
-          <p className="text-[11px] mt-0.5" style={{ color: '#2F9E44' }}>{isFutureMonth ? "—" : `${collectionRate}% collection rate`}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isLoading ? "—" : `BDT ${(stats.totalPaymentsCollected || md.collected).toLocaleString()}`}</p>
+          <p className="text-[11px] mt-0.5" style={{ color: '#2F9E44' }}>{isLoading ? "—" : `${stats.activeTenants} active tenants`}</p>
         </div>
 
         {/* Card 3: Account Receivable */}
@@ -556,8 +588,8 @@ const DashboardContent = () => {
             <span className="text-[11px] font-medium" style={{ color: '#868E96' }}>Total Expense</span>
             <div className="w-7 h-7 md:w-8 md:h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF9DB' }}><TrendingDown className="h-4 w-4" style={{ color: '#E67700' }} /></div>
           </div>
-          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isFutureMonth ? "—" : `BDT ${md.expense.toLocaleString()}`}</p>
-          <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isFutureMonth ? "—" : "6 expense entries"}</p>
+          <p className="text-lg md:text-2xl font-bold" style={{ color: '#1A1D23' }}>{isLoading ? "—" : `BDT ${(stats.totalExpenses || md.expense).toLocaleString()}`}</p>
+          <p className="text-[11px] mt-0.5" style={{ color: '#868E96' }}>{isLoading ? "—" : `${stats.totalUnits} total units`}</p>
         </div>
 
         {/* Card 5: Account Payable */}
@@ -794,9 +826,21 @@ const DashboardContent = () => {
 
 // ─── TAB 2: Buildings (single building + flats) ──────────
 
-const BuildingsContent = () => {
+const BuildingsContent = ({ orgId }: { orgId: string | null }) => {
+  const { data: unitsData, isLoading: unitsLoading } = useUnits(orgId);
+  const { data: buildingsData, isLoading: buildingsLoading } = useBuildings(orgId);
+  const { data: dashboardData } = useDashboard(orgId);
   const [statusFilter, setStatusFilter] = useState("All");
-  const filtered = flats.filter(f => statusFilter === "All" || f.status === statusFilter);
+  
+  const buildings = ((buildingsData as any)?.data || []) as Array<{ id: string; name: string; address: string | null; total_floors: number | null; created_at: string }>;
+  const units = ((unitsData as any)?.data || []) as Array<{ unit_number: string; floor: string | null; size_sqft: number | null; service_charge: number | null; status: string; }>;
+  const filtered = units.filter((f: { status: string }) => statusFilter === "All" || f.status.toLowerCase() === statusFilter.toLowerCase());
+
+  const building = buildings[0];
+  const occupiedCount = units.filter(u => u.status === 'occupied').length;
+  const vacantCount = units.filter(u => u.status !== 'occupied').length;
+  const totalServiceCharge = units.reduce((sum, u) => sum + (u.service_charge || 0), 0);
+  const isLoading = unitsLoading || buildingsLoading;
 
   return (
     <div className="space-y-5">
@@ -806,21 +850,20 @@ const BuildingsContent = () => {
       <div className="bg-white rounded-2xl shadow-sm p-5" style={{ border: '1px solid #DEE2E6' }}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-3">
-            <h2 className="text-base font-semibold" style={{ color: '#1A1D23' }}>Sunset Tower</h2>
+            <h2 className="text-base font-semibold" style={{ color: '#1A1D23' }}>{building?.name || 'Building'}</h2>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <div><span style={{ color: '#868E96' }}>Address</span><p className="font-medium" style={{ color: '#1A1D23' }}>Road 5, Dhanmondi, Dhaka-1209</p></div>
-              <div><span style={{ color: '#868E96' }}>Total Floors</span><p className="font-medium" style={{ color: '#1A1D23' }}>8</p></div>
-              <div><span style={{ color: '#868E96' }}>Year Built</span><p className="font-medium" style={{ color: '#1A1D23' }}>2010</p></div>
-              <div><span style={{ color: '#868E96' }}>Total Flats</span><p className="font-medium" style={{ color: '#1A1D23' }}>24</p></div>
-              <div className="col-span-2"><span style={{ color: '#868E96' }}>Common Areas</span><p className="font-medium" style={{ color: '#1A1D23' }}>Rooftop, Parking, Generator Room</p></div>
+              <div><span style={{ color: '#868E96' }}>Address</span><p className="font-medium" style={{ color: '#1A1D23' }}>{building?.address || '—'}</p></div>
+              <div><span style={{ color: '#868E96' }}>Total Floors</span><p className="font-medium" style={{ color: '#1A1D23' }}>{building?.total_floors || '—'}</p></div>
+              <div><span style={{ color: '#868E96' }}>Total Flats</span><p className="font-medium" style={{ color: '#1A1D23' }}>{units.length}</p></div>
+              <div><span style={{ color: '#868E96' }}>Active Tenants</span><p className="font-medium" style={{ color: '#1A1D23' }}>{dashboardData?.activeTenants || 0}</p></div>
             </div>
             <button className="text-xs px-3 py-1.5 rounded-lg font-medium" style={{ border: '1.5px solid #3B5BDB', color: '#3B5BDB' }}>Edit Building Info</button>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-[#F8F9FA] rounded-xl p-3"><span className="text-[11px]" style={{ color: '#868E96' }}>Occupied Flats</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>21</p></div>
-            <div className="bg-[#F8F9FA] rounded-xl p-3"><span className="text-[11px]" style={{ color: '#868E96' }}>Vacant Flats</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>3</p></div>
-            <div className="bg-[#F8F9FA] rounded-xl p-3"><span className="text-[11px]" style={{ color: '#868E96' }}>Monthly Fund Target</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 48,000</p></div>
-            <div className="bg-[#F8F9FA] rounded-xl p-3"><span className="text-[11px]" style={{ color: '#868E96' }}>Building Fund Balance</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 1,85,000</p></div>
+            <div className="bg-[#F8F9FA] rounded-xl p-3"><span className="text-[11px]" style={{ color: '#868E96' }}>Occupied Flats</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>{occupiedCount}</p></div>
+            <div className="bg-[#F8F9FA] rounded-xl p-3"><span className="text-[11px]" style={{ color: '#868E96' }}>Vacant Flats</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>{vacantCount}</p></div>
+            <div className="bg-[#F8F9FA] rounded-xl p-3"><span className="text-[11px]" style={{ color: '#868E96' }}>Monthly Fund Target</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT {totalServiceCharge.toLocaleString()}</p></div>
+            <div className="bg-[#F8F9FA] rounded-xl p-3"><span className="text-[11px]" style={{ color: '#868E96' }}>Total Units</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>{dashboardData?.totalUnits || units.length}</p></div>
           </div>
         </div>
       </div>
@@ -854,18 +897,18 @@ const BuildingsContent = () => {
             <tbody>
               {filtered.map((f, i) => (
                 <tr key={i} className="border-t hover:bg-[#F8F9FA]" style={{ borderColor: '#F1F3F5' }}>
-                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{f.flat}</td>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{f.floor}</td>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{f.size}</td>
-                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>BDT {f.serviceCharge.toLocaleString()}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{f.unit_number}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{f.floor || '—'}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{f.size_sqft || '—'}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>BDT {(f.service_charge || 0).toLocaleString()}</td>
                   <td className="p-3">
-                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium ${f.status === "Occupied" ? "bg-[#EDF2FF] text-[#3B5BDB]" : "bg-[#F8F9FA] text-[#868E96]"}`} style={{ border: f.status === "Occupied" ? '1px solid #BAC8FF' : '1px solid #DEE2E6' }}>
-                      {f.status}
+                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium ${f.status === "occupied" ? "bg-[#EDF2FF] text-[#3B5BDB]" : "bg-[#F8F9FA] text-[#868E96]"}`} style={{ border: f.status === "occupied" ? '1px solid #BAC8FF' : '1px solid #DEE2E6' }}>
+                      {f.status === "occupied" ? "Occupied" : "Vacant"}
                     </span>
                   </td>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{f.tenant}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>—</td>
                   <td className="p-3">
-                    <button className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>{f.status === "Occupied" ? "View" : "Assign"}</button>
+                    <button className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>{f.status === "occupied" ? "View" : "Assign"}</button>
                   </td>
                 </tr>
               ))}
@@ -879,12 +922,21 @@ const BuildingsContent = () => {
 
 // ─── TAB 3: Flat Owner ───────────────────────────────────
 
-const FlatOwnerContent = ({ onSelectOwner }: { onSelectOwner: (o: typeof flatOwners[0]) => void }) => (
+const FlatOwnerContent = ({ orgId, onSelectOwner }: { orgId: string | null; onSelectOwner: (o: typeof flatOwners[0]) => void }) => {
+  const { data: flatOwnersData, isLoading } = useFlatOwners(orgId);
+  const flatOwnersApi = ((flatOwnersData as any)?.data || []) as Array<{ name: string; phone: string | null; nid: string | null; unit_number: string | null; since: string | null; status: string }>;
+
+  return (
   <div className="space-y-5">
     <div className="flex items-center justify-between">
       <h1 className="text-xl font-heading font-bold" style={{ color: '#1A1D23' }}>Flat Owners</h1>
       <button className="flex items-center gap-1.5 text-white text-xs font-medium px-3 py-2 rounded-lg" style={{ background: '#3B5BDB' }}><Plus className="h-3.5 w-3.5" /> Add Owner</button>
     </div>
+    {isLoading ? (
+      <div className="text-center py-8 text-gray-500">Loading...</div>
+    ) : flatOwnersApi.length === 0 ? (
+      <div className="text-center py-8 text-gray-500">No flat owners found</div>
+    ) : (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden" style={{ border: '1px solid #DEE2E6' }}>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -894,19 +946,19 @@ const FlatOwnerContent = ({ onSelectOwner }: { onSelectOwner: (o: typeof flatOwn
             ))}
           </tr></thead>
           <tbody>
-            {flatOwners.map((o, i) => (
+            {flatOwnersApi.map((o, i) => (
               <tr key={i} className="border-t hover:bg-[#F8F9FA]" style={{ borderColor: '#F1F3F5' }}>
                 <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{o.name}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{o.phone}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{o.nid}</td>
-                <td className="p-3 text-xs" style={{ color: '#1A1D23' }}>{o.flat}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{o.since}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{o.tenantLiving}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{o.phone || '—'}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{o.nid || '—'}</td>
+                <td className="p-3 text-xs" style={{ color: '#1A1D23' }}>{o.unit_number || '—'}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{o.since || '—'}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>—</td>
                 <td className="p-3">
-                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#EBFBEE] text-[#2F9E44]" style={{ border: '1px solid #B2F2BB' }}>{o.status}</span>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#EBFBEE] text-[#2F9E44]" style={{ border: '1px solid #B2F2BB' }}>{o.status || 'Active'}</span>
                 </td>
                 <td className="p-3 flex gap-2">
-                  <button onClick={() => onSelectOwner(o)} className="text-xs hover:underline flex items-center gap-1" style={{ color: '#3B5BDB' }}><Eye className="h-3 w-3" />View</button>
+                  <button onClick={() => onSelectOwner(o as unknown as typeof flatOwners[0])} className="text-xs hover:underline flex items-center gap-1" style={{ color: '#3B5BDB' }}><Eye className="h-3 w-3" />View</button>
                   <button className="text-xs hover:underline flex items-center gap-1" style={{ color: '#868E96' }}><Edit className="h-3 w-3" />Edit</button>
                 </td>
               </tr>
@@ -915,17 +967,28 @@ const FlatOwnerContent = ({ onSelectOwner }: { onSelectOwner: (o: typeof flatOwn
         </table>
       </div>
     </div>
+    )}
   </div>
-);
+  );
+};
 
 // ─── TAB 4: Tenants ──────────────────────────────────────
 
-const TenantsContent = ({ onSelectTenant }: { onSelectTenant: (t: typeof tenantsList[0]) => void }) => (
+const TenantsContent = ({ orgId, onSelectTenant }: { orgId: string | null; onSelectTenant: (t: typeof tenantsList[0]) => void }) => {
+  const { data: tenantsData, isLoading } = useTenants(orgId);
+  const tenantsApi = ((tenantsData as any)?.data || []) as Array<{ name: string; phone: string | null; unit_number: string | null; move_in_date: string | null; status: string; }>;
+
+  return (
   <div className="space-y-5">
     <div className="flex items-center justify-between">
       <h1 className="text-xl font-heading font-bold" style={{ color: '#1A1D23' }}>Tenants</h1>
       <button className="flex items-center gap-1.5 text-white text-xs font-medium px-3 py-2 rounded-lg" style={{ background: '#3B5BDB' }}><Plus className="h-3.5 w-3.5" /> Add Tenant</button>
     </div>
+    {isLoading ? (
+      <div className="text-center py-8 text-gray-500">Loading...</div>
+    ) : tenantsApi.length === 0 ? (
+      <div className="text-center py-8 text-gray-500">No tenants found</div>
+    ) : (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden" style={{ border: '1px solid #DEE2E6' }}>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -935,17 +998,17 @@ const TenantsContent = ({ onSelectTenant }: { onSelectTenant: (t: typeof tenants
             ))}
           </tr></thead>
           <tbody>
-            {tenantsList.map((tt, i) => (
+            {tenantsApi.map((tt, i) => (
               <tr key={i} className="border-t hover:bg-[#F8F9FA]" style={{ borderColor: '#F1F3F5' }}>
                 <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{tt.name}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{tt.phone}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{tt.nid}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{tt.flat}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{tt.moveIn}</td>
-                <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>BDT {tt.rent.toLocaleString()}</td>
-                <td className="p-3"><span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#EBFBEE] text-[#2F9E44]" style={{ border: '1px solid #B2F2BB' }}>{tt.status}</span></td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{tt.phone || '—'}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>—</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{tt.unit_number || '—'}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{tt.move_in_date ? new Date(tt.move_in_date).toLocaleDateString() : '—'}</td>
+                <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>—</td>
+                <td className="p-3"><span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#EBFBEE] text-[#2F9E44]" style={{ border: '1px solid #B2F2BB' }}>{tt.status || 'Active'}</span></td>
                 <td className="p-3">
-                  <button onClick={() => onSelectTenant(tt)} className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>View</button>
+                  <button onClick={() => onSelectTenant(tt as unknown as typeof tenantsList[0])} className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>View</button>
                 </td>
               </tr>
             ))}
@@ -953,24 +1016,36 @@ const TenantsContent = ({ onSelectTenant }: { onSelectTenant: (t: typeof tenants
         </table>
       </div>
     </div>
+    )}
   </div>
-);
+  );
+};
 
 // ─── TAB 5: Payment Status ──────────────────────────────
 
-const PaymentStatusContent = () => {
+const PaymentStatusContent = ({ orgId }: { orgId: string | null }) => {
+  const { data: paymentsData, isLoading } = usePayments(orgId);
+  const paymentsApi = ((paymentsData as any)?.data || []) as Array<{ tenant_name: string; unit_number: string; amount: number; month: string; paid_at: string | null; method: string; status: string; }>;
   const [statusFilter, setStatusFilter] = useState("All");
-  const filtered = paymentStatusData.filter(p => statusFilter === "All" || (statusFilter === "Paid" ? p.status === "paid" : p.status === "due"));
+  const filtered = paymentsApi.filter(p => statusFilter === "All" || (statusFilter === "Paid" ? p.status === "paid" : p.status === "due"));
+
+  const totalCollectable = paymentsApi.length * 4000;
+  const collected = paymentsApi.filter(p => p.status === 'paid').reduce((sum, p) => sum + p.amount, 0);
+  const due = totalCollectable - collected;
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-heading font-bold" style={{ color: '#1A1D23' }}>Payment Status</h1>
         <button className="flex items-center gap-1.5 text-white text-xs font-medium px-3 py-2 rounded-lg" style={{ background: '#3B5BDB' }}><Plus className="h-3.5 w-3.5" /> Record Payment</button>
       </div>
+      {isLoading ? (
+        <div className="text-center py-8 text-gray-500">Loading...</div>
+      ) : (
+      <>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-        <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Collectable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 48,000</p></div>
-        <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Collected</span><p className="text-xl font-bold" style={{ color: '#2F9E44' }}>BDT 34,500</p></div>
-        <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Due</span><p className="text-xl font-bold" style={{ color: '#E03131' }}>BDT 13,500</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Collectable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT {totalCollectable.toLocaleString()}</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Collected</span><p className="text-xl font-bold" style={{ color: '#2F9E44' }}>BDT {collected.toLocaleString()}</p></div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Due</span><p className="text-xl font-bold" style={{ color: '#E03131' }}>BDT {due.toLocaleString()}</p></div>
       </div>
       <div className="flex gap-3">
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="h-9 rounded-lg border px-3 text-xs" style={{ borderColor: '#DEE2E6' }}>
@@ -988,14 +1063,19 @@ const PaymentStatusContent = () => {
               ))}
             </tr></thead>
             <tbody>
-              {filtered.map((p, i) => (
+              {isLoading ? (
+                <tr><td colSpan={8} className="p-4 text-center text-gray-500">Loading...</td></tr>
+              ) : filtered.length === 0 ? (
+                <tr><td colSpan={8} className="p-4 text-center text-gray-500">No payments found</td></tr>
+              ) : (
+              filtered.map((p, i) => (
                 <tr key={i} className="border-t hover:bg-[#F8F9FA]" style={{ borderColor: '#F1F3F5' }}>
-                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{p.tenant}</td>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{p.flat}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{p.tenant_name}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{p.unit_number}</td>
                   <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>BDT {p.amount.toLocaleString()}</td>
                   <td className="p-3 text-xs" style={{ color: '#868E96' }}>{p.month}</td>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{p.date}</td>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{p.method}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{p.paid_at ? new Date(p.paid_at).toLocaleDateString() : '—'}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{p.method || '—'}</td>
                   <td className="p-3">
                     <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium ${p.status === "paid" ? "bg-[#EBFBEE] text-[#2F9E44]" : "bg-[#FFF5F5] text-[#E03131]"}`} style={{ border: p.status === "paid" ? '1px solid #B2F2BB' : '1px solid #FFC9C9' }}>
                       {p.status === "paid" ? "Paid" : "Due"}
@@ -1005,24 +1085,28 @@ const PaymentStatusContent = () => {
                     {p.status === "paid" ? (
                       <button className="text-xs px-2 py-1 rounded-md" style={{ border: '1px solid #3B5BDB', color: '#3B5BDB' }}>Receipt</button>
                     ) : (
-                      <button onClick={() => toast.success(`Reminder sent to ${p.tenant}`)} className="text-xs px-2 py-1 rounded-md" style={{ border: '1px solid #E67700', color: '#E67700' }}>Remind</button>
+                      <button onClick={() => toast.success(`Reminder sent to ${p.tenant_name}`)} className="text-xs px-2 py-1 rounded-md" style={{ border: '1px solid #E67700', color: '#E67700' }}>Remind</button>
                     )}
                   </td>
                 </tr>
-              ))}
+              )))}
             </tbody>
           </table>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 };
 
 // ─── TAB 6: Expenses ─────────────────────────────────────
 
-const ExpensesContent = () => {
+const ExpensesContent = ({ orgId }: { orgId: string | null }) => {
+  const { data: expensesData, isLoading } = useExpenses(orgId);
+  const expensesApi = ((expensesData as any)?.data || []) as Array<{ description: string; amount: number; category: string; date: string; added_by: string }>;
   const [catFilter, setCatFilter] = useState("All");
-  const filtered = expensesList.filter(e => catFilter === "All" || e.category === catFilter);
+  const filtered = expensesApi.filter(e => catFilter === "All" || e.category === catFilter);
   const total = filtered.reduce((sum, e) => sum + e.amount, 0);
   return (
     <div className="space-y-5">
@@ -1045,15 +1129,20 @@ const ExpensesContent = () => {
               ))}
             </tr></thead>
             <tbody>
-              {filtered.map((e, i) => (
+              {isLoading ? (
+                <tr><td colSpan={5} className="p-4 text-center text-gray-500">Loading...</td></tr>
+              ) : filtered.length === 0 ? (
+                <tr><td colSpan={5} className="p-4 text-center text-gray-500">No expenses found</td></tr>
+              ) : (
+              filtered.map((e, i) => (
                 <tr key={i} className="border-t hover:bg-[#F8F9FA]" style={{ borderColor: '#F1F3F5' }}>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{e.date}</td>
-                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{e.desc}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{e.date ? new Date(e.date).toLocaleDateString() : '—'}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{e.description}</td>
                   <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>BDT {e.amount.toLocaleString()}</td>
                   <td className="p-3"><span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium ${catColors[e.category] || "bg-gray-100 text-gray-700"}`}>{e.category}</span></td>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{e.addedBy}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{e.added_by || '—'}</td>
                 </tr>
-              ))}
+              )))}
             </tbody>
           </table>
         </div>
@@ -1067,7 +1156,15 @@ const ExpensesContent = () => {
 
 // ─── TAB 7: Account Payable ──────────────────────────────
 
-const AccountPayableContent = () => (
+const AccountPayableContent = ({ orgId }: { orgId: string | null }) => {
+  const { data: payablesData, isLoading } = usePayables(orgId);
+  const payablesApi = ((payablesData as any)?.data || []) as Array<{ description: string; amount: number; pay_to: string; due_date: string; status: string }>;
+
+  const totalPayable = payablesApi.reduce((sum, a) => sum + a.amount, 0);
+  const paid = payablesApi.filter(a => a.status === 'paid').reduce((sum, a) => sum + a.amount, 0);
+  const pending = totalPayable - paid;
+
+  return (
   <div className="space-y-5">
     <div className="flex items-center justify-between">
       <div>
@@ -1077,10 +1174,15 @@ const AccountPayableContent = () => (
       <button className="flex items-center gap-1.5 text-white text-xs font-medium px-3 py-2 rounded-lg" style={{ background: '#3B5BDB' }}><Plus className="h-3.5 w-3.5" /> Add Payable</button>
     </div>
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Payable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 39,200</p></div>
-      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Paid</span><p className="text-xl font-bold" style={{ color: '#2F9E44' }}>BDT 12,700</p></div>
-      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Pending</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT 26,500</p></div>
+      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Payable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT {totalPayable.toLocaleString()}</p></div>
+      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Paid</span><p className="text-xl font-bold" style={{ color: '#2F9E44' }}>BDT {paid.toLocaleString()}</p></div>
+      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Pending</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT {pending.toLocaleString()}</p></div>
     </div>
+    {isLoading ? (
+      <div className="text-center py-8 text-gray-500">Loading...</div>
+    ) : payablesApi.length === 0 ? (
+      <div className="text-center py-8 text-gray-500">No payables found</div>
+    ) : (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden" style={{ border: '1px solid #DEE2E6' }}>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -1090,12 +1192,12 @@ const AccountPayableContent = () => (
             ))}
           </tr></thead>
           <tbody>
-            {accountPayableData.map((a, i) => (
+            {payablesApi.map((a, i) => (
               <tr key={i} className="border-t hover:bg-[#F8F9FA]" style={{ borderColor: '#F1F3F5' }}>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.date}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.due_date ? new Date(a.due_date).toLocaleDateString() : '—'}</td>
                 <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{a.description}</td>
                 <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>BDT {a.amount.toLocaleString()}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.payTo}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.pay_to}</td>
                 <td className="p-3">
                   <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium ${a.status === "paid" ? "bg-[#EBFBEE] text-[#2F9E44]" : "bg-amber-100 text-amber-700"}`}>
                     {a.status === "paid" ? "Paid" : "Pending"}
@@ -1112,12 +1214,22 @@ const AccountPayableContent = () => (
         </table>
       </div>
     </div>
+    )}
   </div>
-);
+  );
+};
 
 // ─── TAB 8: Account Receivable ───────────────────────────
 
-const AccountReceivableContent = () => (
+const AccountReceivableContent = ({ orgId }: { orgId: string | null }) => {
+  const { data: invoicesData, isLoading } = useInvoices(orgId);
+  const invoicesApi = ((invoicesData as any)?.data || []) as Array<{ tenant_name: string; unit_number: string; total_amount: number; due_date: string | null; status: string; invoice_number: string }>;
+
+  const totalReceivable = invoicesApi.filter(i => i.status !== 'paid').reduce((sum, i) => sum + i.total_amount, 0);
+  const overdue = invoicesApi.filter(i => i.status === 'overdue').reduce((sum, i) => sum + i.total_amount, 0);
+  const upcoming = invoicesApi.filter(i => i.status === 'pending' || i.status === 'issued').reduce((sum, i) => sum + i.total_amount, 0);
+
+  return (
   <div className="space-y-5">
     <div className="flex items-center justify-between">
       <div>
@@ -1127,49 +1239,56 @@ const AccountReceivableContent = () => (
       <button className="flex items-center gap-1.5 text-white text-xs font-medium px-3 py-2 rounded-lg" style={{ background: '#3B5BDB' }}><Plus className="h-3.5 w-3.5" /> Add Entry</button>
     </div>
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Receivable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT 17,500</p></div>
-      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Overdue</span><p className="text-xl font-bold" style={{ color: '#E03131' }}>BDT 14,000</p></div>
-      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Upcoming</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT 3,500</p></div>
+      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Total Receivable</span><p className="text-xl font-bold" style={{ color: '#1A1D23' }}>BDT {totalReceivable.toLocaleString()}</p></div>
+      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Overdue</span><p className="text-xl font-bold" style={{ color: '#E03131' }}>BDT {overdue.toLocaleString()}</p></div>
+      <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid #DEE2E6' }}><span className="text-[11px]" style={{ color: '#868E96' }}>Upcoming</span><p className="text-xl font-bold" style={{ color: '#E67700' }}>BDT {upcoming.toLocaleString()}</p></div>
     </div>
+    {isLoading ? (
+      <div className="text-center py-8 text-gray-500">Loading...</div>
+    ) : invoicesApi.length === 0 ? (
+      <div className="text-center py-8 text-gray-500">No receivables found</div>
+    ) : (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden" style={{ border: '1px solid #DEE2E6' }}>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead><tr style={{ background: '#F8F9FA' }}>
-            {["Tenant", "Flat", "Type", "Amount", "Due Date", "Days Overdue", "Status", "Actions"].map(h => (
+            {["Tenant", "Flat", "Invoice #", "Amount", "Due Date", "Status", "Actions"].map(h => (
               <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#495057' }}>{h}</th>
             ))}
           </tr></thead>
           <tbody>
-            {accountReceivableData.map((a, i) => (
+            {invoicesApi.map((a, i) => {
+              const isOverdue = a.status === 'overdue';
+              const isPaid = a.status === 'paid';
+              const daysOverdue = a.due_date ? Math.max(0, Math.floor((Date.now() - new Date(a.due_date).getTime()) / 86400000)) : 0;
+              return (
               <tr key={i} className="border-t hover:bg-[#F8F9FA]" style={{ borderColor: '#F1F3F5' }}>
-                <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{a.tenant}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.flat}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.type}</td>
-                <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>BDT {a.amount.toLocaleString()}</td>
-                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.dueDate}</td>
+                <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{a.tenant_name || '—'}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.unit_number || '—'}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.invoice_number}</td>
+                <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>BDT {a.total_amount.toLocaleString()}</td>
+                <td className="p-3 text-xs" style={{ color: '#868E96' }}>{a.due_date ? new Date(a.due_date).toLocaleDateString() : '—'}</td>
                 <td className="p-3">
-                  {a.daysOverdue > 0 ? (
-                    <span className="text-xs font-medium" style={{ color: '#E03131' }}>{a.daysOverdue} days</span>
-                  ) : (
-                    <span className="text-xs" style={{ color: '#868E96' }}>—</span>
-                  )}
-                </td>
-                <td className="p-3">
-                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium ${a.status === "overdue" ? "bg-[#FFF5F5] text-[#E03131]" : "bg-amber-100 text-amber-700"}`} style={{ border: a.status === "overdue" ? '1px solid #FFC9C9' : '1px solid #FFE066' }}>
-                    {a.status === "overdue" ? "Overdue" : "Upcoming"}
+                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium ${isPaid ? "bg-[#EBFBEE] text-[#2F9E44]" : isOverdue ? "bg-[#FFF5F5] text-[#E03131]" : "bg-amber-100 text-amber-700"}`}>
+                    {isPaid ? "Paid" : isOverdue ? "Overdue" : "Upcoming"}
                   </span>
                 </td>
                 <td className="p-3">
-                  <button onClick={() => toast.success(`Reminder sent to ${a.tenant}`)} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#3B5BDB' }}><Send className="h-3 w-3" />Remind</button>
+                  {!isPaid && (
+                    <button onClick={() => toast.success(`Reminder sent to ${a.tenant_name || 'tenant'}`)} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#3B5BDB' }}><Send className="h-3 w-3" />Remind</button>
+                  )}
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>
     </div>
+    )}
   </div>
-);
+  );
+};
 
 // ─── TAB 9: Reports ─────────────────────────────────────
 
@@ -1404,19 +1523,46 @@ const ReportsContent = () => {
 
 // ─── TAB 10: Association ─────────────────────────────────
 
-const AssociationContent = () => {
+const AssociationContent = ({ orgId }: { orgId: string | null }) => {
   const [showAddMember, setShowAddMember] = useState(false);
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
-  const [memberToRemove, setMemberToRemove] = useState<{ name: string } | null>(null);
+  const [memberToRemove, setMemberToRemove] = useState<{ id: string; name: string } | null>(null);
+  const { data: membersData, isLoading } = useOrgMembers(orgId);
+  const inviteMember = useInviteMember(orgId);
+  const updateMemberRole = useUpdateMemberRole(orgId);
+  const removeMember = useRemoveMember(orgId);
 
-  const handleRemoveClick = (m: { name: string }) => {
+  const membersApi = ((membersData as any)?.data || []) as Array<{
+    id: string;
+    user_id: string;
+    joined_at: string;
+    user?: { id: string; name: string; phone: string | null; email: string | null };
+    role?: { id: string; name: string; permissions: string[] };
+  }>;
+
+  const roleCountMap: Record<string, number> = {};
+  const rolePermissionsMap: Record<string, string> = {};
+  membersApi.forEach(m => {
+    const roleName = m.role?.name || 'Member';
+    roleCountMap[roleName] = (roleCountMap[roleName] || 0) + 1;
+    if (m.role?.permissions) {
+      rolePermissionsMap[roleName] = m.role.permissions.join(', ');
+    }
+  });
+  const uniqueRoles = Object.keys(roleCountMap).map(name => ({
+    name,
+    permissions: rolePermissionsMap[name] || '—',
+    members: roleCountMap[name],
+  }));
+
+  const handleRemoveClick = (m: { id: string; name: string }) => {
     setMemberToRemove(m);
     setRemoveDialogOpen(true);
   };
 
   const confirmRemove = () => {
     if (memberToRemove) {
-      toast.success(`${memberToRemove.name} removed`);
+      removeMember.mutate(memberToRemove.id);
     }
     setRemoveDialogOpen(false);
     setMemberToRemove(null);
@@ -1429,13 +1575,13 @@ const AssociationContent = () => {
       {/* Association Info */}
       <div className="bg-white rounded-2xl shadow-sm p-5" style={{ border: '1px solid #DEE2E6' }}>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold" style={{ color: '#1A1D23' }}>Sunset Tower Owners Association</h2>
+          <h2 className="text-base font-semibold" style={{ color: '#1A1D23' }}>Owners Association</h2>
           <button className="text-xs px-3 py-1.5 rounded-lg font-medium" style={{ border: '1.5px solid #3B5BDB', color: '#3B5BDB' }}>Edit Association Info</button>
         </div>
         <div className="grid grid-cols-3 gap-3 text-xs">
-          <div><span style={{ color: '#868E96' }}>Established</span><p className="font-medium" style={{ color: '#1A1D23' }}>January 2018</p></div>
-          <div><span style={{ color: '#868E96' }}>Total Members</span><p className="font-medium" style={{ color: '#1A1D23' }}>8</p></div>
-          <div><span style={{ color: '#868E96' }}>Admin</span><p className="font-medium" style={{ color: '#1A1D23' }}>Muhammad Mushfiqur Rahman</p></div>
+          <div><span style={{ color: '#868E96' }}>Total Members</span><p className="font-medium" style={{ color: '#1A1D23' }}>{membersApi.length}</p></div>
+          <div><span style={{ color: '#868E96' }}>Roles</span><p className="font-medium" style={{ color: '#1A1D23' }}>{uniqueRoles.length}</p></div>
+          <div><span style={{ color: '#868E96' }}>Admin</span><p className="font-medium" style={{ color: '#1A1D23' }}>{membersApi.find(m => m.role?.name === 'Admin')?.user?.name || '—'}</p></div>
         </div>
       </div>
 
@@ -1458,7 +1604,7 @@ const AssociationContent = () => {
               ))}
             </tr></thead>
             <tbody>
-              {associationRoles.map((r, i) => (
+              {uniqueRoles.map((r, i) => (
                 <tr key={i} className="border-t hover:bg-[#F8F9FA]" style={{ borderColor: '#F1F3F5' }}>
                   <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{r.name}</td>
                   <td className="p-3 text-xs" style={{ color: '#868E96' }}>{r.permissions}</td>
@@ -1480,40 +1626,45 @@ const AssociationContent = () => {
           <h3 className="text-sm font-semibold" style={{ color: '#1A1D23' }}>Association Members</h3>
           <button onClick={() => setShowAddMember(true)} className="text-xs px-3 py-1.5 rounded-lg font-medium text-white" style={{ background: '#3B5BDB' }}>+ Add Member</button>
         </div>
+        {isLoading ? (
+          <div className="text-center py-8 text-gray-500">Loading...</div>
+        ) : membersApi.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">No members found</div>
+        ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead><tr style={{ background: '#F8F9FA' }}>
-              {["Name", "Phone", "NID", "Role", "Joining Date", "Status", "Actions"].map(h => (
+              {["Name", "Phone", "Role", "Joining Date", "Status", "Actions"].map(h => (
                 <th key={h} className="text-left p-3 font-semibold text-[11px] uppercase tracking-wide" style={{ color: '#495057' }}>{h}</th>
               ))}
             </tr></thead>
             <tbody>
-              {associationMembers.map((m, i) => (
+              {membersApi.map((m, i) => (
                 <tr key={i} className="border-t hover:bg-[#F8F9FA]" style={{ borderColor: '#F1F3F5' }}>
-                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{m.name}</td>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{m.phone}</td>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{m.nid}</td>
+                  <td className="p-3 text-xs font-medium" style={{ color: '#1A1D23' }}>{m.user?.name || '—'}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{m.user?.phone || '—'}</td>
                   <td className="p-3">
                     <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                      m.role === "Admin" ? "bg-[#EDF2FF] text-[#3B5BDB]" :
-                      m.role === "Manager" ? "bg-purple-100 text-purple-700" :
-                      m.role === "Cashier" ? "bg-amber-100 text-amber-700" :
+                      m.role?.name === "Admin" ? "bg-[#EDF2FF] text-[#3B5BDB]" :
+                      m.role?.name === "Manager" ? "bg-purple-100 text-purple-700" :
+                      m.role?.name === "Cashier" ? "bg-amber-100 text-amber-700" :
                       "bg-gray-100 text-gray-600"
-                    }`}>{m.role}</span>
+                    }`}>{m.role?.name || 'Member'}</span>
                   </td>
-                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{m.joined}</td>
+                  <td className="p-3 text-xs" style={{ color: '#868E96' }}>{m.joined_at ? new Date(m.joined_at).toLocaleDateString() : '—'}</td>
                   <td className="p-3">
-                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#EBFBEE] text-[#2F9E44]" style={{ border: '1px solid #B2F2BB' }}>{m.status}</span>
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#EBFBEE] text-[#2F9E44]" style={{ border: '1px solid #B2F2BB' }}>Active</span>
                   </td>
                   <td className="p-3 flex gap-2">
                     <button className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>Edit</button>
-                    {m.role !== "Admin" && <button onClick={() => handleRemoveClick(m)} className="text-xs hover:underline" style={{ color: '#E03131' }}>Remove</button>}
+                    {m.role?.name !== "Admin" && <button onClick={() => handleRemoveClick({ id: m.user_id, name: m.user?.name || 'member' })} className="text-xs hover:underline" style={{ color: '#E03131' }}>Remove</button>}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        )}
         <p className="text-[11px] mt-3 italic" style={{ color: '#868E96' }}>Only the Admin can add or remove members and manage roles.</p>
       </div>
 
@@ -1527,16 +1678,13 @@ const AssociationContent = () => {
               <button onClick={() => setShowAddMember(false)} className="p-1 hover:bg-[#F1F3F5] rounded"><X className="h-4 w-4" /></button>
             </div>
             <div className="space-y-3">
-              <div><label className="text-xs mb-1 block" style={{ color: '#495057' }}>Full Name</label><input className="w-full h-9 rounded-lg border px-3 text-xs" style={{ borderColor: '#DEE2E6' }} /></div>
               <div><label className="text-xs mb-1 block" style={{ color: '#495057' }}>Phone Number</label><input placeholder="+880" className="w-full h-9 rounded-lg border px-3 text-xs" style={{ borderColor: '#DEE2E6' }} /></div>
-              <div><label className="text-xs mb-1 block" style={{ color: '#495057' }}>NID Number</label><input className="w-full h-9 rounded-lg border px-3 text-xs" style={{ borderColor: '#DEE2E6' }} /></div>
               <div><label className="text-xs mb-1 block" style={{ color: '#495057' }}>Role</label>
                 <select className="w-full h-9 rounded-lg border px-3 text-xs" style={{ borderColor: '#DEE2E6' }}>
                   <option>Admin</option><option>Manager</option><option>Cashier</option><option>Member</option>
                 </select>
               </div>
-              <div><label className="text-xs mb-1 block" style={{ color: '#495057' }}>Joining Date</label><input type="date" className="w-full h-9 rounded-lg border px-3 text-xs" style={{ borderColor: '#DEE2E6' }} /></div>
-              <button onClick={() => { setShowAddMember(false); toast.success("Member added"); }} className="w-full h-9 text-xs font-medium rounded-lg text-white" style={{ background: '#3B5BDB' }}>Add Member</button>
+              <button onClick={() => { setShowAddMember(false); toast.success("Invitation sent"); }} className="w-full h-9 text-xs font-medium rounded-lg text-white" style={{ background: '#3B5BDB' }}>Invite Member</button>
             </div>
           </div>
         </div>
