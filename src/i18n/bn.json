@@ -187,6 +187,8 @@
   "pm.advanceMoney": "অ্যাডভান্স টাকা",
   "pm.advanceMoneyDesc": "ভাড়াটদের থেকে অ্যাডভান্স পেমেন্ট ট্র্যাক করুন",
   "pm.allActive": "সব সক্রিয়",
+  "pm.accountPayable": "প্রদেয় হিসাব",
+  "pm.accountReceivable": "পাওনা হিসাব",
   "pm.createInvoice": "বিল তৈরি করুন",
   "pm.dateReceived": "প্রাপ্তির তারিখ",
   "pm.incomeTrend": "আয়ের প্রবণতা",

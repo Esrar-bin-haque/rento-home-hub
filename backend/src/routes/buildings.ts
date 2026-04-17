@@ -33,7 +33,7 @@ router.post('/', requireAuth, requireOrgMember, requirePermission('buildings.wri
 router.get('/:id', requireAuth, requireOrgMember, requirePermission('buildings.read'), (req: Request, res: Response) => {
   const b = findBuildingById(req.params.id, req.org!.id);
   if (!b) return res.status(404).json({ error: 'Not found' });
-  res.json(b);
+  res.json({ data: b });
 });
 
 router.put('/:id', requireAuth, requireOrgMember, requirePermission('buildings.write'), async (req: Request, res: Response) => {

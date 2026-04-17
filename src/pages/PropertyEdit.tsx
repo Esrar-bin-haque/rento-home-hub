@@ -21,7 +21,7 @@ export default function PropertyEdit() {
   const buildingQuery = useBuilding(currentOrg?.id || null, id);
   const updateBuilding = useUpdateBuilding(currentOrg?.id || null);
 
-  const building = buildingQuery.data as Building | undefined;
+  const building = (buildingQuery.data as any)?.data as Building | undefined;
   const isLoading = buildingQuery.isLoading;
 
   const [formData, setFormData] = useState({

@@ -187,6 +187,8 @@
   "pm.advanceMoney": "Advance Money",
   "pm.advanceMoneyDesc": "Track advance payments from tenants",
   "pm.allActive": "All Active",
+  "pm.accountPayable": "Account Payable",
+  "pm.accountReceivable": "Account Receivable",
   "pm.createInvoice": "Create Invoice",
   "pm.dateReceived": "Date Received",
   "pm.incomeTrend": "Income Trend",

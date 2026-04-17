@@ -28,8 +28,8 @@ export default function PropertyDetail() {
 
   const deleteBuilding = useDeleteBuilding(currentOrg?.id || null);
 
-  const building = buildingQuery.data as Building | undefined;
-  const unitsData = (unitsQuery.data as Unit[] | undefined) || [];
+  const building = (buildingQuery.data as any)?.data as Building | undefined;
+  const unitsData = (unitsQuery.data as any)?.data || [];
   const tenantsData = (tenantsQuery.data as Tenant[] | undefined) || [];
 
   const handleDelete = async () => {

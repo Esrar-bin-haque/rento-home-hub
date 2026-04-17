@@ -469,7 +469,17 @@ const PropertiesContent = () => {
   }
 
   const propertyList = buildings?.data || [];
-  
+  const { data: allUnitsData } = useUnits();
+  const allUnitsList = allUnitsData?.data || [];
+
+  const getUnitCounts = (buildingId: string) => {
+    const buildingUnits = allUnitsList.filter((u: any) => u.building_id === buildingId);
+    const total = buildingUnits.length;
+    const occupied = buildingUnits.filter((u: any) => u.status === "occupied").length;
+    const vacant = total - occupied;
+    return { total, occupied, vacant };
+  };
+
   console.log('Properties debug:', { currentOrg, buildings, propertyList, isLoading, error });
 
   return (
@@ -544,19 +554,21 @@ const PropertiesContent = () => {
                   </td>
                 </tr>
               ) : (
-                propertyList.map((p: any) => (
+                propertyList.map((p: any) => {
+                  const counts = getUnitCounts(p.id);
+                  return (
                   <tr key={p.id} className="border-t border-[#F1F3F5] hover:bg-[#F8F9FA] transition-colors">
                     <td className="p-3 text-foreground text-xs font-medium">{p.name}</td>
                     <td className="p-3 text-muted-foreground text-xs">{p.address || "-"}</td>
-                    <td className="p-3 text-foreground text-xs">-</td>
-                    <td className="p-3 text-foreground text-xs">-</td>
-                    <td className="p-3 text-foreground text-xs">-</td>
+                    <td className="p-3 text-foreground text-xs">{counts.total}</td>
+                    <td className="p-3 text-foreground text-xs">{counts.occupied}</td>
+                    <td className="p-3 text-foreground text-xs">{counts.vacant}</td>
                     <td className="p-3 flex gap-2">
                       <Link to={`/management/property/${p.id}`} className="text-xs text-primary hover:underline flex items-center gap-1"><Eye className="h-3 w-3" />{t("bm.view")}</Link>
                       <Link to={`/management/property/${p.id}/edit`} className="text-xs text-muted-foreground hover:underline flex items-center gap-1"><Edit className="h-3 w-3" />{t("bm.edit")}</Link>
                     </td>
                   </tr>
-                ))
+                )})
               )}
             </tbody>
           </table>
@@ -1888,9 +1900,9 @@ const AccountReceivableContent = () => {
   const { data: payments, isLoading: paymentsLoading } = usePayments(currentOrg);
   const { data: tenants, isLoading: tenantsLoading } = useTenants(currentOrg);
 
-  const invoicesData = invoices as Array<{ id: string; tenant_id: string; unit_id: string; invoice_number: string; amount: number; status: string; due_date: string }> | undefined;
-  const paymentsData = payments as Array<{ id: string; tenant_id: string; unit_id: string; amount: number; status: string; due_date: string }> | undefined;
-  const tenantsData = tenants as Array<{ id: string; name: string; unit_id: string }> | undefined;
+  const invoicesData = (invoices as any)?.data?.data || [];
+  const paymentsData = (payments as any)?.data?.data || [];
+  const tenantsData = (tenants as any)?.data?.data || [];
 
   const getTenantName = (tenantId: string) => tenantsData?.find(t => t.id === tenantId)?.name || "Unknown";
   const getUnitName = (unitId: string) => "Unit " + unitId;
