@@ -132,6 +132,62 @@ npx playwright test
 npm run lint
 ```
 
+### Google OAuth Setup (Optional)
+
+To enable Sign in with Google, you need to create OAuth credentials in Google Cloud Console:
+
+1. **Go to Google Cloud Console**: https://console.cloud.google.com/
+2. **Create a new project** or select an existing one
+3. **Enable the Google+ API** (or Google People API):
+   - Go to APIs & Services → Library
+   - Search for "Google+ API" or "People API" and enable it
+4. **Create OAuth 2.0 credentials**:
+   - Go to APIs & Services → Credentials
+   - Click "Create credentials" → OAuth client ID
+   - Application type: Web application
+   - Add authorized redirect URI: `http://localhost:3001/api/auth/google/callback`
+5. **Get the Client ID and Client Secret**
+6. **Update `backend/.env`**:
+
+```
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-client-secret
+GOOGLE_CALLBACK_URL=http://localhost:3001/api/auth/google/callback
+```
+
+7. **Restart the backend** for changes to take effect
+
+Note: For production, update `GOOGLE_CALLBACK_URL` to your actual domain.
+
+### Facebook OAuth Setup (Optional)
+
+To enable Sign in with Facebook, you need to create an app in Facebook Developer Portal:
+
+1. **Go to Facebook Developer Portal**: https://developers.facebook.com/
+2. **Create a new app**:
+   - Go to "My Apps" → "Create App"
+   - Select "Consumer" as app type
+   - Add app name and contact email
+3. **Set up Facebook Login**:
+   - Go to Products → Add Product → Facebook Login
+   - Go to Settings → OAuth Settings
+   - Add Valid OAuth Redirect URIs: `http://localhost:3001/api/auth/facebook/callback`
+   - Add Site URL: `http://localhost:8080/`
+4. **Get the App ID and App Secret**:
+   - Go to Settings → Basic
+   - Copy the App ID and App Secret
+5. **Update `backend/.env`**:
+
+```
+FACEBOOK_CLIENT_ID=your-facebook-app-id
+FACEBOOK_CLIENT_SECRET=your-facebook-app-secret
+FACEBOOK_CALLBACK_URL=http://localhost:3001/api/auth/facebook/callback
+```
+
+6. **Restart the backend** for changes to take effect
+
+Note: For production, update `FACEBOOK_CALLBACK_URL` to your actual domain.
+
 ## Deployment to VPS
 
 ### Backend Deployment
@@ -248,3 +304,94 @@ rento-home-hub/
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+## Internationalization (i18n)
+
+This project supports multiple languages using a custom i18n implementation.
+
+### Supported Languages
+
+- **English** (`en`) - Default
+- **Bengali** (`bn`) - Bangla translation
+
+### Translation Files
+
+Translation files are located in `src/i18n/`:
+
+- `src/i18n/en.json` - English translations
+- `src/i18n/bn.json` - Bengali translations
+- `src/i18n/index.ts` - Language configuration
+
+### Adding New Translations
+
+1. **Add a new translation key to your component**:
+   ```tsx
+   const { t } = useLanguage();
+   // Use in your component
+   <h1>{t("my_new_key")}</h1>
+   ```
+
+2. **Run the extraction script** to automatically add new keys:
+   ```bash
+   npm run extract:i18n
+   # or
+   node scripts/extract-translations.js
+   ```
+
+3. **Update the translation values** in the JSON files:
+   - Edit `src/i18n/en.json` with the English value
+   - Edit `src/i18n/bn.json` with the Bengali value
+
+   Example:
+   ```json
+   {
+     "my_new_key": "This is my new text"
+   }
+   ```
+
+### Adding a New Language
+
+1. Create a new JSON file in `src/i18n/` (e.g., `es.json` for Spanish)
+
+2. Copy all keys from `en.json` and translate them:
+   ```json
+   {
+     "my_new_key": "Esta es mi nuevo texto"
+   }
+   ```
+
+3. Update `src/i18n/index.ts` to include the new language:
+   ```typescript
+   import en from './en.json';
+   import bn from './bn.json';
+   import es from './es.json'; // Add your new language
+
+   export const translations = {
+     en,
+     bn,
+     es // Add your new language
+   };
+   ```
+
+4. The `LanguageContext` provides a `setLang` function to switch languages:
+   ```tsx
+   const { setLang } = useLanguage();
+   setLang('es'); // Switch to Spanish
+   ```
+
+### Translation Key Naming Convention
+
+Use a prefix system to organize keys:
+
+- `nav_*` - Navigation items
+- `hero_*` - Hero section texts
+- `card*_*` - Feature cards
+- `auth_*` - Authentication related
+- `dash_*` - Dashboard related
+- `pm_*` - Property management
+- `bm_*` - Building management
+- `rentals_*` - Rental listings
+- `services_*` - Services page
+- `footer_*` - Footer section
+
+Example: `dash_tenant`, `pm_addProperty`, `bm_flatNo`
