@@ -2,11 +2,13 @@ import { useState } from "react";
 import { MapPin, Phone, Mail, Share2, Facebook, Linkedin, Instagram } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
+import { api } from "@/lib/api";
 
 const Contact = () => {
   const { t } = useLanguage();
   const [form, setForm] = useState({ name: "", phone: "", email: "", subject: "General Inquiry", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validate = () => {
     const errs: Record<string, string> = {};
@@ -17,13 +19,21 @@ const Contact = () => {
     return errs;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    toast.success("✅ Message sent! We'll get back to you soon.");
-    setForm({ name: "", phone: "", email: "", subject: "General Inquiry", message: "" });
-    setErrors({});
+    setIsSubmitting(true);
+    try {
+      await api.post('/contact', form);
+      toast.success("✅ Message sent! We'll get back to you soon.");
+      setForm({ name: "", phone: "", email: "", subject: "General Inquiry", message: "" });
+      setErrors({});
+    } catch {
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const infoCards = [
@@ -89,8 +99,8 @@ const Contact = () => {
                     onBlur={(e) => e.currentTarget.style.borderColor = '#DEE2E6'} />
                   {errors.message && <p className="text-xs mt-1" style={{ color: '#E03131' }}>{errors.message}</p>}
                 </div>
-                <button type="submit" className="w-full h-10 font-semibold rounded-lg text-sm transition-colors" style={{ background: '#3B5BDB', color: '#FFFFFF' }}>
-                  {t("contact.sendMessage")}
+                <button type="submit" disabled={isSubmitting} className="w-full h-10 font-semibold rounded-lg text-sm transition-colors disabled:opacity-50" style={{ background: '#3B5BDB', color: '#FFFFFF' }}>
+                  {isSubmitting ? "Sending..." : t("contact.sendMessage")}
                 </button>
                 <p className="text-center text-xs" style={{ color: '#868E96' }}>{t("contact.replyTime")}</p>
               </form>

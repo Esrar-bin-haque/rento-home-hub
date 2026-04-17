@@ -2,13 +2,26 @@ import { Request, Response, NextFunction } from 'express';
 import { prepare } from '../db/index.js';
 
 export function requireOrgMember(req: Request, res: Response, next: NextFunction) {
-  const orgId = req.headers['x-org-id'] as string;
+  let orgId = req.headers['x-org-id'] as string;
+  
+  if (!orgId && req.user?.userId) {
+    const userOrgs = prepare(
+      'SELECT org_id FROM org_members WHERE user_id = ? LIMIT 1'
+    ).all([req.user.userId]) as { org_id: string }[];
+    
+    if (userOrgs.length > 0) {
+      orgId = userOrgs[0].org_id;
+      console.log(`No X-Org-Id provided, using user's first org: ${orgId}`);
+    }
+  }
+  
   if (!orgId) {
     return res.status(400).json({ error: 'X-Org-Id header required' });
   }
   
   if (req.user?.is_super_admin) {
     req.org = { id: orgId };
+    console.log(`Super admin ${req.user?.userId} accessing org: ${orgId}`);
     return next();
   }
   

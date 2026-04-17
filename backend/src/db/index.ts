@@ -3,20 +3,21 @@ import fs from 'fs';
 import path from 'path';
 import { config } from '../config/env.js';
 
-const dbPath = config.dbPath;
+const dbPath = process.env.VITEST ? ':memory:' : config.dbPath;
 const dbDir = path.dirname(path.resolve(dbPath));
 
-if (!fs.existsSync(dbDir)) {
+if (!process.env.VITEST && !fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }
 
 let db: SqlJsDatabase;
+let isTestMode = false;
 
 export async function initDatabase() {
   const SQL = await initSqlJs();
   
   let data: Uint8Array | undefined;
-  if (fs.existsSync(dbPath)) {
+  if (!process.env.VITEST && fs.existsSync(dbPath)) {
     data = new Uint8Array(fs.readFileSync(dbPath));
   }
   
@@ -25,6 +26,11 @@ export async function initDatabase() {
   db.run('PRAGMA foreign_keys = ON');
   
   return db;
+}
+
+export function setTestDb(testDb: SqlJsDatabase) {
+  db = testDb;
+  isTestMode = true;
 }
 
 export function getDb(): SqlJsDatabase {

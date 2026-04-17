@@ -57,3 +57,34 @@ export function findUserByPhone(phone: string): User | null {
   const users = prepare('SELECT * FROM users WHERE phone = ?').all([phone]) as unknown as User[];
   return users[0] || null;
 }
+
+export function findUserByEmail(email: string): User | null {
+  const users = prepare('SELECT * FROM users WHERE email = ?').all([email]) as unknown as User[];
+  return users[0] || null;
+}
+
+export function findUserByGoogleId(googleId: string): User | null {
+  const users = prepare('SELECT * FROM users WHERE google_id = ?').all([googleId]) as unknown as User[];
+  return users[0] || null;
+}
+
+export async function upsertGoogleUser(data: { name: string; email: string; googleId: string }): Promise<User> {
+  let user = findUserByGoogleId(data.googleId);
+  
+  if (user) {
+    return user;
+  }
+  
+  const existingEmail = findUserByEmail(data.email);
+  if (existingEmail) {
+    return existingEmail;
+  }
+  
+  const id = uuid();
+  run(
+    'INSERT INTO users (id, name, email, google_id, is_verified) VALUES (?, ?, ?, ?, 1)',
+    [id, data.name, data.email, data.googleId]
+  );
+  
+  return findUserById(id)!;
+}

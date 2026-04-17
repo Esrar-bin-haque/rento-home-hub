@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { registerSchema, loginSchema } from '../schemas/auth.schema.js';
 import { registerUser, loginUser, findUserById, findUserByPhone } from '../services/auth.service.js';
+import { listUserOrgs } from '../services/org.service.js';
 import { generateAccessToken, generateRefreshToken, saveRefreshToken, deleteRefreshToken, verifyRefreshToken, ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../utils/jwt.js';
 import { requireAuth } from '../middleware/auth.js';
 import { ZodError } from 'zod';
@@ -8,8 +9,9 @@ import { ZodError } from 'zod';
 const router = Router();
 
 function setCookies(res: Response, accessToken: string, refreshToken: string) {
-  const accessOptions = { httpOnly: true, sameSite: 'lax' as const, maxAge: 15 * 60 * 1000 };
-  const refreshOptions = { httpOnly: true, sameSite: 'lax' as const, maxAge: 30 * 24 * 60 * 60 * 1000 };
+  const isProduction = process.env.NODE_ENV === 'production';
+  const accessOptions = { httpOnly: true, sameSite: 'lax' as const, maxAge: 15 * 60 * 1000, secure: isProduction };
+  const refreshOptions = { httpOnly: true, sameSite: 'lax' as const, maxAge: 30 * 24 * 60 * 60 * 1000, secure: isProduction };
   
   res.cookie(ACCESS_TOKEN_COOKIE, accessToken, accessOptions);
   res.cookie(REFRESH_TOKEN_COOKIE, refreshToken, refreshOptions);
@@ -46,7 +48,7 @@ router.post('/login', async (req: Request, res: Response) => {
   try {
     const data = loginSchema.parse(req.body);
     
-    const user = await loginUser(data.phone, data.password);
+    const user = await loginUser(data.phone, data.password as string);
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -86,9 +88,13 @@ router.get('/me', requireAuth, (req: Request, res: Response) => {
     return res.status(404).json({ error: 'User not found' });
   }
   
+  console.log('/auth/me - userId:', req.user!.userId);
+  const orgs = listUserOrgs(req.user!.userId);
+  console.log('/auth/me - orgs:', orgs);
+  
   res.json({ 
     user: { id: user.id, name: user.name, phone: user.phone, email: user.email }, 
-    orgs: [] 
+    orgs
   });
 });
 

@@ -67,19 +67,19 @@ class ApiClient {
     }
   }
 
-  async get(path: string): Promise<any> {
+  async get<T>(path: string): Promise<T> {
     return this.request(path, { method: 'GET' });
   }
 
-  async post(path: string, body?: any): Promise<any> {
+  async post<T>(path: string, body?: unknown): Promise<T> {
     return this.request(path, { method: 'POST', body: JSON.stringify(body) });
   }
 
-  async put(path: string, body?: any): Promise<any> {
+  async put<T>(path: string, body?: unknown): Promise<T> {
     return this.request(path, { method: 'PUT', body: JSON.stringify(body) });
   }
 
-  async delete(path: string): Promise<any> {
+  async delete<T>(path: string): Promise<T> {
     return this.request(path, { method: 'DELETE' });
   }
 }

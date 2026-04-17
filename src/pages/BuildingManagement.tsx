@@ -12,6 +12,15 @@ import {
 } from "recharts";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 // ─── Mock Data ──────────────────────────────────────────
 
@@ -1397,6 +1406,21 @@ const ReportsContent = () => {
 
 const AssociationContent = () => {
   const [showAddMember, setShowAddMember] = useState(false);
+  const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
+  const [memberToRemove, setMemberToRemove] = useState<{ name: string } | null>(null);
+
+  const handleRemoveClick = (m: { name: string }) => {
+    setMemberToRemove(m);
+    setRemoveDialogOpen(true);
+  };
+
+  const confirmRemove = () => {
+    if (memberToRemove) {
+      toast.success(`${memberToRemove.name} removed`);
+    }
+    setRemoveDialogOpen(false);
+    setMemberToRemove(null);
+  };
 
   return (
     <div className="space-y-5">
@@ -1483,7 +1507,7 @@ const AssociationContent = () => {
                   </td>
                   <td className="p-3 flex gap-2">
                     <button className="text-xs hover:underline" style={{ color: '#3B5BDB' }}>Edit</button>
-                    {m.role !== "Admin" && <button onClick={() => { if (confirm(`Remove ${m.name} from association?`)) toast.success(`${m.name} removed`); }} className="text-xs hover:underline" style={{ color: '#E03131' }}>Remove</button>}
+                    {m.role !== "Admin" && <button onClick={() => handleRemoveClick(m)} className="text-xs hover:underline" style={{ color: '#E03131' }}>Remove</button>}
                   </td>
                 </tr>
               ))}
@@ -1517,6 +1541,20 @@ const AssociationContent = () => {
           </div>
         </div>
       )}
+
+      {/* Remove Member Confirmation Dialog */}
+      <Dialog open={removeDialogOpen} onOpenChange={setRemoveDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Remove Member</DialogTitle>
+            <DialogDescription>Are you sure you want to remove {memberToRemove?.name} from the association?</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRemoveDialogOpen(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={confirmRemove}>Remove</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
