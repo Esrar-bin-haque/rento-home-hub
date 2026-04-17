@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
   phone TEXT UNIQUE,
   password_hash TEXT,
   google_id TEXT UNIQUE,
+  facebook_id TEXT UNIQUE,
   name TEXT NOT NULL,
   avatar_url TEXT,
   is_super_admin INTEGER NOT NULL DEFAULT 0,
